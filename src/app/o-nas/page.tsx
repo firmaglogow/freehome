@@ -54,7 +54,7 @@ export default function ONasPage() {
               { v: `${site.reviewsCount}+`, l: "opinii klientów" },
               { v: "5,0", l: "średnia ocen" },
               { v: "100%", l: "lokalnie" },
-              { v: "2", l: "osoby w zespole" },
+              { v: "3", l: "osoby w zespole" },
             ].map((stat, i) => (
               <Reveal key={i} delay={i * 70}>
                 <div className="rounded-2xl border border-gold-500/15 bg-forest-800 p-5 text-center">

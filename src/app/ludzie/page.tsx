@@ -4,7 +4,7 @@ import People from "@/components/home/People";
 export const metadata = {
   title: "Ludzie",
   description:
-    "Poznaj FREE HOME Nieruchomości — dwie osoby, do których trafiasz bezpośrednio.",
+    "Poznaj zespół FREE HOME Nieruchomości — trzy osoby, do których trafiasz bezpośrednio.",
 };
 
 export default function LudziePage() {
@@ -13,7 +13,7 @@ export default function LudziePage() {
       <PageHeader
         eyebrow="Ludzie"
         title="Zespół FREE HOME"
-        subtitle="Bez hierarchii, bez infolinii. Dwie osoby, które poprowadzą Twoją sprawę."
+        subtitle="Bez hierarchii, bez infolinii. Trzy osoby, które poprowadzą Twoją sprawę."
       />
       <People withHeading={false} />
     </>

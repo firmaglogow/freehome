@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -16,36 +17,37 @@ export default function People({
           <SectionHeading
             eyebrow="Poznaj nas"
             title="Ludzie FREE HOME"
-            subtitle="Dwie osoby, do których trafiasz. Bez hierarchii, bez infolinii."
+            subtitle="Trzy osoby, do których trafiasz. Bez hierarchii, bez infolinii."
             align="center"
           />
         )}
 
-        <div className="mx-auto mt-12 grid max-w-3xl gap-7 sm:grid-cols-2">
+        <div className="mx-auto mt-12 grid max-w-5xl gap-7 sm:grid-cols-2 lg:grid-cols-3">
           {people.map((p, i) => (
             <Reveal key={p.slug} delay={i * 90}>
-              <article className="overflow-hidden rounded-2xl border border-gold-500/15 bg-forest-900">
+              <Link
+                href={`/ludzie/${p.slug}`}
+                className="group block h-full overflow-hidden rounded-2xl border border-gold-500/15 bg-forest-900 transition hover:border-gold-500/40 hover:bg-forest-900/80"
+              >
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <Image
                     src={p.photo}
                     alt={p.name}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover object-top"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover object-top transition duration-500 group-hover:scale-[1.03]"
                   />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-2xl text-cream">{p.name}</h3>
+                  <h3 className="text-2xl text-cream group-hover:text-gold-300">
+                    {p.name}
+                  </h3>
                   <p className="text-sm text-gold-400">{p.role}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-cream/70">
-                    {p.bio}
-                  </p>
-                  <div className="mt-4 space-y-1 text-sm">
-                    <p className="text-cream/80">tel. {p.phone}</p>
-                    <p className="text-cream/60">{p.email}</p>
-                  </div>
+                  <span className="mt-4 inline-block text-sm font-semibold text-gold-400">
+                    Zobacz profil i oferty →
+                  </span>
                 </div>
-              </article>
+              </Link>
             </Reveal>
           ))}
         </div>

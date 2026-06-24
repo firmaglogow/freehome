@@ -54,7 +54,8 @@ export type Person = {
   photo: string;
 };
 
-// Biuro prowadzą dwie osoby — Grzegorz i Daria Łukasik. Bez hierarchii.
+// Biuro prowadzą Grzegorz i Daria Łukasik; w zespole także trzecia osoba.
+// Bez hierarchii — każda osoba ma własną podstronę z opisem i ofertami.
 export const people: Person[] = [
   {
     slug: "grzegorz-lukasik",
@@ -73,6 +74,15 @@ export const people: Person[] = [
     phone: "518 092 404",
     email: "dariaz.lukasik@freehome.com.pl",
     photo: "/zespol/daria.jpg",
+  },
+  {
+    slug: "angela",
+    name: "Angela", // [POTWIERDZIĆ pełne imię i nazwisko]
+    role: "Agentka nieruchomości",
+    bio: "[DO UZUPEŁNIENIA — krótkie bio: doświadczenie, specjalizacja, w czym pomaga klientom.]",
+    phone: "[DO UZUPEŁNIENIA]",
+    email: "[DO UZUPEŁNIENIA]",
+    photo: "/zespol/angela.jpg", // [POTWIERDZIĆ zdjęcie — wg uwagi o zamianie plików daria/angela]
   },
 ];
 

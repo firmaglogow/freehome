@@ -29,7 +29,12 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
   const offer = offers.find((o) => o.id === id);
   if (!offer) notFound();
 
-  const agent = people[0];
+  const agent = people.find((p) => p.slug === offer.agent) ?? people[0];
+  const agentHasPhone = !!agent.phone && /\d/.test(agent.phone);
+  const agentPhone = agentHasPhone ? agent.phone! : site.phone;
+  const agentPhoneHref = agentHasPhone
+    ? `tel:+48${agent.phone!.replace(/\s/g, "")}`
+    : site.phoneHref;
   const similar = offers
     .filter((o) => o.id !== offer.id && o.type === offer.type)
     .slice(0, 3);
@@ -143,10 +148,10 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
                 <div className="text-sm">
                   <p className="text-cream">{agent.name}</p>
                   <a
-                    href={site.phoneHref}
+                    href={agentPhoneHref}
                     className="text-gold-400 hover:underline"
                   >
-                    {site.phone}
+                    {agentPhone}
                   </a>
                 </div>
               </div>

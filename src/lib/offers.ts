@@ -15,6 +15,9 @@ export type Offer = {
   floor?: string;
   image: string;
   promoted?: boolean;
+  // Agent prowadzący ofertę (slug z people). Przypisanie tymczasowe —
+  // docelowo pochodzi z importu EstiCRM (Etap 2). [POTWIERDZIĆ przypisania]
+  agent?: string;
 };
 
 const PLN = (n: number) => n;
@@ -33,6 +36,7 @@ export const offers: Offer[] = [
     rooms: 4,
     image: "/oferty/oferta-1.webp",
     promoted: true,
+    agent: "grzegorz-lukasik",
   },
   {
     id: "FH-1002",
@@ -45,6 +49,7 @@ export const offers: Offer[] = [
     areaTotal: 1100,
     image: "/oferty/oferta-2.webp",
     promoted: true,
+    agent: "daria-lukasik",
   },
   {
     id: "FH-1003",
@@ -59,6 +64,7 @@ export const offers: Offer[] = [
     rooms: 5,
     image: "/oferty/oferta-3.webp",
     promoted: true,
+    agent: "angela",
   },
   {
     id: "FH-1004",
@@ -72,6 +78,7 @@ export const offers: Offer[] = [
     areaTotal: 180,
     rooms: 6,
     image: "/oferty/oferta-4.webp",
+    agent: "grzegorz-lukasik",
   },
   {
     id: "FH-1005",
@@ -86,6 +93,7 @@ export const offers: Offer[] = [
     rooms: 3,
     floor: "2/4",
     image: "/oferty/oferta-5.webp",
+    agent: "daria-lukasik",
   },
   {
     id: "FH-1006",
@@ -97,6 +105,7 @@ export const offers: Offer[] = [
     price: PLN(245000),
     areaTotal: 2500,
     image: "/oferty/oferta-6.webp",
+    agent: "angela",
   },
 ];
 
