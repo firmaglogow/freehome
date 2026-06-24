@@ -2,7 +2,6 @@ import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
-import Placeholder from "@/components/ui/Placeholder";
 import People from "@/components/home/People";
 import { awards, site } from "@/lib/site";
 
@@ -23,17 +22,39 @@ export default function ONasPage() {
 
       <section className="py-16 sm:py-20">
         <Container className="max-w-3xl">
-          <Placeholder>
-            Historia FREE HOME — kiedy powstało biuro, misja, wartości, czym się
-            wyróżniamy. Treść do uzupełnienia z właścicielem.
-          </Placeholder>
+          <h2 className="font-display text-3xl text-cream sm:text-4xl">
+            Kim jesteśmy
+          </h2>
+          <div className="mt-5 space-y-4 text-cream/75 leading-relaxed">
+            <p>
+              FREE HOME to lokalne biuro nieruchomości z Głogowa, które
+              prowadzimy razem — Daria i Grzegorz Łukasik. Nie jesteśmy siecią z
+              infolinią i oddziałami w całej Polsce. Jesteśmy stąd. I to jest
+              cała różnica.
+            </p>
+            <p>
+              Przez lata pracy w głogowskich nieruchomościach przeszły przez
+              nasze ręce setki transakcji — mieszkania, domy, działki. Każda z
+              nich nauczyła nas tego samego: że za każdą nieruchomością stoi
+              człowiek i jego decyzja, często jedna z najważniejszych w życiu.
+              Dlatego pracujemy inaczej. Bez nacisku, bez sztampy, bez
+              traktowania klienta jak numer w systemie.
+            </p>
+            <p>
+              Szczerze? Najbardziej cieszą nas nie statuetki, tylko to, że
+              klienci wracają i polecają nas dalej. Ponad 254 opinie z oceną 5
+              gwiazdek w Google nie wzięły się znikąd — to lata uczciwej,
+              konkretnej roboty. Lokalna wiedza, realne ceny, pełne
+              zaangażowanie na każdym etapie. Tak właśnie wygląda FREE HOME.
+            </p>
+          </div>
 
           <div className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4">
             {[
               { v: `${site.reviewsCount}+`, l: "opinii klientów" },
               { v: "5,0", l: "średnia ocen" },
               { v: "100%", l: "lokalnie" },
-              { v: "3", l: "osoby w zespole" },
+              { v: "2", l: "osoby w zespole" },
             ].map((stat, i) => (
               <Reveal key={i} delay={i * 70}>
                 <div className="rounded-2xl border border-gold-500/15 bg-forest-800 p-5 text-center">

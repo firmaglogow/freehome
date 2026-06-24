@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
-import Placeholder from "@/components/ui/Placeholder";
 import { services, site } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -26,20 +25,29 @@ export default async function ServicePage(props: PageProps<"/uslugi/[slug]">) {
       <PageHeader eyebrow="Usługa" title={service.title} subtitle={service.desc} />
       <section className="py-16 sm:py-20">
         <Container className="max-w-3xl">
-          <Placeholder>
-            Szczegółowy opis usługi „{service.title}” — przebieg współpracy,
-            korzyści, FAQ. Treść do uzupełnienia z właścicielem.
-          </Placeholder>
+          <div className="space-y-4 text-base leading-relaxed text-cream/75">
+            {service.intro.map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+          </div>
+
+          {service.cta && (
+            <div className="mt-8">
+              <a
+                href={service.cta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 px-6 py-3 text-sm font-semibold text-gold-300 transition hover:bg-gold-500/10"
+              >
+                {service.cta.label} →
+              </a>
+            </div>
+          )}
 
           <div className="mt-10 space-y-6 text-cream/75">
             <h2 className="font-display text-2xl text-cream">Jak to działa</h2>
             <ol className="space-y-4">
-              {[
-                "Bezpłatna konsultacja i analiza potrzeb.",
-                "Wycena i ustalenie strategii.",
-                "Działanie — marketing, prezentacje, negocjacje.",
-                "Bezpieczna, dopięta transakcja.",
-              ].map((step, i) => (
+              {service.steps.map((step, i) => (
                 <li key={i} className="flex gap-4">
                   <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-gold-500 text-sm font-semibold text-forest-950">
                     {i + 1}

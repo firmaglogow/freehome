@@ -54,35 +54,25 @@ export type Person = {
   photo: string;
 };
 
-// 3 równorzędne osoby — bez hierarchii.
-// UWAGA: zdjęcia dwóch osób (daria/angela) do POTWIERDZENIA który plik = która osoba.
+// Biuro prowadzą dwie osoby — Grzegorz i Daria Łukasik. Bez hierarchii.
 export const people: Person[] = [
   {
     slug: "grzegorz-lukasik",
     name: "Grzegorz Łukasik",
     role: "Agent nieruchomości",
-    bio: "[DO UZUPEŁNIENIA — krótkie bio: doświadczenie, specjalizacja, dlaczego warto.]",
-    phone: site.phone,
-    email: site.email,
+    bio: "Nieruchomości to moja codzienność od lat — i nadal podchodzę do każdej transakcji tak, jakby była pierwsza. Prowadzę FREE HOME razem z Darią. Znam Głogów i okolice na wylot: realne ceny, dzielnice, to, co naprawdę przesądza o dobrej sprzedaży. U mnie nie ma sztampy i nacisku. Jest konkret, uczciwa rozmowa i pełne zaangażowanie — od pierwszego telefonu po klucze w dłoni.",
+    phone: "537 264 666",
+    email: "grzegorz.lukasik@freehome.com.pl",
     photo: "/zespol/grzegorz.jpg",
   },
   {
     slug: "daria-lukasik",
     name: "Daria Łukasik",
     role: "Agentka nieruchomości",
-    bio: "[DO UZUPEŁNIENIA — krótkie bio.]",
-    phone: "[DO UZUPEŁNIENIA]",
-    email: "[DO UZUPEŁNIENIA]",
-    photo: "/zespol/daria.jpg", // [POTWIERDZIĆ zdjęcie]
-  },
-  {
-    slug: "angela",
-    name: "Angela",
-    role: "Agentka nieruchomości",
-    bio: "[DO UZUPEŁNIENIA — krótkie bio.]",
-    phone: "[DO UZUPEŁNIENIA]",
-    email: "[DO UZUPEŁNIENIA]",
-    photo: "/zespol/angela.jpg", // [POTWIERDZIĆ zdjęcie]
+    bio: "Najbardziej empatyczna pośredniczka w Głogowie — tak mówią o mnie klienci, i biorę to sobie do serca. Za sobą mam setki transakcji i jedną zasadę: człowiek przed nieruchomością. Słucham, tłumaczę spokojnie, jestem obok na każdym etapie. Sprzedaż czy zakup domu to jedna z największych decyzji w życiu — zasługuje na kogoś, komu naprawdę zależy.",
+    phone: "518 092 404",
+    email: "dariaz.lukasik@freehome.com.pl",
+    photo: "/zespol/daria.jpg",
   },
 ];
 
@@ -91,6 +81,9 @@ export type Service = {
   title: string;
   desc: string;
   href: string;
+  intro: string[];
+  steps: string[];
+  cta?: { label: string; href: string };
 };
 
 export const services: Service[] = [
@@ -99,24 +92,65 @@ export const services: Service[] = [
     title: "Sprzedaż",
     desc: "Kompleksowa obsługa sprzedaży — wycena, marketing, bezpieczna transakcja.",
     href: "/uslugi/sprzedaz",
+    intro: [
+      "Sprzedaż nieruchomości to znacznie więcej niż ogłoszenie w internecie. To strategia, prezentacja i negocjacje, które realnie decydują o tym, ile dostaniesz i jak szybko. Zajmujemy się wszystkim — od rzetelnej wyceny, przez profesjonalne zdjęcia i marketing, po bezpieczne dopięcie transakcji u notariusza. Ty masz spokój, my mamy robotę pod kontrolą.",
+      "Działamy lokalnie i znamy głogowski rynek od podszewki — wiemy, ile naprawdę warta jest Twoja nieruchomość i jak ją pokazać właściwym kupującym. Bez pustych obietnic. Konkret i efekt.",
+    ],
+    steps: [
+      "Bezpłatna wycena i rozmowa o Twoich celach.",
+      "Strategia sprzedaży — cena, marketing, grupa kupujących.",
+      "Profesjonalne zdjęcia, ogłoszenia, prezentacje, negocjacje.",
+      "Bezpieczna transakcja i finalizacja u notariusza.",
+    ],
   },
   {
     slug: "zakup",
     title: "Zakup",
     desc: "Pomoc w znalezieniu i zakupie wymarzonej nieruchomości w Głogowie i okolicy.",
     href: "/uslugi/zakup",
+    intro: [
+      "Szukanie wymarzonej nieruchomości potrafi być męczące — dziesiątki ogłoszeń, telefony, oglądania, które do niczego nie prowadzą. My to skracamy. Poznajemy Twoje potrzeby i budżet, a potem szukamy konkretnie pod Ciebie — także wśród ofert, które nie trafiły jeszcze do internetu.",
+      "Sprawdzamy stan prawny, doradzamy, negocjujemy cenę w Twoim imieniu. Kupujesz pewnie i bezpiecznie, bez stresu i bez przepłacania. Lokalna wiedza po Twojej stronie.",
+    ],
+    steps: [
+      "Rozmowa o potrzebach, budżecie i okolicy.",
+      "Selekcja ofert pod Ciebie — też tych spoza portali.",
+      "Oglądania, weryfikacja stanu prawnego, negocjacje.",
+      "Bezpieczny zakup i finalizacja u notariusza.",
+    ],
   },
   {
     slug: "deweloperzy",
     title: "Deweloperzy",
     desc: "Obsługa inwestycji deweloperskich. Zobacz freehomeinwest.pl.",
     href: "/uslugi/deweloperzy",
+    intro: [
+      "Współpracujemy z deweloperami i inwestorami — kompleksowo obsługujemy sprzedaż inwestycji mieszkaniowych w Głogowie i okolicy. Marketing, prezentacja, kontakt z klientami i sprzedaż lokali to nasza działka.",
+      "Prowadzimy też osobny serwis dedykowany inwestycjom: freehomeinwest.pl. Jeśli jesteś deweloperem i szukasz lokalnego partnera, który zna rynek i potrafi sprzedawać — odezwij się.",
+    ],
+    steps: [
+      "Analiza inwestycji i grupy docelowej.",
+      "Strategia sprzedaży i marketing.",
+      "Obsługa klientów i prezentacje lokali.",
+      "Sprzedaż i finalizacja kolejnych etapów.",
+    ],
+    cta: { label: "Zobacz freehomeinwest.pl", href: "https://freehomeinwest.pl" },
   },
   {
     slug: "kredyty",
     title: "Finansowanie",
     desc: "Kredyty i ubezpieczenia z naszym ekspertem (partner: Lendi).",
     href: "/uslugi/kredyty",
+    intro: [
+      "Kupno nieruchomości to często też kredyt — a dobry kredyt potrafi zaoszczędzić dziesiątki tysięcy złotych. Dlatego współpracujemy ze sprawdzonym ekspertem finansowym (partner: Lendi), który pomoże dobrać najlepsze finansowanie i przejść przez formalności.",
+      "Jedna rozmowa, jeden zaufany kontakt — bez biegania po bankach na własną rękę. Doradztwo kredytowe i ubezpieczeniowe w jednym miejscu, u ludzi, którym ufamy.",
+    ],
+    steps: [
+      "Rozmowa o Twoich planach i zdolności kredytowej.",
+      "Kontakt z naszym ekspertem finansowym (Lendi).",
+      "Dobór najlepszej oferty kredytu i ubezpieczenia.",
+      "Wsparcie aż do uruchomienia kredytu.",
+    ],
   },
 ];
 

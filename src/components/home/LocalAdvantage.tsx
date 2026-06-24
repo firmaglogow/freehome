@@ -39,11 +39,10 @@ export default function LocalAdvantage() {
             <h2 className="mt-3 text-3xl leading-tight text-cream sm:text-4xl">
               Lokalne biuro &gt; bezosobowa sieć
             </h2>
-            {/* [DO UZUPEŁNIENIA — właściciel napisze 2-3 zdania własnymi słowami] */}
             <p className="mt-4 text-base leading-relaxed text-cream/75">
-              Jesteśmy stąd. Daria, Grzegorz i Angela — trzy osoby, które znają
-              Głogów i okolice na wylot. U nas nieruchomość to nie numer w
-              systemie, tylko Twój dom, Twoja decyzja i nasza wspólna sprawa.
+              Jesteśmy stąd. Daria i Grzegorz — dwie osoby, które znają Głogów i
+              okolice na wylot. U nas nieruchomość to nie numer w systemie, tylko
+              Twój dom, Twoja decyzja i nasza wspólna sprawa.
             </p>
 
             <div className="mt-8 space-y-5">

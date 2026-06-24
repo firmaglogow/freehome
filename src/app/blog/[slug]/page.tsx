@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
-import Placeholder from "@/components/ui/Placeholder";
 import { posts, formatDate } from "@/lib/blog";
 
 export function generateStaticParams() {
@@ -49,16 +48,28 @@ export default async function PostPage(props: PageProps<"/blog/[slug]">) {
           />
         </div>
 
-        <div className="mt-8">
-          <Placeholder>
-            Pełna treść artykułu „{post.title}”. Docelowo wpisy będą zarządzane
-            przez MDX lub lekki CMS (Etap 3).
-          </Placeholder>
-        </div>
-
-        <p className="mt-8 text-lg leading-relaxed text-cream/80">
+        <p className="mt-8 text-lg leading-relaxed text-cream/85">
           {post.excerpt}
         </p>
+
+        <div className="mt-6 space-y-5 text-base leading-relaxed text-cream/75">
+          {post.body.map((block, i) => (
+            <p key={i}>
+              {block.lead && (
+                <strong className="font-semibold text-cream">
+                  {block.lead}{" "}
+                </strong>
+              )}
+              {block.text}
+            </p>
+          ))}
+        </div>
+
+        {post.note && (
+          <p className="mt-10 border-t border-gold-500/15 pt-5 text-xs leading-relaxed text-cream/45">
+            {post.note}
+          </p>
+        )}
       </Container>
     </article>
   );

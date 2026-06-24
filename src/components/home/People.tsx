@@ -16,12 +16,12 @@ export default function People({
           <SectionHeading
             eyebrow="Poznaj nas"
             title="Ludzie FREE HOME"
-            subtitle="Trzy osoby, do których trafiasz. Bez hierarchii, bez infolinii."
+            subtitle="Dwie osoby, do których trafiasz. Bez hierarchii, bez infolinii."
             align="center"
           />
         )}
 
-        <div className="mt-12 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-3xl gap-7 sm:grid-cols-2">
           {people.map((p, i) => (
             <Reveal key={p.slug} delay={i * 90}>
               <article className="overflow-hidden rounded-2xl border border-gold-500/15 bg-forest-900">
@@ -30,7 +30,7 @@ export default function People({
                     src={p.photo}
                     alt={p.name}
                     fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover object-top"
                   />
                 </div>

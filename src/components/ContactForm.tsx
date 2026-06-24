@@ -71,8 +71,14 @@ export default function ContactForm({
           className="mt-0.5 h-4 w-4 flex-none accent-gold-500"
         />
         <span>
-          Wyrażam zgodę na przetwarzanie moich danych w celu kontaktu (RODO).
-          [DO UZUPEŁNIENIA: pełna klauzula]
+          Wyrażam zgodę na przetwarzanie moich danych osobowych podanych w
+          formularzu przez FREE HOME Nieruchomości (ul. Grodzka 18, Głogów, NIP
+          693-210-77-22) w celu udzielenia odpowiedzi na moje zapytanie.
+          Administratorem danych jest FREE HOME Nieruchomości. Dane przetwarzane
+          są zgodnie z RODO (Rozporządzenie UE 2016/679). Podanie danych jest
+          dobrowolne, ale niezbędne do kontaktu. Mam prawo dostępu do swoich
+          danych, ich sprostowania, usunięcia oraz wycofania zgody w dowolnym
+          momencie.
         </span>
       </label>
       <button
