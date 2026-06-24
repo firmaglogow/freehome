@@ -121,3 +121,40 @@ h1, h2, h3, h4 {
     animation: none;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/*  Suwak kalkulatora (Kariera) — złote wypełnienie + uchwyt          */
+/* ------------------------------------------------------------------ */
+.fh-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 9999px;
+  outline: none;
+  background: linear-gradient(
+    90deg,
+    var(--color-gold-500) 0%,
+    var(--color-gold-500) var(--fill, 33%),
+    rgba(245, 241, 232, 0.16) var(--fill, 33%)
+  );
+}
+.fh-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-gold-500);
+  cursor: pointer;
+  border: 3px solid var(--color-forest-950);
+  box-shadow: 0 0 0 1px var(--color-gold-500);
+}
+.fh-range::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-gold-500);
+  cursor: pointer;
+  border: 3px solid var(--color-forest-950);
+}
