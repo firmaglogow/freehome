@@ -65,7 +65,7 @@ export const people: Person[] = [
   {
     slug: "grzegorz-lukasik",
     name: "Grzegorz Łukasik",
-    role: "Agent nieruchomości",
+    role: "Ekspert ds. sprzedaży nieruchomości",
     bio: "Nieruchomości to moja codzienność od lat — i nadal podchodzę do każdej transakcji tak, jakby była pierwsza. Prowadzę FREE HOME razem z Darią. Znam Głogów i okolice na wylot: realne ceny, dzielnice, to, co naprawdę przesądza o dobrej sprzedaży. U mnie nie ma sztampy i nacisku. Jest konkret, uczciwa rozmowa i pełne zaangażowanie — od pierwszego telefonu po klucze w dłoni.",
     phone: "537 264 666",
     email: "grzegorz.lukasik@freehome.com.pl",
@@ -74,7 +74,7 @@ export const people: Person[] = [
   {
     slug: "daria-lukasik",
     name: "Daria Łukasik",
-    role: "Agentka nieruchomości",
+    role: "Ekspert ds. sprzedaży nieruchomości",
     bio: "Najbardziej empatyczna pośredniczka w Głogowie — tak mówią o mnie klienci, i biorę to sobie do serca. Za sobą mam setki transakcji i jedną zasadę: człowiek przed nieruchomością. Słucham, tłumaczę spokojnie, jestem obok na każdym etapie. Sprzedaż czy zakup domu to jedna z największych decyzji w życiu — zasługuje na kogoś, komu naprawdę zależy.",
     phone: "518 092 404",
     email: "dariaz.lukasik@freehome.com.pl",
@@ -83,7 +83,7 @@ export const people: Person[] = [
   {
     slug: "angelika-skorupinska",
     name: "Angelika Skorupińska",
-    role: "Ekspert ds. sprzedaży nieruchomości",
+    role: "Agentka nieruchomości",
     bio: "Do nieruchomości weszłam z bagażem, którego nie da się nauczyć w tej branży — z lat pracy z ludźmi w zupełnie innym świecie. I właśnie to okazało się największym atutem. Wiem, jak słuchać, jak budować relację i jak prowadzić klienta spokojnie przez decyzję, która potrafi onieśmielać. Świeże spojrzenie, mnóstwo energii i pełne zaangażowanie w każdą sprawę — tak zaczynam swój rozdział w FREE HOME.",
     phone: "733 687 666",
     email: "angelika.skorupinska@freehome.com.pl",
