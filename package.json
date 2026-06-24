@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "touch out/.nojekyll",
+    "deploy": "npm run build && cd out && git init -q && git add -A && git commit -qm deploy && git push -f https://github.com/firmaglogow/freehome.git HEAD:gh-pages && cd .. && rm -rf out/.git",
     "start": "next start",
     "lint": "eslint"
   },

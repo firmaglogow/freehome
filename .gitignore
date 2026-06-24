@@ -33,6 +33,13 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# zgłoszenia z formularza zapisane lokalnie + materiały źródłowe (brief, prompty)
+/data/
+/*.pdf
+
+# workflow GitHub Actions — wrzucany dopiero po nadaniu tokenowi scope `workflow`
+/.github/
+
 # vercel
 .vercel
 
