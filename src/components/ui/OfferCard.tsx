@@ -17,7 +17,7 @@ export default function OfferCard({ offer }: { offer: Offer }) {
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <span className="absolute left-3 top-3 rounded-full bg-forest-950/80 px-3 py-1 text-xs font-medium text-gold-300 backdrop-blur">
-          {offer.transaction === "sprzedaz" ? "Sprzedaż" : "Wynajem"}
+          Sprzedaż
         </span>
         {offer.promoted && (
           <span className="absolute right-3 top-3 rounded-full bg-gold-500 px-3 py-1 text-xs font-semibold text-forest-950">

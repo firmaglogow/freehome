@@ -15,7 +15,7 @@ const conditions = [
   "Bardzo dobry / po remoncie",
   "Deweloperski / nowy",
 ];
-const goals = ["Sprzedaż", "Wynajem", "Tylko orientacyjnie"];
+const goals = ["Sprzedaż", "Tylko orientacyjnie"];
 
 // Wysyłka przez FormSubmit.co — działa bez własnego backendu (także na GitHub Pages).
 // Zgłoszenia trafiają na ten adres:

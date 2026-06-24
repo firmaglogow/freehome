@@ -5,7 +5,7 @@ export type Offer = {
   id: string;
   slug: string;
   title: string;
-  transaction: "sprzedaz" | "wynajem";
+  transaction: "sprzedaz";
   type: string;
   location: string;
   price: number;

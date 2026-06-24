@@ -13,7 +13,7 @@ export default function Footer() {
             <Logo width={180} height={60} />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-cream/70">
               Lokalne biuro nieruchomości w Głogowie. Ludzie, których znasz —
-              sprzedaż, zakup i wynajem z osobistym podejściem.
+              sprzedaż i zakup z osobistym podejściem.
             </p>
             <div className="mt-5 space-y-1 text-sm text-cream/70">
               <p>

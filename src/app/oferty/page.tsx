@@ -5,7 +5,7 @@ import OffersExplorer from "@/components/oferty/OffersExplorer";
 export const metadata = {
   title: "Oferty nieruchomości",
   description:
-    "Aktualne oferty sprzedaży i wynajmu — domy, mieszkania i działki w Głogowie, Polkowicach i okolicach. FREE HOME Nieruchomości.",
+    "Aktualne oferty sprzedaży — domy, mieszkania i działki w Głogowie, Polkowicach i okolicach. FREE HOME Nieruchomości.",
 };
 
 export default function OfertyPage() {

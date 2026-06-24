@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: `%s · ${site.name}`,
   },
   description:
-    "Lokalne biuro nieruchomości w Głogowie. Sprzedaż, zakup i wynajem mieszkań, domów i działek. Ludzie, których znasz — ponad 254 opinie 5★.",
+    "Lokalne biuro nieruchomości w Głogowie. Sprzedaż i zakup mieszkań, domów i działek. Ludzie, których znasz — ponad 254 opinie 5★.",
   keywords: [
     "biuro nieruchomości Głogów",
     "mieszkania Głogów",

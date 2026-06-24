@@ -7,7 +7,7 @@ import { services } from "@/lib/site";
 export const metadata = {
   title: "Usługi",
   description:
-    "Sprzedaż, zakup, wynajem, obsługa deweloperów i finansowanie. Kompleksowa obsługa nieruchomości w Głogowie i okolicach.",
+    "Sprzedaż, zakup, obsługa deweloperów i finansowanie. Kompleksowa obsługa nieruchomości w Głogowie i okolicach.",
 };
 
 export default function UslugiPage() {

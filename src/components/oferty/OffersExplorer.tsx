@@ -12,7 +12,6 @@ const fieldCls =
   "w-full rounded-lg border border-forest-600/60 bg-forest-950/50 px-3 py-2.5 text-sm text-cream outline-none transition focus:border-gold-500/70";
 
 export default function OffersExplorer() {
-  const [transaction, setTransaction] = useState("");
   const [location, setLocation] = useState("");
   const [type, setType] = useState("");
   const [priceFrom, setPriceFrom] = useState("");
@@ -29,7 +28,6 @@ export default function OffersExplorer() {
       const v = sp.get(key);
       if (v) fn(v);
     };
-    set("t", setTransaction);
     set("lok", setLocation);
     set("typ", setType);
     set("cena_od", setPriceFrom);
@@ -39,7 +37,6 @@ export default function OffersExplorer() {
 
   const filtered = useMemo(() => {
     let list: Offer[] = allOffers.filter((o) => {
-      if (transaction && o.transaction !== transaction) return false;
       if (location && o.location !== location) return false;
       if (type && o.type !== type) return false;
       if (priceFrom && o.price < Number(priceFrom)) return false;
@@ -61,10 +58,9 @@ export default function OffersExplorer() {
       }
     });
     return list;
-  }, [transaction, location, type, priceFrom, priceTo, rooms, sort]);
+  }, [location, type, priceFrom, priceTo, rooms, sort]);
 
   function reset() {
-    setTransaction("");
     setLocation("");
     setType("");
     setPriceFrom("");
@@ -76,28 +72,6 @@ export default function OffersExplorer() {
     <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
       {/* Filtry */}
       <aside className="h-fit rounded-2xl border border-gold-500/15 bg-forest-800 p-5 lg:sticky lg:top-24">
-        <div className="mb-4 inline-flex w-full rounded-full bg-forest-950/70 p-1">
-          {[
-            { v: "", l: "Wszystko" },
-            { v: "sprzedaz", l: "Sprzedaż" },
-            { v: "wynajem", l: "Wynajem" },
-          ].map((t) => (
-            <button
-              key={t.v}
-              type="button"
-              onClick={() => setTransaction(t.v)}
-              className={cn(
-                "flex-1 rounded-full px-2 py-1.5 text-xs font-medium transition",
-                transaction === t.v
-                  ? "bg-gold-500 text-forest-950"
-                  : "text-cream/70 hover:text-cream"
-              )}
-            >
-              {t.l}
-            </button>
-          ))}
-        </div>
-
         <div className="space-y-3">
           <select
             value={location}

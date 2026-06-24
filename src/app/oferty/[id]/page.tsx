@@ -60,7 +60,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
                 className="object-cover"
               />
               <span className="absolute left-4 top-4 rounded-full bg-forest-950/80 px-3 py-1 text-xs font-medium text-gold-300 backdrop-blur">
-                {offer.transaction === "sprzedaz" ? "Sprzedaż" : "Wynajem"}
+                Sprzedaż
               </span>
             </div>
 

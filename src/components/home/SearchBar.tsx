@@ -18,9 +18,6 @@ export default function SearchBar({
   variant?: "hero" | "page";
 }) {
   const router = useRouter();
-  const [transaction, setTransaction] = useState<"sprzedaz" | "wynajem">(
-    "sprzedaz"
-  );
   const [location, setLocation] = useState("");
   const [type, setType] = useState("");
   const [priceFrom, setPriceFrom] = useState("");
@@ -30,7 +27,6 @@ export default function SearchBar({
   function submit(e: React.FormEvent) {
     e.preventDefault();
     const params = new URLSearchParams();
-    params.set("t", transaction);
     if (location) params.set("lok", location);
     if (type) params.set("typ", type);
     if (priceFrom) params.set("cena_od", priceFrom);
@@ -47,25 +43,6 @@ export default function SearchBar({
         variant === "hero" && "ring-1 ring-white/5"
       )}
     >
-      {/* Przełącznik transakcji */}
-      <div className="mb-4 inline-flex rounded-full bg-forest-950/70 p-1">
-        {(["sprzedaz", "wynajem"] as const).map((t) => (
-          <button
-            key={t}
-            type="button"
-            onClick={() => setTransaction(t)}
-            className={cn(
-              "rounded-full px-5 py-1.5 text-sm font-medium transition",
-              transaction === t
-                ? "bg-gold-500 text-forest-950"
-                : "text-cream/70 hover:text-cream"
-            )}
-          >
-            {t === "sprzedaz" ? "Kupię" : "Wynajmę"}
-          </button>
-        ))}
-      </div>
-
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <label className={labelCls} htmlFor="s-lok">
