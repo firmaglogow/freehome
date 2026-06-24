@@ -16,7 +16,7 @@ export default function People({
         {withHeading && (
           <SectionHeading
             eyebrow="Poznaj nas"
-            title="Ludzie FREE HOME"
+            title="Zespół FREE HOME"
             subtitle="Trzy osoby, do których trafiasz. Bez hierarchii, bez infolinii."
             align="center"
           />

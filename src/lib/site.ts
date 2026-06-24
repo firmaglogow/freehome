@@ -43,7 +43,7 @@ export const nav: NavItem[] = [
   { label: "Oferty", href: "/oferty" },
   { label: "Usługi", href: "/uslugi" },
   { label: "O nas", href: "/o-nas" },
-  { label: "Ludzie", href: "/ludzie" },
+  { label: "Zespół", href: "/ludzie" },
   { label: "Blog", href: "/blog" },
   { label: "Praca", href: "/praca" },
   { label: "Kontakt", href: "/kontakt" },
