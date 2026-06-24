@@ -6,10 +6,10 @@ import Calculator from "@/components/kariera/Calculator";
 import KarieraForm from "@/components/kariera/KarieraForm";
 
 export const metadata = {
-  title: "Kariera — dołącz do lokalnego biura nieruchomości w Głogowie",
+  title: "Praca — dołącz do lokalnego biura nieruchomości w Głogowie",
   description:
     "Dołącz do FREE HOME — lokalnego biura nieruchomości z Głogowa z jedną z najlepszych reputacji w mieście. Doświadczenia nie wymagamy. Realny zarobek bez sufitu, wolność zamiast korpo.",
-  alternates: { canonical: "/kariera" },
+  alternates: { canonical: "/praca" },
 };
 
 const whoCards = [
@@ -55,7 +55,7 @@ const whyPoints = [
   },
 ];
 
-export default function KarieraPage() {
+export default function PracaPage() {
   return (
     <>
       {/* HERO */}

@@ -64,7 +64,7 @@ export const offers: Offer[] = [
     rooms: 5,
     image: "/oferty/oferta-3.webp",
     promoted: true,
-    agent: "angela",
+    agent: "angelika-skorupinska",
   },
   {
     id: "FH-1004",
@@ -105,7 +105,7 @@ export const offers: Offer[] = [
     price: PLN(245000),
     areaTotal: 2500,
     image: "/oferty/oferta-6.webp",
-    agent: "angela",
+    agent: "angelika-skorupinska",
   },
 ];
 

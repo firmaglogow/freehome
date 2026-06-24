@@ -41,7 +41,7 @@ export const nav: NavItem[] = [
   { label: "O nas", href: "/o-nas" },
   { label: "Ludzie", href: "/ludzie" },
   { label: "Blog", href: "/blog" },
-  { label: "Kariera", href: "/kariera" },
+  { label: "Praca", href: "/praca" },
   { label: "Kontakt", href: "/kontakt" },
 ];
 
@@ -77,13 +77,13 @@ export const people: Person[] = [
     photo: "/zespol/daria.jpg",
   },
   {
-    slug: "angela",
-    name: "Angela", // [POTWIERDZIĆ pełne imię i nazwisko]
-    role: "Agentka nieruchomości",
-    bio: "[DO UZUPEŁNIENIA — krótkie bio: doświadczenie, specjalizacja, w czym pomaga klientom.]",
-    phone: "[DO UZUPEŁNIENIA]",
-    email: "[DO UZUPEŁNIENIA]",
-    photo: "/zespol/angela.jpg", // [POTWIERDZIĆ zdjęcie — wg uwagi o zamianie plików daria/angela]
+    slug: "angelika-skorupinska",
+    name: "Angelika Skorupińska",
+    role: "Ekspert ds. sprzedaży nieruchomości",
+    bio: "Do nieruchomości weszłam z bagażem, którego nie da się nauczyć w tej branży — z lat pracy z ludźmi w zupełnie innym świecie. I właśnie to okazało się największym atutem. Wiem, jak słuchać, jak budować relację i jak prowadzić klienta spokojnie przez decyzję, która potrafi onieśmielać. Świeże spojrzenie, mnóstwo energii i pełne zaangażowanie w każdą sprawę — tak zaczynam swój rozdział w FREE HOME.",
+    phone: "733 687 666",
+    email: "angelika.skorupinska@freehome.com.pl",
+    photo: "/zespol/angelika.jpg",
   },
 ];
 
