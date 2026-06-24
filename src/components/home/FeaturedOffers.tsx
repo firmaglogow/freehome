@@ -6,8 +6,8 @@ import Reveal from "@/components/ui/Reveal";
 import { offers } from "@/lib/offers";
 
 export default function FeaturedOffers() {
-  const featured = offers.filter((o) => o.promoted).slice(0, 3);
-  const list = featured.length ? featured : offers.slice(0, 3);
+  // Strona główna: pokazujemy 8 ofert w układzie 4 + 4 (na laptopie/desktopie).
+  const list = offers.slice(0, 8);
 
   return (
     <section className="bg-forest-950 py-20 sm:py-28">
@@ -26,9 +26,9 @@ export default function FeaturedOffers() {
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {list.map((offer, i) => (
-            <Reveal key={offer.id} delay={i * 90}>
+            <Reveal key={offer.id} delay={(i % 4) * 80}>
               <OfferCard offer={offer} />
             </Reveal>
           ))}

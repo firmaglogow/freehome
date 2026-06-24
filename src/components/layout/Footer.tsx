@@ -116,6 +116,19 @@ export default function Footer() {
             </Link>
           </div>
         </div>
+
+        {/* Subtelny podpis autora strony */}
+        <p className="mt-5 text-center text-xs text-cream/35">
+          Projekt i realizacja —{" "}
+          <a
+            href={site.creator.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-cream/55 transition hover:text-gold-400"
+          >
+            {site.creator.label}
+          </a>
+        </p>
       </Container>
     </footer>
   );

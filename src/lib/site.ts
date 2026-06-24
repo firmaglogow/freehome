@@ -27,9 +27,13 @@ export const site = {
     // instagram: "[DO UZUPEŁNIENIA]",
   },
   related: [
-    { label: "freehomeinwest.pl — inwestycje deweloperskie", href: "https://freehomeinwest.pl" },
     { label: "grzegorzlukasik.com — marka osobista", href: "https://grzegorzlukasik.com" },
   ],
+  // Autor strony — subtelny podpis w stopce.
+  creator: {
+    label: "FREE HOME Design Studio",
+    href: "https://www.freehomedesign.pl/",
+  },
   reviewsCount: 254,
 } as const;
 
