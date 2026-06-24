@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -58,10 +59,24 @@ export default function KarieraPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden border-b border-gold-500/10 bg-gradient-to-br from-forest-950 via-forest-900 to-forest-800 pt-36 pb-24">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_30%,rgba(197,164,78,0.14),transparent_55%)]" />
+      <section className="relative isolate flex min-h-[85vh] items-center overflow-hidden border-b border-gold-500/10 pt-32 pb-24">
+        {/* Tło — zdjęcie biurka z kluczami w klimacie marki */}
+        <Image
+          src="/hero/kariera.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="-z-20 object-cover object-center"
+        />
+        {/* Overlay ciemnozielony — czytelność tekstu (jak na stronie głównej) */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-forest-950/85 via-forest-950/75 to-forest-950/95" />
+        {/* Złota poświata — zielono-złoty klimat marki */}
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_75%_30%,rgba(197,164,78,0.16),transparent_55%)]" />
+        {/* Przyciemnienie u dołu — płynne przejście do kolejnej sekcji */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-forest-900" />
         <span className="pointer-events-none absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/60 to-transparent" />
-        <Container className="relative">
+        <Container className="relative w-full">
           <Reveal>
             <p className="eyebrow">Dołącz do FREE HOME</p>
             <h1 className="mt-4 max-w-4xl font-display text-4xl leading-tight text-cream sm:text-5xl lg:text-6xl">
