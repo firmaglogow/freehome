@@ -14,6 +14,7 @@ export default function KontaktPage() {
         eyebrow="Kontakt"
         title="Porozmawiajmy"
         subtitle="Zadzwoń, napisz lub wpadnij do biura. Odpowiadamy szybko."
+        image="/hero/kontakt.jpg"
       />
       <ContactSection />
     </>

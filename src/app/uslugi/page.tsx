@@ -17,6 +17,7 @@ export default function UslugiPage() {
         eyebrow="Usługi"
         title="Jak możemy Ci pomóc"
         subtitle="Od wyceny po bezpieczną transakcję — prowadzimy Cię przez cały proces."
+        image="/hero/uslugi.jpg"
       />
       <section className="py-16 sm:py-20">
         <Container>

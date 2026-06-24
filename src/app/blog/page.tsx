@@ -18,6 +18,7 @@ export default function BlogPage() {
         eyebrow="Blog"
         title="Wiedza o rynku nieruchomości"
         subtitle="Porady, trendy i praktyczne przewodniki — prosto z lokalnego rynku."
+        image="/hero/blog.jpg"
       />
 
       <section className="py-16 sm:py-20">

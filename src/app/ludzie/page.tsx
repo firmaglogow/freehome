@@ -14,6 +14,7 @@ export default function LudziePage() {
         eyebrow="Poznaj nas"
         title="Zespół FREE HOME"
         subtitle="Bez hierarchii, bez infolinii. Trzy osoby, które poprowadzą Twoją sprawę."
+        image="/hero/zespol.jpg"
       />
       <People withHeading={false} />
     </>
