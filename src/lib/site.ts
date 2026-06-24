@@ -107,12 +107,6 @@ export const services: Service[] = [
     href: "/uslugi/zakup",
   },
   {
-    slug: "wynajem",
-    title: "Wynajem",
-    desc: "Najem mieszkań i lokali — dla właścicieli i najemców, bez stresu.",
-    href: "/uslugi/wynajem",
-  },
-  {
     slug: "deweloperzy",
     title: "Deweloperzy",
     desc: "Obsługa inwestycji deweloperskich. Zobacz freehomeinwest.pl.",
