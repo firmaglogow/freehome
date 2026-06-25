@@ -52,17 +52,41 @@ export default async function PostPage(props: PageProps<"/blog/[slug]">) {
           {post.excerpt}
         </p>
 
-        <div className="mt-6 space-y-5 text-base leading-relaxed text-cream/75">
-          {post.body.map((block, i) => (
-            <p key={i}>
-              {block.lead && (
-                <strong className="font-semibold text-cream">
-                  {block.lead}{" "}
-                </strong>
-              )}
-              {block.text}
-            </p>
-          ))}
+        <div className="mt-8 text-base leading-relaxed text-cream/75">
+          {post.body.map((block, i) => {
+            if (block.heading) {
+              return (
+                <h2
+                  key={i}
+                  className="mt-10 mb-3 font-display text-2xl text-cream"
+                >
+                  {block.heading}
+                </h2>
+              );
+            }
+            if (block.list) {
+              return (
+                <ul
+                  key={i}
+                  className="mt-4 list-disc space-y-2 pl-5 marker:text-gold-400"
+                >
+                  {block.list.map((item, j) => (
+                    <li key={j}>{item}</li>
+                  ))}
+                </ul>
+              );
+            }
+            return (
+              <p key={i} className="mt-4">
+                {block.lead && (
+                  <strong className="font-semibold text-cream">
+                    {block.lead}{" "}
+                  </strong>
+                )}
+                {block.text}
+              </p>
+            );
+          })}
         </div>
 
         {post.note && (
