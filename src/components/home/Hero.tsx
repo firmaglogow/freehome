@@ -20,8 +20,7 @@ export default function Hero({ offersCount }: { offersCount: number }) {
 
       <Container className="flex min-h-[92vh] flex-col justify-center py-28">
         <div className="max-w-2xl">
-          <p className="eyebrow">Głogów · Polkowice · Radwanice</p>
-          <h1 className="mt-4 font-display text-4xl leading-[1.1] text-cream sm:text-5xl lg:text-6xl">
+          <h1 className="font-display text-4xl leading-[1.1] text-cream sm:text-5xl lg:text-6xl">
             {site.fullName.split(" ")[0]} {site.name.split(" ")[1] ?? ""}
             <span className="block text-gold-400">{site.tagline}</span>
           </h1>
