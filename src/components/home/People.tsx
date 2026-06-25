@@ -17,12 +17,12 @@ export default function People({
           <SectionHeading
             eyebrow="Poznaj nas"
             title="Zespół FREE HOME"
-            subtitle="Trzy osoby, do których trafiasz. Bez hierarchii, bez infolinii."
+            subtitle="Ludzie, do których trafiasz bezpośrednio — i zaufany partner kredytowy. Bez hierarchii, bez infolinii."
             align="center"
           />
         )}
 
-        <div className="mx-auto mt-12 grid max-w-5xl gap-7 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-6xl gap-7 sm:grid-cols-2 lg:grid-cols-4">
           {people.map((p, i) => (
             <Reveal key={p.slug} delay={i * 90}>
               <Link
@@ -43,8 +43,13 @@ export default function People({
                     {p.name}
                   </h3>
                   <p className="text-sm text-gold-400">{p.role}</p>
+                  {p.partnerLabel && (
+                    <p className="mt-0.5 text-xs uppercase tracking-wide text-cream/45">
+                      {p.partnerLabel}
+                    </p>
+                  )}
                   <span className="mt-4 inline-block text-sm font-semibold text-gold-400">
-                    Zobacz profil i oferty →
+                    {p.partner ? "Zobacz profil →" : "Zobacz profil i oferty →"}
                   </span>
                 </div>
               </Link>

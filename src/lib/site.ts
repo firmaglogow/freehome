@@ -58,9 +58,14 @@ export type Person = {
   phone?: string;
   email?: string;
   photo: string;
+  /** Zewnętrzny partner (np. ekspert kredytowy), nie agent FREE HOME. */
+  partner?: boolean;
+  /** Dyskretny podpis pod tytułem, np. "partner · Lendi". */
+  partnerLabel?: string;
 };
 
-// Biuro prowadzą Grzegorz i Daria Łukasik; w zespole także trzecia osoba.
+// Biuro prowadzą Grzegorz i Daria Łukasik; w zespole także Angelika.
+// Sara Grzegorska to zaufany partner zewnętrzny (ekspert kredytowy, Lendi).
 // Bez hierarchii — każda osoba ma własną podstronę z opisem i ofertami.
 export const people: Person[] = [
   {
@@ -89,6 +94,17 @@ export const people: Person[] = [
     phone: "733 687 666",
     email: "angelika.skorupinska@freehome.com.pl",
     photo: "/zespol/angelika.jpg",
+  },
+  {
+    slug: "sara-grzegorska",
+    name: "Sara Grzegorska",
+    role: "Ekspert ds. kredytów",
+    partner: true,
+    partnerLabel: "partner · Lendi",
+    bio: "Kredyt to często klucz do całej transakcji — i właśnie dlatego od lat współpracujemy z Sarą. Jako ekspert finansowy Lendi pomaga naszym klientom przejść przez kredyt hipoteczny i ubezpieczenia spokojnie, bez bankowego żargonu i biegania od okienka do okienka. Porównuje oferty wielu banków, dobiera najlepsze finansowanie i prowadzi przez formalności aż do uruchomienia kredytu. Sprawdzona, konkretna i naprawdę zaangażowana — dlatego z czystym sumieniem polecamy ją naszym klientom.",
+    phone: "517 349 150",
+    email: "sara.grzegorska.kredyty@gmail.com",
+    photo: "/zespol/sara.jpg",
   },
 ];
 

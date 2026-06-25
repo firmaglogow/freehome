@@ -4,7 +4,7 @@ import People from "@/components/home/People";
 export const metadata = {
   title: "Zespół",
   description:
-    "Poznaj zespół FREE HOME Nieruchomości — trzy osoby, do których trafiasz bezpośrednio.",
+    "Poznaj zespół FREE HOME Nieruchomości — ludzie, do których trafiasz bezpośrednio, oraz zaufany partner kredytowy (Lendi).",
 };
 
 export default function LudziePage() {
@@ -13,7 +13,7 @@ export default function LudziePage() {
       <PageHeader
         eyebrow="Poznaj nas"
         title="Zespół FREE HOME"
-        subtitle="Bez hierarchii, bez infolinii. Trzy osoby, które poprowadzą Twoją sprawę."
+        subtitle="Bez hierarchii, bez infolinii. Ludzie, którzy poprowadzą Twoją sprawę — i zaufany partner kredytowy."
         image="/hero/zespol.jpg"
       />
       <People withHeading={false} />

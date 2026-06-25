@@ -16,7 +16,9 @@ export async function generateMetadata(props: PageProps<"/ludzie/[slug]">) {
   if (!person) return { title: "Osoba nieznaleziona" };
   return {
     title: person.name,
-    description: `${person.name} — ${person.role} w FREE HOME Nieruchomości (Głogów).`,
+    description: person.partner
+      ? `${person.name} — ${person.role}, zaufany partner kredytowy (Lendi) współpracujący z FREE HOME Nieruchomości w Głogowie.`
+      : `${person.name} — ${person.role} w FREE HOME Nieruchomości (Głogów).`,
   };
 }
 
@@ -60,6 +62,11 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
                   {person.name}
                 </h1>
                 <p className="mt-1 text-sm text-gold-400">{person.role}</p>
+                {person.partnerLabel && (
+                  <p className="mt-0.5 text-xs uppercase tracking-wide text-cream/45">
+                    {person.partnerLabel}
+                  </p>
+                )}
 
                 <div className="mt-5 space-y-2 text-sm">
                   {hasPhone ? (
@@ -85,10 +92,12 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
                 </div>
 
                 <Link
-                  href="/kontakt"
+                  href={person.partner ? "/uslugi/kredyty" : "/kontakt"}
                   className="mt-6 block rounded-full bg-gold-500 px-6 py-3 text-center text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
                 >
-                  Napisz do nas
+                  {person.partner
+                    ? "Skontaktuj się w sprawie kredytu"
+                    : "Napisz do nas"}
                 </Link>
               </div>
             </div>
@@ -101,26 +110,61 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
               {person.bio}
             </p>
 
-            <h2 className="mt-12 font-display text-2xl text-cream">
-              Oferty {person.name.split(" ")[0]}
-            </h2>
-            {agentOffers.length > 0 ? (
-              <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                {agentOffers.map((o) => (
-                  <OfferCard key={o.id} offer={o} />
-                ))}
-              </div>
+            {person.partner ? (
+              <>
+                <h2 className="mt-12 font-display text-2xl text-cream">
+                  Kredyty i finansowanie
+                </h2>
+                <div className="mt-6 rounded-2xl border border-gold-500/15 bg-forest-800 p-6">
+                  <p className="text-sm leading-relaxed text-cream/75">
+                    {person.name.split(" ")[0]} jest naszym zaufanym partnerem
+                    kredytowym (Lendi) — nie zajmuje się sprzedażą
+                    nieruchomości, tylko finansowaniem. Jeśli potrzebujesz
+                    kredytu hipotecznego lub ubezpieczenia, skontaktuj się
+                    bezpośrednio albo poznaj naszą usługę finansowania.
+                  </p>
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    {telHref && (
+                      <a
+                        href={telHref}
+                        className="rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
+                      >
+                        Skontaktuj się w sprawie kredytu
+                      </a>
+                    )}
+                    <Link
+                      href="/uslugi/kredyty"
+                      className="rounded-full border border-gold-500/30 px-6 py-3 text-sm font-semibold text-gold-400 transition hover:border-gold-400 hover:bg-gold-500/10 hover:text-gold-300"
+                    >
+                      Poznaj usługę: Finansowanie →
+                    </Link>
+                  </div>
+                </div>
+              </>
             ) : (
-              <p className="mt-4 rounded-2xl border border-gold-500/15 bg-forest-800 p-6 text-sm text-cream/70">
-                Aktualnie brak ofert przypisanych do tego agenta.{" "}
-                <Link
-                  href="/oferty"
-                  className="font-semibold text-gold-400 hover:underline"
-                >
-                  Zobacz wszystkie oferty
-                </Link>
-                .
-              </p>
+              <>
+                <h2 className="mt-12 font-display text-2xl text-cream">
+                  Oferty {person.name.split(" ")[0]}
+                </h2>
+                {agentOffers.length > 0 ? (
+                  <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                    {agentOffers.map((o) => (
+                      <OfferCard key={o.id} offer={o} />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-4 rounded-2xl border border-gold-500/15 bg-forest-800 p-6 text-sm text-cream/70">
+                    Aktualnie brak ofert przypisanych do tego agenta.{" "}
+                    <Link
+                      href="/oferty"
+                      className="font-semibold text-gold-400 hover:underline"
+                    >
+                      Zobacz wszystkie oferty
+                    </Link>
+                    .
+                  </p>
+                )}
+              </>
             )}
           </div>
         </div>
