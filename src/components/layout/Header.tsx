@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/ui/Logo";
 import Container from "@/components/ui/Container";
-import { nav, site } from "@/lib/site";
+import { nav } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 export default function Header() {
@@ -59,12 +59,6 @@ export default function Header() {
 
         {/* CTA desktop */}
         <div className="hidden lg:flex items-center gap-3">
-          <a
-            href={site.phoneHref}
-            className="text-sm font-semibold text-cream hover:text-gold-400 transition-colors"
-          >
-            {site.phone}
-          </a>
           <Link
             href="/wycena"
             className="rounded-full bg-gold-500 px-5 py-2.5 text-sm font-semibold text-forest-950 transition-colors hover:bg-gold-400"
@@ -73,15 +67,8 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Mobile: telefon + hamburger */}
+        {/* Mobile: hamburger */}
         <div className="flex items-center gap-2 lg:hidden">
-          <a
-            href={site.phoneHref}
-            aria-label={`Zadzwoń ${site.phone}`}
-            className="rounded-full border border-gold-500/40 px-4 py-2 text-sm font-semibold text-gold-400"
-          >
-            {site.phone}
-          </a>
           <button
             type="button"
             aria-label={open ? "Zamknij menu" : "Otwórz menu"}

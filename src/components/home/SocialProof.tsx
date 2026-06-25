@@ -1,18 +1,8 @@
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
-import Reveal from "@/components/ui/Reveal";
+import ReviewsCarousel from "@/components/opinie/ReviewsCarousel";
 import { awards, reviews, site } from "@/lib/site";
-
-// Trzy najnowsze opinie z wizytówki Google (pełna lista na /opinie).
-const featuredReviews = reviews.slice(0, 3);
-
-function Stars() {
-  return (
-    <span className="text-gold-400" aria-label="5 na 5 gwiazdek">
-      ★★★★★
-    </span>
-  );
-}
 
 export default function SocialProof() {
   return (
@@ -25,20 +15,16 @@ export default function SocialProof() {
           align="center"
         />
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {featuredReviews.map((r, i) => (
-            <Reveal key={i} delay={i * 90}>
-              <figure className="flex h-full flex-col rounded-2xl border border-gold-500/15 bg-forest-800 p-7">
-                <Stars />
-                <blockquote className="mt-4 flex-1 text-base leading-relaxed text-cream/85">
-                  „{r.text}"
-                </blockquote>
-                <figcaption className="mt-5 text-sm font-medium text-cream/60">
-                  — {r.name}
-                </figcaption>
-              </figure>
-            </Reveal>
-          ))}
+        <div className="mt-12">
+          <ReviewsCarousel reviews={reviews} />
+          <div className="mt-8 text-center">
+            <Link
+              href="/opinie"
+              className="inline-flex items-center gap-2 rounded-full border border-gold-500/30 px-6 py-2.5 text-sm font-semibold text-gold-400 transition hover:border-gold-400 hover:bg-gold-500/10 hover:text-gold-300"
+            >
+              Zobacz wszystkie opinie →
+            </Link>
+          </div>
         </div>
 
         {/* Odznaki nagród */}

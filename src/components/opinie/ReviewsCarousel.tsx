@@ -69,6 +69,9 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
         </div>
       </div>
 
+      <div className="relative">
+      {/* Gradientowe „zanikanie" sygnalizujące, że są kolejne karty */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-forest-950 to-transparent" aria-hidden="true" />
       <div
         ref={trackRef}
         className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -112,6 +115,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             </figure>
           );
         })}
+      </div>
       </div>
     </div>
   );

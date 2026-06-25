@@ -44,6 +44,7 @@ export const nav: NavItem[] = [
   { label: "Usługi", href: "/uslugi" },
   { label: "O nas", href: "/o-nas" },
   { label: "Zespół", href: "/ludzie" },
+  { label: "Opinie", href: "/opinie" },
   { label: "Blog", href: "/blog" },
   { label: "Praca", href: "/praca" },
   { label: "Kontakt", href: "/kontakt" },

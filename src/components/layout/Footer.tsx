@@ -99,7 +99,7 @@ export default function Footer() {
 
         <div className="gold-rule mt-12" />
 
-        <div className="mt-6 flex flex-col items-center justify-between gap-3 text-xs text-cream/50 sm:flex-row">
+        <div className="mt-6 flex flex-col items-center justify-between gap-x-6 gap-y-3 text-xs text-cream/50 sm:flex-row sm:flex-wrap">
           <p>
             © {new Date().getFullYear()} {site.fullName}. Wszelkie prawa
             zastrzeżone.
@@ -115,20 +115,18 @@ export default function Footer() {
               Regulamin
             </Link>
           </div>
+          <p className="text-cream/35">
+            Projekt i realizacja —{" "}
+            <a
+              href={site.creator.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-cream/55 transition hover:text-gold-400"
+            >
+              {site.creator.label}
+            </a>
+          </p>
         </div>
-
-        {/* Subtelny podpis autora strony */}
-        <p className="mt-5 text-center text-xs text-cream/35">
-          Projekt i realizacja —{" "}
-          <a
-            href={site.creator.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-cream/55 transition hover:text-gold-400"
-          >
-            {site.creator.label}
-          </a>
-        </p>
       </Container>
     </footer>
   );
