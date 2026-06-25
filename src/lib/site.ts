@@ -21,7 +21,7 @@ export const site = {
     nip: "693-210-77-22",
     regon: "386615248",
   },
-  hours: "Pon–Pt 9:00–17:00 [DO POTWIERDZENIA]",
+  hours: "Pon–Pt 10:00–18:00 · Sob 10:00–14:00",
   social: {
     facebook: "https://facebook.com/firmaglogow",
     // instagram: "[DO UZUPEŁNIENIA]",
@@ -34,7 +34,7 @@ export const site = {
     label: "FREE HOME Design Studio",
     href: "https://www.freehomedesign.pl/",
   },
-  reviewsCount: 254,
+  reviewsCount: 269,
 } as const;
 
 export type NavItem = { label: string; href: string };
@@ -83,7 +83,7 @@ export const people: Person[] = [
   {
     slug: "angelika-skorupinska",
     name: "Angelika Skorupińska",
-    role: "Agentka nieruchomości",
+    role: "Ekspert ds. sprzedaży nieruchomości",
     bio: "Do nieruchomości weszłam z bagażem, którego nie da się nauczyć w tej branży — z lat pracy z ludźmi w zupełnie innym świecie. I właśnie to okazało się największym atutem. Wiem, jak słuchać, jak budować relację i jak prowadzić klienta spokojnie przez decyzję, która potrafi onieśmielać. Świeże spojrzenie, mnóstwo energii i pełne zaangażowanie w każdą sprawę — tak zaczynam swój rozdział w FREE HOME.",
     phone: "733 687 666",
     email: "angelika.skorupinska@freehome.com.pl",
@@ -175,6 +175,42 @@ export const awards: string[] = [
   "Złota Firma 2025",
   "Prestiżowa Marka 2026",
   "Orły Branży 2026",
+];
+
+export type Review = {
+  name: string;
+  text: string;
+  source?: string;
+};
+
+// Prawdziwe opinie z wizytówki Google FREE HOME (5★).
+// Przepisane z profilu Google; drobne literówki delikatnie poprawione na potrzeby publikacji.
+export const reviews: Review[] = [
+  {
+    name: "Patrycja",
+    text: "Bardzo dziękuję za pomoc przy sprzedaży mieszkania. Pan Grzegorz od początku do końca czuwał nad całą transakcją i zawsze można było liczyć na szybki kontakt oraz konkretne odpowiedzi. Profesjonalne biuro nieruchomości Głogów, godne polecenia.",
+    source: "Google",
+  },
+  {
+    name: "Arkadiusz Kazimierczak",
+    text: "Polecam jak najbardziej współpracę z biurem Free Home, profesjonalna obsługa i ciągły aktywny kontakt od początku do końca. Dziękuję bardzo Pani Darii za pomoc w procesie zakupu mieszkania.",
+    source: "Google",
+  },
+  {
+    name: "Kuba Jawor",
+    text: "Jestem bardzo zadowolony ze współpracy z FREE HOME biuro nieruchomości Głogów. Profesjonalna obsługa, indywidualne podejście i świetna organizacja formalności. Zdecydowanie polecam.",
+    source: "Google",
+  },
+  {
+    name: "Paweł W.",
+    text: "Jestem bardzo zadowolony ze współpracy. Szybko znaleziono odpowiednie mieszkanie, a cały proces został dokładnie wyjaśniony. Fachowe doradztwo i miła atmosfera.",
+    source: "Google",
+  },
+  {
+    name: "Maciej Sielski",
+    text: "Bardzo dziękuję za współpracę z Panem Grzegorzem. Sprzedaż mojego mieszkania przebiegła bardzo sprawnie — w niespełna 3 tygodnie był już klient na moje mieszkanie! Zdecydowanie polecam FREE HOME biuro nieruchomości Głogów.",
+    source: "Google",
+  },
 ];
 
 // Lokalizacje do wyszukiwarki

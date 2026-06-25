@@ -28,8 +28,7 @@ export const metadata: Metadata = {
     default: `${site.fullName} — biuro nieruchomości Głogów`,
     template: `%s · ${site.name}`,
   },
-  description:
-    "Lokalne biuro nieruchomości w Głogowie. Sprzedaż i zakup mieszkań, domów i działek. Ludzie, których znasz — ponad 254 opinie 5★.",
+  description: `Lokalne biuro nieruchomości w Głogowie. Sprzedaż i zakup mieszkań, domów i działek. Ludzie, których znasz — ponad ${site.reviewsCount} opinii 5★.`,
   keywords: [
     "biuro nieruchomości Głogów",
     "mieszkania Głogów",
@@ -43,8 +42,7 @@ export const metadata: Metadata = {
     locale: "pl_PL",
     siteName: site.fullName,
     title: `${site.fullName} — biuro nieruchomości Głogów`,
-    description:
-      "Lokalne biuro nieruchomości w Głogowie. Ludzie, których znasz — ponad 254 opinie 5★.",
+    description: `Lokalne biuro nieruchomości w Głogowie. Ludzie, których znasz — ponad ${site.reviewsCount} opinii 5★.`,
   },
   robots: { index: true, follow: true },
 };

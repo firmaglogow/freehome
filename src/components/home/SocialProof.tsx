@@ -1,23 +1,10 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
-import { awards, site } from "@/lib/site";
+import { awards, reviews, site } from "@/lib/site";
 
-// [DO UZUPEŁNIENIA] — treści opinii lub osadzenie widgetu Google Reviews.
-const reviews = [
-  {
-    name: "Klient FREE HOME",
-    text: "Profesjonalna obsługa od początku do końca. Sprzedaż mieszkania przebiegła sprawnie i bez stresu. Polecam!",
-  },
-  {
-    name: "Klientka FREE HOME",
-    text: "Pełne zaangażowanie i kontakt na każdym etapie. Czuło się, że naprawdę zależy im na efekcie.",
-  },
-  {
-    name: "Klient FREE HOME",
-    text: "Lokalna wiedza i uczciwe podejście. Najlepsze biuro w Głogowie — bez dwóch zdań.",
-  },
-];
+// Trzy najnowsze opinie z wizytówki Google (pełna lista na /opinie).
+const featuredReviews = reviews.slice(0, 3);
 
 function Stars() {
   return (
@@ -39,7 +26,7 @@ export default function SocialProof() {
         />
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {reviews.map((r, i) => (
+          {featuredReviews.map((r, i) => (
             <Reveal key={i} delay={i * 90}>
               <figure className="flex h-full flex-col rounded-2xl border border-gold-500/15 bg-forest-800 p-7">
                 <Stars />

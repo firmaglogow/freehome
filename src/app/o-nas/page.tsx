@@ -43,8 +43,8 @@ export default function ONasPage() {
             </p>
             <p>
               Szczerze? Najbardziej cieszą nas nie statuetki, tylko to, że
-              klienci wracają i polecają nas dalej. Ponad 254 opinie z oceną 5
-              gwiazdek w Google nie wzięły się znikąd — to lata uczciwej,
+              klienci wracają i polecają nas dalej. Ponad {site.reviewsCount}{" "}
+              opinii z oceną 5 gwiazdek w Google nie wzięły się znikąd — to lata uczciwej,
               konkretnej roboty. Lokalna wiedza, realne ceny, pełne
               zaangażowanie na każdym etapie. Tak właśnie wygląda FREE HOME.
             </p>
@@ -52,10 +52,10 @@ export default function ONasPage() {
 
           <div className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4">
             {[
+              { v: "10", l: "lat na rynku" },
               { v: `${site.reviewsCount}+`, l: "opinii klientów" },
               { v: "5,0", l: "średnia ocen" },
               { v: "100%", l: "lokalnie" },
-              { v: "3", l: "osoby w zespole" },
             ].map((stat, i) => (
               <Reveal key={i} delay={i * 70}>
                 <div className="rounded-2xl border border-gold-500/15 bg-forest-800 p-5 text-center">

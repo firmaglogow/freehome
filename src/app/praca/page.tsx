@@ -4,6 +4,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import Calculator from "@/components/kariera/Calculator";
 import KarieraForm from "@/components/kariera/KarieraForm";
+import { site } from "@/lib/site";
 
 export const metadata = {
   title: "Praca — dołącz do lokalnego biura nieruchomości w Głogowie",
@@ -36,7 +37,7 @@ const whyPoints = [
   {
     n: "01",
     title: "Marka, która otwiera drzwi",
-    desc: "Ponad 254 opinie 5★, nagrody branżowe i pozycja TOP w regionie. Pukasz do klientów z mocnym nazwiskiem za sobą.",
+    desc: `Ponad ${site.reviewsCount} opinii 5★, nagrody branżowe i pozycja TOP w regionie. Pukasz do klientów z mocnym nazwiskiem za sobą.`,
   },
   {
     n: "02",

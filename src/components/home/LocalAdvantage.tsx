@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
+import { site } from "@/lib/site";
 
 const points = [
   {
@@ -13,7 +14,7 @@ const points = [
   },
   {
     title: "Zaufanie i opinie",
-    desc: "Jedno z najlepiej ocenianych biur w mieście — ponad 254 opinie 5 gwiazdek.",
+    desc: `Jedno z najlepiej ocenianych biur w mieście — ponad ${site.reviewsCount} opinii 5 gwiazdek.`,
   },
 ];
 
