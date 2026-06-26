@@ -4,8 +4,9 @@
 // Dzięki temu nie trzeba zmieniać <Image src=...> w żadnym komponencie.
 //
 // ⚠️ Prefiks musi być taki sam jak `basePath` w next.config.ts.
-// Jeśli kiedyś podepniesz własną domenę (strona w root), ustaw BASE_PATH = "".
-const BASE_PATH = "/freehome";
+// Sterowany tą samą zmienną: domyślnie "/freehome" (GitHub Pages),
+// a dla własnej domeny w root buduj z NEXT_PUBLIC_BASE_PATH="" (pusty string).
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "/freehome";
 
 export default function imageLoader({ src }: { src: string }): string {
   // Zewnętrzne adresy (http/https) zostawiamy bez zmian.

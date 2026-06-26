@@ -69,31 +69,38 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
               </span>
             </div>
 
-            <div className="mt-4 grid grid-cols-4 gap-3">
-              {[0, 1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="relative aspect-[4/3] overflow-hidden rounded-xl border border-dashed border-gold-500/25 bg-gold-500/5"
-                >
-                  <span className="absolute inset-0 grid place-items-center text-center text-[11px] text-gold-300/80">
-                    foto {i + 2}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <p className="mt-2 text-xs text-cream/45">
-              Galeria zdjęć pojawi się automatycznie po imporcie oferty z EstiCRM
-              (Etap 2).
-            </p>
+            {offer.gallery && offer.gallery.length > 1 ? (
+              <div className="mt-4 grid grid-cols-4 gap-3">
+                {offer.gallery.slice(1, 9).map((src, i) => (
+                  <div
+                    key={src}
+                    className="relative aspect-[4/3] overflow-hidden rounded-xl border border-gold-500/15"
+                  >
+                    <Image
+                      src={src}
+                      alt={`${offer.title} — zdjęcie ${i + 2}`}
+                      fill
+                      sizes="(max-width: 1024px) 25vw, 15vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : null}
 
             <h2 className="mt-10 font-display text-2xl text-cream">
               Opis nieruchomości
             </h2>
             <div className="mt-4">
-              <Placeholder>
-                Pełny opis oferty {offer.id} zostanie zaciągnięty z systemu
-                EstiCRM (Etap 2) lub uzupełniony ręcznie.
-              </Placeholder>
+              {offer.description ? (
+                <div className="space-y-3 whitespace-pre-line text-base leading-relaxed text-cream/80">
+                  {offer.description}
+                </div>
+              ) : (
+                <Placeholder>
+                  Opis oferty {offer.id} zostanie uzupełniony.
+                </Placeholder>
+              )}
             </div>
           </div>
 

@@ -40,6 +40,17 @@ yarn-error.log*
 # workflow GitHub Actions — wrzucany dopiero po nadaniu tokenowi scope `workflow`
 /.github/
 
+# importer EstiCRM — sekrety i katalogi robocze (NIGDY do repo)
+/importer/config.php
+/importer/inbox/
+/importer/work/
+/importer/processed/
+/importer/media/
+/importer/*.log
+
+# zdjęcia ofert generowane przez importer na serwerze (artefakt, nie źródło)
+/public/oferty-esti/
+
 # vercel
 .vercel
 
