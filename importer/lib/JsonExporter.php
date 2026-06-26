@@ -63,11 +63,14 @@ final class JsonExporter
                 'descriptionHtml' => $o['description_html'],
                 'market'          => $o['market'],
                 'buildingYear'    => $o['building_year'] !== null ? (int) $o['building_year'] : null,
+                'investmentId'    => $o['investment_id'] !== null ? (int) $o['investment_id'] : null,
+                'investmentName'  => $o['investment_name'],
                 'promoted'        => (bool) $o['portal_promote'],
                 'agent'           => $o['agent_slug'],
                 'agentName'       => $o['contact_name'],
                 'agentPhone'      => $o['contact_phone'],
                 'updatedAt'       => $o['update_date'],
+                'addDate'         => $o['add_date'],
             ];
         }
 

@@ -38,6 +38,16 @@ export type Offer = {
   agentName?: string | null;
   agentPhone?: string | null;
   updatedAt?: string | null;
+  // --- Rynek pierwotny (inwestycje deweloperskie) ---
+  // Powiązanie oferty z inwestycją w Esti. investmentId to stabilny klucz
+  // (po nim wiążemy oferty z osiedlem w src/lib/developments.ts); investmentName
+  // bywa „rozjechany" w Esti, więc służy tylko jako fallback dopasowania.
+  investmentId?: number | null;
+  investmentName?: string | null;
+  // Data dodania oferty w EstiCRM (addDate z XML). Używana do sortowania
+  // „najnowszych" na stronie głównej. Format „Y-m-d H:i:s" → porównanie
+  // leksykograficzne = chronologiczne.
+  addDate?: string | null;
 };
 
 export const offers: Offer[] = offersData as unknown as Offer[];

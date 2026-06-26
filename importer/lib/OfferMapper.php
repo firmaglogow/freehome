@@ -53,6 +53,11 @@ final class OfferMapper
             'building_floors' => $this->int($o, 'buildingFloornumber'),
             'building_year'   => $this->int($o, 'buildingYear'),
 
+            // Rynek pierwotny: powiązanie z inwestycją deweloperską
+            'investment_id'   => $this->int($o, 'investmentId'),
+            'investment_name' => $this->str($o, 'investmentName'),
+            'residential_id'  => $this->int($o, 'residentialId'),
+
             'lat'             => $this->dec($o, 'locationLatitude'),
             'lng'             => $this->dec($o, 'locationLongitude'),
 

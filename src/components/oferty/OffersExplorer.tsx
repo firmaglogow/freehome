@@ -11,9 +11,17 @@ type Sort = "newest" | "price-asc" | "price-desc" | "area-desc";
 const fieldCls =
   "w-full rounded-lg border border-forest-600/60 bg-forest-950/50 px-3 py-2.5 text-sm text-cream outline-none transition focus:border-gold-500/70";
 
+// Typy „mieszkaniowe". Kategoria „komercyjny" = wszystko poza nimi (lokale
+// użytkowe, inwestycyjne i dowolne inne nazwy typów z Esti) — odporne na to,
+// jak dokładnie Esti nazwie dany lokal komercyjny.
+const RESIDENTIAL_TYPES = ["Dom", "Mieszkanie", "Działka"];
+
 export default function OffersExplorer() {
   const [location, setLocation] = useState("");
   const [type, setType] = useState("");
+  // Kategoria zbiorcza z menu (np. „komercyjny"). Osobno od dokładnego typu,
+  // bo komercja to wiele różnych nazw typów z Esti.
+  const [category, setCategory] = useState("");
   const [priceFrom, setPriceFrom] = useState("");
   const [priceTo, setPriceTo] = useState("");
   const [rooms, setRooms] = useState("");
@@ -30,6 +38,7 @@ export default function OffersExplorer() {
     };
     set("lok", setLocation);
     set("typ", setType);
+    set("kat", setCategory);
     set("cena_od", setPriceFrom);
     set("cena_do", setPriceTo);
     set("pokoje", setRooms);
@@ -39,6 +48,8 @@ export default function OffersExplorer() {
     let list: Offer[] = allOffers.filter((o) => {
       if (location && o.location !== location) return false;
       if (type && o.type !== type) return false;
+      if (category === "komercyjny" && RESIDENTIAL_TYPES.includes(o.type))
+        return false;
       if (priceFrom && o.price < Number(priceFrom)) return false;
       if (priceTo && o.price > Number(priceTo)) return false;
       if (rooms && (o.rooms ?? 0) < Number(rooms)) return false;
@@ -58,11 +69,12 @@ export default function OffersExplorer() {
       }
     });
     return list;
-  }, [location, type, priceFrom, priceTo, rooms, sort]);
+  }, [location, type, category, priceFrom, priceTo, rooms, sort]);
 
   function reset() {
     setLocation("");
     setType("");
+    setCategory("");
     setPriceFrom("");
     setPriceTo("");
     setRooms("");

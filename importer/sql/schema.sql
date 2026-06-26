@@ -41,6 +41,11 @@ CREATE TABLE IF NOT EXISTS offers (
   building_floors   INT              NULL,               -- <buildingFloornumber>
   building_year     INT              NULL,               -- <buildingYear>
 
+  -- Rynek pierwotny: powiązanie oferty z inwestycją deweloperską
+  investment_id     BIGINT UNSIGNED  NULL,               -- <investmentId> (klucz inwestycji w Esti)
+  investment_name   VARCHAR(255)     NULL,               -- <investmentName>
+  residential_id    BIGINT UNSIGNED  NULL,               -- <residentialId> (budynek/etap)
+
   lat               DECIMAL(10,6)    NULL,               -- <locationLatitude>
   lng               DECIMAL(10,6)    NULL,               -- <locationLongitude>
 
@@ -74,7 +79,8 @@ CREATE TABLE IF NOT EXISTS offers (
   KEY idx_active       (is_active),
   KEY idx_type         (main_type_id),
   KEY idx_transaction  (transaction_id),
-  KEY idx_city         (city)
+  KEY idx_city         (city),
+  KEY idx_investment   (investment_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------

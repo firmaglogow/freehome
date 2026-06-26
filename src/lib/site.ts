@@ -44,10 +44,26 @@ export const site = {
   reviewsCount: 269,
 } as const;
 
-export type NavItem = { label: string; href: string };
+export type NavItem = { label: string; href: string; children?: NavItem[] };
 
 export const nav: NavItem[] = [
-  { label: "Oferty", href: "/oferty" },
+  {
+    // „Oferty" rozwija się na podkategorie (hover na desktopie, tap na mobile).
+    // Każdy link filtruje istniejący listing /oferty/ po typie nieruchomości —
+    // OffersExplorer czyta parametry z URL (typ=…, kat=komercyjny) po stronie
+    // klienta, więc strona pozostaje w pełni statyczna. Ukośnik przed „?" jest
+    // konieczny przy trailingSlash:true (twarde wejście serwuje /oferty/index.html).
+    label: "Oferty",
+    href: "/oferty",
+    children: [
+      { label: "Mieszkania", href: "/oferty/?typ=Mieszkanie" },
+      { label: "Domy", href: "/oferty/?typ=Dom" },
+      { label: "Komercyjny", href: "/oferty/?kat=komercyjny" },
+      { label: "Działki", href: "/oferty/?typ=Działka" },
+    ],
+  },
+  // „Rynek pierwotny" — osobna, samodzielna pozycja (wyróżnik biura), nie pod „Oferty".
+  { label: "Rynek pierwotny", href: "/rynek-pierwotny" },
   { label: "Usługi", href: "/uslugi" },
   { label: "O nas", href: "/o-nas" },
   { label: "Zespół", href: "/ludzie" },
