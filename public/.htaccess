@@ -1,0 +1,4 @@
+# Apache (hosting cPanel): przy nieistniejącym adresie pokaż firmową stronę 404
+# (src/app/not-found.tsx → wyeksportowana jako /404.html) zamiast generycznej
+# strony serwera. Ścieżka bezwzględna działa dla dowolnego brakującego URL-a.
+ErrorDocument 404 /404.html
