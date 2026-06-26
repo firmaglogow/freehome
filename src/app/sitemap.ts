@@ -4,6 +4,10 @@ import { offers } from "@/lib/offers";
 import { developments } from "@/lib/developments";
 import { posts } from "@/lib/blog";
 
+// Wymuszone statyczne generowanie — przy output: "export" trasy metadanych
+// muszą być w pełni statyczne (analogicznie do robots.ts).
+export const dynamic = "force-static";
+
 // Mapa strony generowana podczas `next build` (output: "export") → statyczny
 // /sitemap.xml. Łączy strony statyczne z dynamicznymi (oferty, zespół, usługi,
 // inwestycje, blog). Adres bazowy z site.url (sterowany NEXT_PUBLIC_SITE_URL).
