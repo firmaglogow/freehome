@@ -22,9 +22,15 @@ final class JsonExporter
             'SELECT * FROM offers WHERE is_active = 1 ORDER BY portal_promote DESC, update_date DESC'
         )->fetchAll();
 
+        // Pobieramy też `type` z Esti, żeby oddzielić rzuty/plany od zdjęć.
+        // W słowniku Esti: 119 = zwykłe zdjęcie, 120 = rzut/plan mieszkania.
         $picStmt = $this->db->pdo()->prepare(
-            'SELECT filename FROM offer_pictures WHERE esti_id = ? ORDER BY position ASC'
+            'SELECT filename, type FROM offer_pictures WHERE esti_id = ? ORDER BY position ASC'
         );
+
+        // Które kody `type` traktujemy jako plan/rzut (a nie zwykłe zdjęcie).
+        // Konfigurowalne w config.php; domyślnie [120].
+        $planTypes = $this->config['plan_picture_types'] ?? [120];
 
         $base = rtrim($this->config['web_image_base'] ?? '/oferty-esti', '/');
         $out  = [];
@@ -33,8 +39,19 @@ final class JsonExporter
             $number = (string) $o['number'];
 
             $picStmt->execute([$o['esti_id']]);
-            $files   = $picStmt->fetchAll(\PDO::FETCH_COLUMN) ?: [];
-            $gallery = array_map(static fn ($f) => "$base/$number/$f", $files);
+            $rows = $picStmt->fetchAll() ?: [];
+
+            // Rozdzielamy zdjęcia (galeria) od rzutów/planów po atrybucie `type`.
+            $gallery = [];
+            $plans   = [];
+            foreach ($rows as $pic) {
+                $url = "$base/$number/{$pic['filename']}";
+                if ($pic['type'] !== null && in_array((int) $pic['type'], $planTypes, true)) {
+                    $plans[] = $url;
+                } else {
+                    $gallery[] = $url;
+                }
+            }
 
             $category = $this->category((int) $o['main_type_id'], $o['type_name']);
 
@@ -54,8 +71,9 @@ final class JsonExporter
                 'areaPlot'        => $o['area_plot'] !== null ? (float) $o['area_plot'] : null,
                 'rooms'           => $o['rooms'] !== null ? (int) $o['rooms'] : null,
                 'floor'           => $this->floor($o),
-                'image'           => $gallery[0] ?? null,
+                'image'           => $gallery[0] ?? $plans[0] ?? null,
                 'gallery'         => $gallery,
+                'plans'           => $plans,
                 'geo'             => ($o['lat'] !== null && $o['lng'] !== null)
                                         ? ['lat' => (float) $o['lat'], 'lng' => (float) $o['lng']]
                                         : null,

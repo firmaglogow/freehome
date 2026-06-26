@@ -30,6 +30,9 @@ export type Offer = {
   city?: string | null;
   areaPlot?: number | null;
   gallery?: string[];
+  // Rzuty / plany mieszkania (Esti picture type=120). Oddzielone od `gallery`
+  // przez importer (JsonExporter), pokazywane w osobnej zakładce „Pokaż plan".
+  plans?: string[];
   geo?: { lat: number; lng: number } | null;
   description?: string | null;
   descriptionHtml?: string | null;
