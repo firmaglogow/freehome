@@ -180,7 +180,9 @@ export const developments: Development[] = [
     slug: "blizniaczy-zakatek",
     name: "Bliźniaczy Zakątek",
     developer: "Bliźniaczy Zakątek",
-    logo: "/rynek-pierwotny/blizniaczy-zakatek.png",
+    // ?v=2 — wymusza świeże pobranie loga (stara wersja z białym tłem siedziała
+    // w cache przeglądarek pod tym samym URL-em; zmiana adresu = czysty refresh).
+    logo: "/rynek-pierwotny/blizniaczy-zakatek.png?v=2",
     location: "Głogów / Szczyglice",
     mapQuery: "Szczyglice, gmina Głogów",
     // Opiekun inwestycji ustawiony ręcznie (w Esti opiekunem ofert jest Daria).
