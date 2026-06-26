@@ -22,8 +22,9 @@ ACTIVATE="source /home/dm82980/nodevenv/freehome/20/bin/activate"
 REPO="/home/dm82980/freehome"
 
 # 3) Katalog publiczny domeny — gdzie ma wylądować gotowa strona.
-#    cPanel → „Domeny" pokaże „Główny katalog" dla freehome.com.pl. Typowo:
-DOCROOT="/home/dm82980/domains/freehome.com.pl/public_html"
+#    cPanel → „Domeny" pokazuje „Katalog główny" dla freehome.com.pl.
+#    Potwierdzone przy dodawaniu domeny w cPanel (Domenomania):
+DOCROOT="/home/dm82980/freehome.com.pl"
 
 # 4) Adres kanoniczny strony (canonical/OG/JSON-LD). Staging na com.pl;
 #    po przepięciu na produkcję zmień na: https://www.freehome.pl

@@ -51,8 +51,9 @@ Kolejność ma znaczenie. Konto na hostingu: **dm82980**, katalog domowy
 
 ### 1. Podepnij domenę na Domenomanii
 - cPanel → **Domeny** → dodaj `freehome.com.pl` (staging).
-- **Zanotuj „Główny katalog"** domeny (typowo
-  `/home/dm82980/domains/freehome.com.pl/public_html`) — wpiszesz go do skryptu.
+- **Zanotuj „Katalog główny"** domeny. Na Domenomanii dla `freehome.com.pl`
+  to `/home/dm82980/freehome.com.pl` (potwierdzone przy dodawaniu domeny) —
+  wpiszesz go do skryptu jako `DOCROOT`.
 - Jeśli domena jest w nazwa.pl: ustaw DNS (rekordy A / nameservery) na Domenomanię.
 - Docelowo to samo dla `freehome.pl` (produkcja).
 
