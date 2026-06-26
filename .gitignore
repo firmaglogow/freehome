@@ -47,6 +47,7 @@ yarn-error.log*
 /importer/processed/
 /importer/media/
 /importer/*.log
+/importer/.last-build.md5
 
 # zdjęcia ofert generowane przez importer na serwerze (artefakt, nie źródło)
 /public/oferty-esti/
