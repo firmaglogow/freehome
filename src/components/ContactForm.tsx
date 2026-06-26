@@ -6,18 +6,62 @@ import { cn } from "@/lib/cn";
 const fieldCls =
   "w-full rounded-lg border border-forest-600/60 bg-forest-950/50 px-3.5 py-3 text-sm text-cream placeholder:text-cream/40 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
 
+// Wysyłka przez FormSubmit.co — bez własnego backendu (działa na GitHub Pages).
+// Ten sam adres, co formularz wyceny i rekrutacji (endpoint jest już aktywny).
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/kontakt@freehome.com.pl";
+
 export default function ContactForm({
   compact = false,
+  context,
 }: {
   compact?: boolean;
+  /** Dodatkowy kontekst do tematu e-maila, np. numer oferty „FH-1001". */
+  context?: string;
 }) {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [agree, setAgree] = useState(false);
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // TODO (Etap 3): podpiąć server action + wysyłkę e-mail (Resend / Nodemailer).
-    setSent(true);
+    setError(null);
+    setSending(true);
+
+    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          _subject: context
+            ? `Zapytanie o ofertę ${context} — strona FREE HOME`
+            : `Nowa wiadomość ze strony FREE HOME${
+                data.subject ? `: ${data.subject}` : ""
+              }`,
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || body.success === "false") {
+        throw new Error(body.message || "Nie udało się wysłać wiadomości.");
+      }
+      setSent(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Coś poszło nie tak. Spróbuj ponownie lub zadzwoń."
+      );
+    } finally {
+      setSending(false);
+    }
   }
 
   if (sent) {
@@ -25,10 +69,7 @@ export default function ContactForm({
       <div className="rounded-2xl border border-gold-500/30 bg-forest-800 p-8 text-center">
         <p className="font-display text-xl text-gold-400">Dziękujemy!</p>
         <p className="mt-2 text-sm text-cream/75">
-          Wiadomość została przyjęta. Odezwiemy się najszybciej, jak to możliwe.
-        </p>
-        <p className="mt-2 text-xs text-cream/45">
-          (Demo — wysyłka e-mail zostanie podpięta na etapie wdrożenia.)
+          Wiadomość została wysłana. Odezwiemy się najszybciej, jak to możliwe.
         </p>
       </div>
     );
@@ -36,6 +77,16 @@ export default function ContactForm({
 
   return (
     <form onSubmit={onSubmit} className="space-y-3">
+      {/* Honeypot — pole-pułapka na boty (ludzie go nie widzą) */}
+      <input
+        type="text"
+        name="_honey"
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        aria-hidden="true"
+      />
+
       <div className={cn("grid gap-3", !compact && "sm:grid-cols-2")}>
         <input
           required
@@ -81,11 +132,19 @@ export default function ContactForm({
           momencie.
         </span>
       </label>
+
+      {error && (
+        <p className="rounded-lg border border-red-500/40 bg-red-500/10 px-3.5 py-2.5 text-sm text-red-300">
+          {error}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="w-full rounded-full bg-gold-500 px-6 py-3.5 text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
+        disabled={sending}
+        className="w-full rounded-full bg-gold-500 px-6 py-3.5 text-sm font-semibold text-forest-950 transition hover:bg-gold-400 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Wyślij wiadomość
+        {sending ? "Wysyłanie…" : "Wyślij wiadomość"}
       </button>
     </form>
   );

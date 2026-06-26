@@ -162,7 +162,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
               <p className="mt-1 mb-4 text-sm text-cream/60">
                 Podaj numer — oddzwonimy z szczegółami oferty {offer.id}.
               </p>
-              <ContactForm compact />
+              <ContactForm compact context={offer.id} />
             </div>
           </aside>
         </div>
