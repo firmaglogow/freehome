@@ -22,7 +22,7 @@ export default function RynekPierwotnyPage() {
         eyebrow="Rynek pierwotny"
         title="Inwestycje deweloperskie"
         subtitle="Współpracujemy z deweloperami z Głogowa i okolic. Poznaj osiedla, w których sprzedajemy mieszkania i domy z rynku pierwotnego."
-        image="/hero/rynekpierwotny.png"
+        image="/hero/rynekpierwotny.jpg"
       />
       <section className="py-12 sm:py-16">
         <Container>

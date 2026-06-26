@@ -43,6 +43,9 @@ export const site = {
     href: "https://www.freehomedesign.pl/",
   },
   reviewsCount: 269,
+  // Obszar działania — jedno źródło prawdy dla SEO (keywords w layout.tsx)
+  // oraz JSON-LD (areaServed w page.tsx). Oferty faktycznie obejmują te miasta.
+  areaServed: ["Głogów", "Polkowice", "Radwanice", "Przemków", "Sława"],
 } as const;
 
 export type NavItem = { label: string; href: string; children?: NavItem[] };

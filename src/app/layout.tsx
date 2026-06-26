@@ -32,9 +32,9 @@ export const metadata: Metadata = {
   keywords: [
     "biuro nieruchomości Głogów",
     "mieszkania Głogów",
-    "domy Polkowice",
-    "działki Radwanice",
-    "nieruchomości Głogów",
+    "domy Głogów",
+    "działki Głogów",
+    ...site.areaServed.map((city) => `nieruchomości ${city}`),
     "FREE HOME",
   ],
   openGraph: {
@@ -43,6 +43,20 @@ export const metadata: Metadata = {
     siteName: site.fullName,
     title: `${site.fullName} — biuro nieruchomości Głogów`,
     description: `Lokalne biuro nieruchomości w Głogowie. Ludzie, których znasz — ponad ${site.reviewsCount} opinii 5★.`,
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: `${site.fullName} — biuro nieruchomości Głogów`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.fullName} — biuro nieruchomości Głogów`,
+    description: `Lokalne biuro nieruchomości w Głogowie. Ludzie, których znasz — ponad ${site.reviewsCount} opinii 5★.`,
+    images: ["/og.jpg"],
   },
   robots: { index: true, follow: true },
 };

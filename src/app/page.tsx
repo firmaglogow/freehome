@@ -29,7 +29,7 @@ export default function Home() {
       ratingValue: "5",
       reviewCount: String(site.reviewsCount),
     },
-    areaServed: ["Głogów", "Polkowice", "Radwanice", "Przemków", "Sława"],
+    areaServed: site.areaServed,
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
