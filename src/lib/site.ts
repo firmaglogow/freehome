@@ -106,7 +106,7 @@ export const people: Person[] = [
     role: "Ekspert ds. sprzedaży nieruchomości",
     bio: "Najbardziej empatyczna pośredniczka w Głogowie — tak mówią o mnie klienci, i biorę to sobie do serca. Za sobą mam setki transakcji i jedną zasadę: człowiek przed nieruchomością. Słucham, tłumaczę spokojnie, jestem obok na każdym etapie. Sprzedaż czy zakup domu to jedna z największych decyzji w życiu — zasługuje na kogoś, komu naprawdę zależy.",
     phone: "518 092 404",
-    email: "dariaz.lukasik@freehome.com.pl",
+    email: "daria.lukasik@freehome.com.pl",
     photo: "/zespol/daria.jpg",
   },
   {
