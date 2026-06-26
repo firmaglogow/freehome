@@ -106,7 +106,7 @@ export default async function DevelopmentPage(
               fill
               sizes="(max-width: 1024px) 100vw, 320px"
               priority
-              className="object-contain p-8"
+              className="object-contain p-8 scale-[1.15]"
             />
           </div>
 

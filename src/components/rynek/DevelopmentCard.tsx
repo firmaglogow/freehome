@@ -22,7 +22,7 @@ export default function DevelopmentCard({ dev }: { dev: Development }) {
           alt={dev.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-contain p-8 transition-transform duration-700 group-hover:scale-[1.04]"
+          className="object-contain p-8 scale-[1.15] transition-transform duration-700 group-hover:scale-[1.2]"
         />
       </div>
       <div className="p-5">
