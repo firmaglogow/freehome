@@ -31,7 +31,8 @@ export const site = {
   hours: "Pon–Pt 10:00–18:00 · Sob 10:00–14:00",
   social: {
     facebook: "https://facebook.com/firmaglogow",
-    // instagram: "[DO UZUPEŁNIENIA]",
+    instagram: "https://www.instagram.com/agent_2_0_freehome",
+    tiktok: "https://www.tiktok.com/@efreehome",
   },
   related: [
     { label: "grzegorzlukasik.com — marka osobista", href: "https://grzegorzlukasik.com" },
