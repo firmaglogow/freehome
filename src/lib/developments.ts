@@ -61,6 +61,8 @@ export type Development = {
   sections?: DevelopmentSection[];
   /** Termin realizacji, np. „lato 2026" albo „Gotowe do odbioru". */
   readyDate?: string;
+  /** Zapytanie do mapy Google (np. „Szczyglice, gmina Głogów"). Domyślnie = location. */
+  mapQuery?: string;
 };
 
 export const developments: Development[] = [
@@ -70,6 +72,7 @@ export const developments: Development[] = [
     developer: "MDBS Sp. z o.o.",
     logo: "/rynek-pierwotny/nova.png",
     location: "Radwanice, pow. polkowicki",
+    mapQuery: "Radwanice, powiat polkowicki",
     investmentId: 53117,
     readyDate: "Gotowe / lato 2026",
     tagline: "Nowa definicja premium",
@@ -114,6 +117,7 @@ export const developments: Development[] = [
     developer: "Energy House Invest",
     logo: "/rynek-pierwotny/trzyperly.png",
     location: "Bytnik k. Głogowa",
+    mapQuery: "Bytnik, gmina Głogów",
     investmentId: 55307,
     readyDate: "Gotowe — od kwietnia 2025",
     tagline: "Luksusowe domy szeregowe 5 minut od Głogowa",
@@ -178,6 +182,9 @@ export const developments: Development[] = [
     developer: "Bliźniaczy Zakątek",
     logo: "/rynek-pierwotny/blizniaczy-zakatek.png",
     location: "Głogów / Szczyglice",
+    mapQuery: "Szczyglice, gmina Głogów",
+    // Opiekun inwestycji ustawiony ręcznie (w Esti opiekunem ofert jest Daria).
+    agentSlug: "daria-lukasik",
     // investmentId nieznane (osiedle dodane niedawno, jeszcze nie weszło w paczkę
     // Esti). Wiążemy po nazwie — gdy pojawią się oferty z investmentName
     // zawierającym „bliźniaczy", same trafią tutaj. Docelowo można dopisać

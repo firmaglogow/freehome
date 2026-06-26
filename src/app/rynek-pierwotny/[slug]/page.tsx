@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import OfferCard from "@/components/ui/OfferCard";
+import DevelopmentBody from "@/components/rynek/DevelopmentBody";
 import { formatArea, formatPrice } from "@/lib/offers";
 import { people, site } from "@/lib/site";
 import {
@@ -64,6 +65,28 @@ export default async function DevelopmentPage(
   const agentPhoneHref = agentHasPhone
     ? `tel:+48${agent.phone!.replace(/\s/g, "")}`
     : site.phoneHref;
+
+  const agentInfo = {
+    name: agent.name,
+    role: agent.role,
+    photo: agent.photo,
+    phone: agentPhone,
+    phoneHref: agentPhoneHref,
+    email: agent.email ?? null,
+  };
+
+  // Mapa Google (embed bez klucza API) — wyśrodkowana na lokalizacji inwestycji.
+  const mapQuery = dev.mapQuery ?? dev.location ?? null;
+  const mapSrc = mapQuery
+    ? `https://www.google.com/maps?q=${encodeURIComponent(
+        mapQuery
+      )}&z=14&hl=pl&output=embed`
+    : null;
+  const mapLink = mapQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        mapQuery
+      )}`
+    : null;
 
   return (
     <article className="pt-28 pb-20">
@@ -130,112 +153,16 @@ export default async function DevelopmentPage(
           </div>
         </div>
 
-        {/* Opis osiedla + opiekun inwestycji */}
-        {dev.tagline || dev.intro || dev.sections?.length ? (
-          <div className="mt-12 grid gap-10 lg:grid-cols-[1.6fr_1fr] lg:items-start">
-            <div>
-              {dev.tagline ? (
-                <p className="font-display text-2xl text-gold-400">
-                  {dev.tagline}
-                </p>
-              ) : null}
-              {dev.intro ? (
-                <p className="mt-4 text-lg leading-relaxed text-cream/85">
-                  {dev.intro}
-                </p>
-              ) : null}
-
-              {dev.sections?.map((section, i) => (
-                <section key={section.heading ?? i} className="mt-8">
-                  {section.heading ? (
-                    <h2 className="font-display text-xl text-cream">
-                      {section.heading}
-                    </h2>
-                  ) : null}
-                  {section.paragraphs?.map((p, j) => (
-                    <p
-                      key={j}
-                      className="mt-3 text-base leading-relaxed text-cream/80"
-                    >
-                      {p}
-                    </p>
-                  ))}
-                  {section.bullets?.length ? (
-                    <ul className="mt-4 space-y-2.5">
-                      {section.bullets.map((b, j) => (
-                        <li key={j} className="flex gap-3 text-cream/80">
-                          <span
-                            aria-hidden="true"
-                            className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-gold-400"
-                          />
-                          <span className="leading-relaxed">{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </section>
-              ))}
-            </div>
-
-            {/* Opiekun inwestycji — jak karta agenta przy ofercie */}
-            <aside className="h-fit lg:sticky lg:top-24">
-              <div className="rounded-3xl border border-gold-500/15 bg-forest-800 p-6">
-                <p className="text-sm text-cream/60">Opiekun inwestycji</p>
-                <div className="mt-4 flex items-center gap-4">
-                  <div className="relative h-16 w-16 flex-none overflow-hidden rounded-full">
-                    <Image
-                      src={agent.photo}
-                      alt={agent.name}
-                      fill
-                      sizes="64px"
-                      className="object-cover object-top"
-                    />
-                  </div>
-                  <div>
-                    <p className="font-display text-lg text-cream">
-                      {agent.name}
-                    </p>
-                    <p className="text-sm text-cream/60">{agent.role}</p>
-                  </div>
-                </div>
-
-                <dl className="mt-5 space-y-3 text-sm">
-                  <div className="flex items-center justify-between gap-3">
-                    <dt className="text-cream/50">Telefon</dt>
-                    <dd>
-                      <a
-                        href={agentPhoneHref}
-                        className="font-medium text-gold-400 hover:underline"
-                      >
-                        {agentPhone}
-                      </a>
-                    </dd>
-                  </div>
-                  {agent.email ? (
-                    <div className="flex items-center justify-between gap-3">
-                      <dt className="text-cream/50">E-mail</dt>
-                      <dd>
-                        <a
-                          href={`mailto:${agent.email}`}
-                          className="font-medium text-gold-400 hover:underline break-all"
-                        >
-                          {agent.email}
-                        </a>
-                      </dd>
-                    </div>
-                  ) : null}
-                </dl>
-
-                <a
-                  href={agentPhoneHref}
-                  className="mt-6 block rounded-xl bg-gold-500 px-4 py-3 text-center text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
-                >
-                  Zadzwoń i zapytaj o ofertę
-                </a>
-              </div>
-            </aside>
-          </div>
-        ) : null}
+        {/* Opis osiedla (zwijany) + opiekun inwestycji + mapa */}
+        <DevelopmentBody
+          tagline={dev.tagline}
+          intro={dev.intro}
+          sections={dev.sections}
+          location={dev.location}
+          agent={agentInfo}
+          mapSrc={mapSrc}
+          mapLink={mapLink}
+        />
 
         {/* Lista ofert tej inwestycji (mechanizm bliźniaczy) */}
         <div className="mt-12">
