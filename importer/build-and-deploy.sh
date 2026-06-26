@@ -24,6 +24,10 @@ REPO="/home/dm82980/freehome"
 # 3) Katalog publiczny domeny — gdzie ma wylądować gotowa strona.
 #    cPanel → „Domeny" pokaże „Główny katalog" dla freehome.com.pl. Typowo:
 DOCROOT="/home/dm82980/domains/freehome.com.pl/public_html"
+
+# 4) Adres kanoniczny strony (canonical/OG/JSON-LD). Staging na com.pl;
+#    po przepięciu na produkcję zmień na: https://www.freehome.pl
+SITE_URL="https://www.freehome.com.pl"
 # ──────────────────────────────────────────────────────────────────────────
 
 STAMP="$REPO/importer/.last-build.md5"
@@ -44,11 +48,12 @@ if [ "$NEW" = "$OLD" ] && [ -f "$DOCROOT/index.html" ]; then
   exit 0
 fi
 
-# 3. Build statyczny dla własnej domeny (root, bez prefiksu /freehome).
+# 3. Build statyczny dla własnej domeny (root, bez prefiksu /freehome,
+#    adres kanoniczny = SITE_URL).
 eval "$ACTIVATE"
 [ -d node_modules ] || npm install
 rm -rf .next out
-NEXT_PUBLIC_BASE_PATH="" npm run build
+NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" npm run build
 
 # 4. Publikacja: zsynchronizuj kompletny out/ do katalogu domeny.
 #    --delete sprząta stare pliki (out/ zawiera całą stronę, też zdjęcia ofert,

@@ -1,13 +1,20 @@
 // Centralna konfiguracja treści FREE HOME.
 // Treści [DO UZUPEŁNIENIA] są oznaczone i łatwe do podmiany przez właściciela.
 
+// Adres kanoniczny serwisu — sterowany zmienną, żeby ten sam kod działał na:
+//  • staging   → https://www.freehome.com.pl  (skrypt buildu ustawia NEXT_PUBLIC_SITE_URL)
+//  • produkcja → https://www.freehome.pl       (wartość domyślna)
+// Zasila metadataBase (canonical, Open Graph) w layout.tsx oraz JSON-LD.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.freehome.pl";
+
 export const site = {
   name: "FREE HOME",
   fullName: "FREE HOME Nieruchomości",
   tagline: "Twoje lokalne biuro nieruchomości",
   subtitle: "Głogów i okolice. Ludzie, których znasz.", // [DO UZUPEŁNIENIA — warianty hasła]
-  domain: "freehome.pl",
-  url: "https://www.freehome.pl",
+  // Domena bez www, wyliczana z siteUrl — nigdy się nie rozjedzie z url.
+  domain: new URL(siteUrl).host.replace(/^www\./, ""),
+  url: siteUrl,
   phone: "537 264 666",
   phoneHref: "tel:+48537264666",
   email: "kontakt@freehome.com.pl", // [POTWIERDZIĆ dokładny adres]
