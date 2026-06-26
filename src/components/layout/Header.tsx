@@ -41,7 +41,7 @@ export default function Header() {
         <Logo />
 
         {/* Nawigacja desktop */}
-        <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
+        <nav className="hidden lg:flex items-center gap-4 xl:gap-6">
           {nav.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(item.href + "/");
@@ -54,7 +54,7 @@ export default function Header() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-1 text-sm tracking-wide transition-colors hover:text-gold-400",
+                      "flex items-center gap-1 whitespace-nowrap text-sm tracking-wide transition-colors hover:text-gold-400",
                       active ? "text-gold-400" : "text-cream/85"
                     )}
                   >
@@ -94,12 +94,17 @@ export default function Header() {
               );
             }
 
+            // „Rynek pierwotny" może zostać w dwóch liniach (wyśrodkowany, równy),
+            // reszta pozycji wymuszona w jednej linii (whitespace-nowrap), żeby
+            // np. „O nas" nie łamało się na „O" / „nas".
+            const isRynek = item.href === "/rynek-pierwotny";
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
                   "text-sm tracking-wide transition-colors hover:text-gold-400",
+                  isRynek ? "text-center leading-tight" : "whitespace-nowrap",
                   active ? "text-gold-400" : "text-cream/85"
                 )}
               >
@@ -113,9 +118,9 @@ export default function Header() {
         <div className="hidden lg:flex items-center gap-3">
           <Link
             href="/wycena"
-            className="rounded-full bg-gold-500 px-5 py-2.5 text-sm font-semibold text-forest-950 transition-colors hover:bg-gold-400"
+            className="whitespace-nowrap rounded-full bg-gold-500 px-5 py-2.5 text-sm font-semibold text-forest-950 transition-colors hover:bg-gold-400"
           >
-            Wyceń nieruchomość
+            Zgłoś ofertę
           </Link>
         </div>
 
@@ -238,7 +243,7 @@ export default function Header() {
             href="/wycena"
             className="mt-4 block rounded-full bg-gold-500 px-5 py-3 text-center text-sm font-semibold text-forest-950"
           >
-            Wyceń nieruchomość
+            Zgłoś ofertę
           </Link>
         </Container>
       </div>
