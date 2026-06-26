@@ -162,7 +162,7 @@ export const developments: Development[] = [
       {
         heading: "Atuty i komfort zakupu",
         bullets: [
-          "Możliwość wykończenia domu „pod klucz" za 140 000 zł, z pełnym dostosowaniem do oczekiwań",
+          "Możliwość wykończenia domu „pod klucz” za 140 000 zł, z pełnym dostosowaniem do oczekiwań",
           "Prywatny ogród do własnej aranżacji",
           "Dwa miejsca postojowe przed budynkiem oraz garaż",
           "Bezpieczna lokalizacja — teren poza obszarem górniczym i zagrożeniem powodziowym",
