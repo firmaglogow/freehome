@@ -181,8 +181,10 @@ function showAnswer(u, houseNo){
   setOsiedle(u.osiedle,false);
   markStreetInList(u.ulica);
   highlight(u.osiedle);
-  showStreet(u.ulica);
   wireHouse(u.ulica);
+  // ulica i numer lecą równolegle (numer z GUGiK jest szybki, ulica z OSM
+  // bywa wolna). Widok końcowy należy do numeru — patrz guard w showStreet.
+  showStreet(u.ulica);
   if(houseNo){ const inp=document.getElementById('houseNo'); if(inp) inp.value=houseNo; showHouse(u.ulica, houseNo); }
 }
 // podpina pole „numer domu" w panelu odpowiedzi do geokodera GUGiK
@@ -299,7 +301,8 @@ async function showStreet(name){
   });
   streetLayer.addTo(map);
   try{ streetLayer.bindTooltip(name,{sticky:true,direction:'top'}); }catch(e){}
-  try{ map.fitBounds(streetLayer.getBounds(),{padding:[40,40],maxZoom:17}); }catch(e){}
+  // jeśli pokazujemy konkretny numer domu, nie odsuwaj widoku na całą ulicę
+  if(!houseLayer){ try{ map.fitBounds(streetLayer.getBounds(),{padding:[40,40],maxZoom:17}); }catch(e){} }
   lastStreetName=name;
   setStreetStatus(seq,'Przebieg ulicy zaznaczony na mapie (złota linia).');
 }
