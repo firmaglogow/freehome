@@ -1,6 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatArea, formatPrice, type Offer } from "@/lib/offers";
+import {
+  formatArea,
+  formatOfferPlace,
+  formatPrice,
+  type Offer,
+} from "@/lib/offers";
 
 export default function OfferCard({ offer }: { offer: Offer }) {
   return (
@@ -28,7 +33,7 @@ export default function OfferCard({ offer }: { offer: Offer }) {
 
       <div className="p-5">
         <p className="text-sm text-cream/60">
-          {offer.type} · {offer.location}
+          {offer.type} · {formatOfferPlace(offer)}
         </p>
         <h3 className="mt-1 line-clamp-1 text-lg text-cream group-hover:text-gold-300">
           {offer.title}
