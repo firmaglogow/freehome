@@ -80,6 +80,7 @@
   .streets div.active{background:var(--gold-400);color:var(--forest-950);font-weight:600}
   .count{color:var(--cream-dim);font-size:13px;margin:2px 0 0}
   #map{height:460px;border-radius:14px;overflow:hidden;border:1px solid var(--forest-600)}
+  @media(min-width:900px){#map{height:620px}}
   .mapfail{display:flex;align-items:center;justify-content:center;height:100%;color:var(--cream-dim);font-size:14px;text-align:center;padding:20px}
   .legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
   .legend button{display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.1);
@@ -192,7 +193,7 @@ function wireHouse(street){
   const inp=document.getElementById('houseNo');
   const btn=document.getElementById('houseBtn');
   if(!inp||!btn) return;
-  const go=()=>showHouse(street, inp.value);
+  const go=()=>{ showHouse(street, inp.value); scrollToMap(); };
   btn.addEventListener('click', go);
   inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); go(); } });
 }
@@ -222,7 +223,7 @@ function renderSugg(q){
     const b=document.createElement('button');
     const c=colorOf[u.osiedle]||'#888';
     b.innerHTML=`<span>${u.ulica}</span><span class="mini"><span class="pill" style="background:${c}">${u.osiedle}</span></span>`;
-    b.onclick=()=>{ $street.value=u.ulica; $sugg.innerHTML=''; showAnswer(u); };
+    b.onclick=()=>{ $street.value=u.ulica; $sugg.innerHTML=''; showAnswer(u); scrollToMap(); };
     $sugg.appendChild(b);
   });
 }
@@ -245,15 +246,23 @@ function setOsiedle(name, focusMap){
     d.addEventListener('click',()=>{
       $street.value=u;
       showAnswer({ulica:u, osiedle:name});   // ta sama ścieżka co wyszukiwarka: linia + pole numeru
+      scrollToMap();
     });
     $streets.appendChild(d);
   });
   if(focusMap) highlight(name);
 }
-$osiedle.addEventListener('change', e=> setOsiedle(e.target.value, true));
+$osiedle.addEventListener('change', e=>{ setOsiedle(e.target.value, true); scrollToMap(); });
 
 // ---- mapa
 let map=null, geoLayer=null, streetLayer=null, houseLayer=null, lastStreetName=null;
+// po wyborze ulicy/osiedla/numeru zjedź płynnie do mapy (karta z tytułem
+// „MAPA OSIEDLI"), żeby od razu było widać wynik bez ręcznego scrollowania.
+function scrollToMap(){
+  const el=document.getElementById('map'); if(!el) return;
+  const card=el.closest('.card')||el;
+  card.scrollIntoView({behavior:'smooth',block:'start'});
+}
 // Serwery Overpass (geometria ulicy z OpenStreetMap). Dwa, dla niezawodności.
 const OVERPASS_EP=[
   "https://overpass-api.de/api/interpreter",
@@ -379,7 +388,7 @@ function initMap(){
 allNames.forEach(o=>{
   const b=document.createElement('button');
   b.innerHTML=`<i style="background:${colorOf[o]}"></i>${o}`;
-  b.onclick=()=> setOsiedle(o,true);
+  b.onclick=()=>{ setOsiedle(o,true); scrollToMap(); };
   $legend.appendChild(b);
 });
 
