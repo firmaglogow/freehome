@@ -61,6 +61,31 @@ function PriceMark() {
   );
 }
 
+// Ikona kalkulatora kredytu: domek z zielonym kółkiem „%" = orientacyjna rata.
+// Kolory spójne z legendą mapy cen (czerwony dach, złota ściana, zielony badge).
+function LoanMark() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden className="h-9 w-9">
+      {/* dach */}
+      <path d="M23 7L37 18v1.6H9V18L23 7z" fill="#d24c3a" />
+      {/* ściana */}
+      <rect x="13" y="19.5" width="20" height="15" rx="1.4" fill="#e0b13c" />
+      {/* drzwi */}
+      <rect x="20" y="26" width="6" height="8.5" rx="0.8" fill="#0c1f15" opacity="0.5" />
+      {/* badge „%" */}
+      <circle cx="34" cy="33" r="8.5" fill="#45b35e" stroke="#f3efe3" strokeWidth="1.6" />
+      <path
+        d="M37.4 29.6l-6.8 6.8"
+        stroke="#f3efe3"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+      />
+      <circle cx="31.4" cy="30.4" r="1.5" fill="#f3efe3" />
+      <circle cx="36.6" cy="35.6" r="1.5" fill="#f3efe3" />
+    </svg>
+  );
+}
+
 type Tile = {
   key: string;
   icon: React.ReactNode;
@@ -115,6 +140,16 @@ const tiles: Tile[] = [
     cta: "Sprawdź ceny",
     external: true,
   },
+  {
+    key: "kredyt",
+    icon: <LoanMark />,
+    badge: "Z suwakami",
+    title: "Kalkulator kredytu hipotecznego",
+    desc: "Policz orientacyjną ratę kredytu: wpisz cenę mieszkania, wkład własny, okres i oprocentowanie, a od razu zobaczysz miesięczną ratę oraz całkowity koszt odsetek.",
+    href: `${BASE_PATH}/kalkulator-kredytowy/`,
+    cta: "Policz ratę",
+    external: true,
+  },
 ];
 
 export default function DlaKlientaPage() {
@@ -128,7 +163,7 @@ export default function DlaKlientaPage() {
       />
       <section className="py-16 sm:py-20">
         <Container>
-          <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2">
             {tiles.map((t, i) => {
               const inner = (
                 <>
