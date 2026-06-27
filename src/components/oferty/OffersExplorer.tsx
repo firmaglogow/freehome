@@ -3,7 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import OfferCard from "@/components/ui/OfferCard";
 import { locations, propertyTypes } from "@/lib/site";
-import { offers as allOffers, type Offer } from "@/lib/offers";
+import {
+  offers as allOffers,
+  glogowOsiedla,
+  resolveEstate,
+  type Offer,
+} from "@/lib/offers";
 import { cn } from "@/lib/cn";
 
 type Sort = "newest" | "price-asc" | "price-desc" | "area-desc";
@@ -18,6 +23,7 @@ const RESIDENTIAL_TYPES = ["Dom", "Mieszkanie", "Działka"];
 
 export default function OffersExplorer() {
   const [location, setLocation] = useState("");
+  const [osiedle, setOsiedle] = useState("");
   const [type, setType] = useState("");
   // Kategoria zbiorcza z menu (np. „komercyjny"). Osobno od dokładnego typu,
   // bo komercja to wiele różnych nazw typów z Esti.
@@ -37,6 +43,7 @@ export default function OffersExplorer() {
       if (v) fn(v);
     };
     set("lok", setLocation);
+    set("osiedle", setOsiedle);
     set("typ", setType);
     set("kat", setCategory);
     set("cena_od", setPriceFrom);
@@ -47,6 +54,7 @@ export default function OffersExplorer() {
   const filtered = useMemo(() => {
     let list: Offer[] = allOffers.filter((o) => {
       if (location && o.location !== location) return false;
+      if (osiedle && resolveEstate(o) !== osiedle) return false;
       if (type && o.type !== type) return false;
       if (category === "komercyjny" && RESIDENTIAL_TYPES.includes(o.type))
         return false;
@@ -69,10 +77,11 @@ export default function OffersExplorer() {
       }
     });
     return list;
-  }, [location, type, category, priceFrom, priceTo, rooms, sort]);
+  }, [location, osiedle, type, category, priceFrom, priceTo, rooms, sort]);
 
   function reset() {
     setLocation("");
+    setOsiedle("");
     setType("");
     setCategory("");
     setPriceFrom("");
@@ -95,6 +104,20 @@ export default function OffersExplorer() {
             {locations.map((l) => (
               <option key={l} value={l}>
                 {l}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={osiedle}
+            onChange={(e) => setOsiedle(e.target.value)}
+            className={fieldCls}
+            aria-label="Osiedle (Głogów)"
+          >
+            <option value="">Osiedle (Głogów): wszystkie</option>
+            {glogowOsiedla.map((o) => (
+              <option key={o} value={o}>
+                {o}
               </option>
             ))}
           </select>

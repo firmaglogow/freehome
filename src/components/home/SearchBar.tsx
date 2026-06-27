@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { locations, propertyTypes } from "@/lib/site";
+import { glogowOsiedla } from "@/lib/offers";
 import { cn } from "@/lib/cn";
 
 const fieldCls =
@@ -19,6 +20,7 @@ export default function SearchBar({
 }) {
   const router = useRouter();
   const [location, setLocation] = useState("");
+  const [osiedle, setOsiedle] = useState("");
   const [type, setType] = useState("");
   const [priceFrom, setPriceFrom] = useState("");
   const [priceTo, setPriceTo] = useState("");
@@ -28,6 +30,7 @@ export default function SearchBar({
     e.preventDefault();
     const params = new URLSearchParams();
     if (location) params.set("lok", location);
+    if (osiedle) params.set("osiedle", osiedle);
     if (type) params.set("typ", type);
     if (priceFrom) params.set("cena_od", priceFrom);
     if (priceTo) params.set("cena_do", priceTo);
@@ -43,7 +46,7 @@ export default function SearchBar({
         variant === "hero" && "ring-1 ring-white/5"
       )}
     >
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <div>
           <label className={labelCls} htmlFor="s-lok">
             Lokalizacja
@@ -58,6 +61,25 @@ export default function SearchBar({
             {locations.map((l) => (
               <option key={l} value={l}>
                 {l}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className={labelCls} htmlFor="s-osiedle">
+            Osiedle <span className="text-cream/40">· Głogów</span>
+          </label>
+          <select
+            id="s-osiedle"
+            value={osiedle}
+            onChange={(e) => setOsiedle(e.target.value)}
+            className={fieldCls}
+          >
+            <option value="">Wszystkie</option>
+            {glogowOsiedla.map((o) => (
+              <option key={o} value={o}>
+                {o}
               </option>
             ))}
           </select>
