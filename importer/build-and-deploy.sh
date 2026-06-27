@@ -59,6 +59,16 @@ eval "$ACTIVATE"
 # Dodatkowo nodevenv zostawia NODE_ENV pusty — wymuszamy production.
 unset NODE_PATH
 export NODE_ENV=production
+# CloudLinux LVE: host pokazuje 14 rdzeni i 78 GB RAM, ale konto ma UKRYTY
+# limit pamięci (PMEM). Next/Turbopack skalują liczbę workerów do widocznych
+# rdzeni → ~14× pamięci jednocześnie → kernel ubija build ("Killed"/SIGKILL,
+# bez logu OOM bo limit jest po stronie LVE, nie zwykłego ulimit/cgroup konta).
+# taskset przypina build do 2 rdzeni — os.availableParallelism() oraz pula
+# wątków Turbopacka (Rust) respektują maskę affinity → ~7× mniej pamięci.
+# NODE_OPTIONS dodatkowo ścina stertę V8, która sama rośnie do RAM hosta (78 GB).
+export NODE_OPTIONS="--max-old-space-size=1536"
+TASKSET="taskset -c 0-1"
+command -v taskset >/dev/null 2>&1 || TASKSET=""
 [ -d node_modules ] || npm install
 rm -rf .next out
 # CloudLinux nodevenv: zwykły build (worker prerender) wywala null React
@@ -66,7 +76,7 @@ rm -rf .next out
 #   „Cannot read properties of null (reading 'useState'/'useContext')".
 # `--debug-prerender` renderuje prerender IN-PROCESS (jeden proces) zamiast w
 # workerach i buduje poprawnie. Wynik (statyczny out/) jest identyczny.
-NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" ./node_modules/.bin/next build --debug-prerender
+NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" $TASKSET ./node_modules/.bin/next build --debug-prerender
 
 # 4. Publikacja: zsynchronizuj kompletny out/ do katalogu domeny.
 #    --delete sprząta stare pliki (out/ zawiera całą stronę, też zdjęcia ofert,

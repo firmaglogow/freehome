@@ -34,11 +34,21 @@ eval "$ACTIVATE"
 # dispatcher przy output:export. Czyścimy NODE_PATH i wymuszamy production.
 unset NODE_PATH
 export NODE_ENV=production
+# CloudLinux LVE: host pokazuje 14 rdzeni i 78 GB RAM, ale konto ma UKRYTY
+# limit pamięci (PMEM). Next/Turbopack skalują liczbę workerów do widocznych
+# rdzeni → ~14× pamięci jednocześnie → kernel ubija build ("Killed"/SIGKILL,
+# bez logu OOM bo limit jest po stronie LVE, nie zwykłego ulimit/cgroup konta).
+# taskset przypina build do 2 rdzeni — os.availableParallelism() oraz pula
+# wątków Turbopacka (Rust) respektują maskę affinity → ~7× mniej pamięci.
+# NODE_OPTIONS dodatkowo ścina stertę V8, która sama rośnie do RAM hosta (78 GB).
+export NODE_OPTIONS="--max-old-space-size=1536"
+TASKSET="taskset -c 0-1"
+command -v taskset >/dev/null 2>&1 || TASKSET=""
 [ -d node_modules ] || npm install
 rm -rf .next out
 # --debug-prerender: prerender IN-PROCESS (jeden proces) — omija null React
 # dispatcher z workerów przy output:export. Wynik identyczny, mniejszy narzut.
-NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" ./node_modules/.bin/next build --debug-prerender
+NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" $TASKSET ./node_modules/.bin/next build --debug-prerender
 
 # 3. Publikacja: synchronizacja kompletnego out/ do docroota podglądu.
 #    out/ zawiera też zdjęcia ofert (Next kopiuje public/ → out/).
