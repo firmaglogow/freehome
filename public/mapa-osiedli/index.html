@@ -51,6 +51,14 @@
   }
   .answer .big{font-size:20px;font-weight:700}
   .answer .os{color:var(--gold-400);font-weight:700}
+  .houserow{margin-top:10px;display:flex;gap:8px}
+  .houserow input{flex:1;width:auto}
+  .houserow button{white-space:nowrap;border:0;border-radius:10px;cursor:pointer;
+    background:var(--gold-500);color:var(--forest-950);font-weight:700;padding:0 14px;font-size:14px}
+  .houserow button:hover{background:var(--gold-400)}
+  .house-tip{background:var(--gold-400);color:var(--forest-950);border:0;font-weight:700;
+    border-radius:6px;padding:2px 7px;box-shadow:0 1px 4px rgba(0,0,0,.45)}
+  .house-tip:before{display:none}
   .pill{
     display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;
     font-weight:700;color:#0c1f15
@@ -66,7 +74,10 @@
   .streets{margin-top:10px;max-height:330px;overflow:auto;
     columns:2;column-gap:18px}
   @media(max-width:520px){.streets{columns:1}}
-  .streets div{break-inside:avoid;padding:4px 2px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.05)}
+  .streets div{break-inside:avoid;padding:4px 8px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.05);
+    cursor:pointer;border-radius:6px;transition:background .12s,color .12s}
+  .streets div:hover{background:rgba(201,162,39,.12)}
+  .streets div.active{background:var(--gold-400);color:var(--forest-950);font-weight:600}
   .count{color:var(--cream-dim);font-size:13px;margin:2px 0 0}
   #map{height:460px;border-radius:14px;overflow:hidden;border:1px solid var(--forest-600)}
   .mapfail{display:flex;align-items:center;justify-content:center;height:100%;color:var(--cream-dim);font-size:14px;text-align:center;padding:20px}
@@ -83,7 +94,7 @@
 <div class="wrap">
   <a class="back" href="../dla-klienta/"><span>←</span> Wróć do: Dla klienta</a>
   <h1>Głogów — <span>ulice i osiedla</span></h1>
-  <p class="sub">Wpisz ulicę, żeby zobaczyć osiedle — albo wybierz osiedle, żeby zobaczyć jego ulice. Dane: OpenStreetMap.</p>
+  <p class="sub">Wpisz ulicę, żeby zobaczyć osiedle — albo wybierz osiedle, żeby zobaczyć jego ulice. Po wybraniu ulicy możesz wpisać numer domu i zobaczyć dokładny adres na mapie. Dane: OpenStreetMap + rejestr adresowy GUGiK.</p>
 
   <div class="grid">
     <div class="card">
@@ -157,24 +168,52 @@ OSIEDLA.forEach(o=>{
 });
 
 // ---- wyszukiwanie ulicy
-function showAnswer(u){
+function showAnswer(u, houseNo){
   const c=colorOf[u.osiedle]||'#888';
   $answer.innerHTML = `<div class="big">${u.ulica}</div>
     <div style="margin-top:6px">osiedle: <span class="pill" style="background:${c}">${u.osiedle}</span></div>
-    <div id="streetStatus" style="margin-top:8px;font-size:13px;color:var(--cream-dim)"></div>`;
+    <div id="streetStatus" style="margin-top:8px;font-size:13px;color:var(--cream-dim)"></div>
+    <div class="houserow">
+      <input id="houseNo" inputmode="numeric" autocomplete="off" placeholder="nr domu, np. 5">
+      <button id="houseBtn" type="button">Pokaż numer</button>
+    </div>
+    <div id="houseStatus" style="margin-top:6px;font-size:13px;color:var(--cream-dim)"></div>`;
   setOsiedle(u.osiedle,false);
+  markStreetInList(u.ulica);
   highlight(u.osiedle);
   showStreet(u.ulica);
+  wireHouse(u.ulica);
+  if(houseNo){ const inp=document.getElementById('houseNo'); if(inp) inp.value=houseNo; showHouse(u.ulica, houseNo); }
+}
+// podpina pole „numer domu" w panelu odpowiedzi do geokodera GUGiK
+function wireHouse(street){
+  const inp=document.getElementById('houseNo');
+  const btn=document.getElementById('houseBtn');
+  if(!inp||!btn) return;
+  const go=()=>showHouse(street, inp.value);
+  btn.addEventListener('click', go);
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); go(); } });
+}
+// podświetla ulicę na liście po prawej (gdy wybrano ją wyszukiwarką)
+function markStreetInList(name){
+  const nn=norm(name);
+  $streets.querySelectorAll('div').forEach(d=>{
+    d.classList.toggle('active', norm(d.textContent)===nn);
+  });
 }
 function renderSugg(q){
-  const nq=norm(q);
+  // wykryj numer domu na końcu (np. „Akacjowa 5") — wtedy od razu pokaż adres
+  let houseNo=null, sq=q;
+  const m=q.match(/^(.+?)[\s,]+(\d+[a-zA-Z]?)\s*$/);
+  if(m){ sq=m[1]; houseNo=m[2]; }
+  const nq=norm(sq);
   $sugg.innerHTML='';
   if(!nq){ $answer.textContent='Zacznij pisać nazwę ulicy…'; return; }
   const exact = ULICE.filter(u=>norm(u.ulica)===nq);
   const starts = ULICE.filter(u=>norm(u.ulica).startsWith(nq) && norm(u.ulica)!==nq);
   const incl = ULICE.filter(u=>norm(u.ulica).includes(nq) && !norm(u.ulica).startsWith(nq));
   const list = exact.concat(starts, incl).slice(0,40);
-  if(exact.length){ showAnswer(exact[0]); }
+  if(exact.length){ showAnswer(exact[0], houseNo); }
   else if(list.length){ $answer.innerHTML = `Wybierz z listy poniżej — pasuje <b>${list.length}</b> ulic.`; }
   else { $answer.innerHTML = `Brak ulicy „<b>${q}</b>" w danych Głogowa.`; }
   list.forEach(u=>{
@@ -197,13 +236,22 @@ function setOsiedle(name, focusMap){
   const list=(byOsiedle[name]||[]).slice().sort(collator.compare);
   $count.textContent = name ? `${list.length} ulic na osiedlu ${name}` : '';
   $streets.innerHTML='';
-  list.forEach(u=>{ const d=document.createElement('div'); d.textContent=u; $streets.appendChild(d); });
+  list.forEach(u=>{
+    const d=document.createElement('div');
+    d.textContent=u;
+    d.title='Kliknij, aby zaznaczyć ulicę na mapie';
+    d.addEventListener('click',()=>{
+      $street.value=u;
+      showAnswer({ulica:u, osiedle:name});   // ta sama ścieżka co wyszukiwarka: linia + pole numeru
+    });
+    $streets.appendChild(d);
+  });
   if(focusMap) highlight(name);
 }
 $osiedle.addEventListener('change', e=> setOsiedle(e.target.value, true));
 
 // ---- mapa
-let map=null, geoLayer=null, streetLayer=null;
+let map=null, geoLayer=null, streetLayer=null, houseLayer=null, lastStreetName=null;
 // Serwery Overpass (geometria ulicy z OpenStreetMap). Dwa, dla niezawodności.
 const OVERPASS_EP=[
   "https://overpass-api.de/api/interpreter",
@@ -234,7 +282,10 @@ async function fetchStreetGeom(name){
 }
 async function showStreet(name){
   if(!map) return;                        // offline / brak mapy → zostaje sama wyszukiwarka
+  if(name===lastStreetName && streetLayer) return; // ta sama ulica już narysowana — nie migaj
   clearStreet();
+  clearHouse();                           // zmiana ulicy → skasuj stary pin numeru
+  lastStreetName=null;
   const seq=++streetSeq;
   setStreetStatus(seq,'Rysuję przebieg ulicy na mapie…');
   let lines=null;
@@ -249,7 +300,51 @@ async function showStreet(name){
   streetLayer.addTo(map);
   try{ streetLayer.bindTooltip(name,{sticky:true,direction:'top'}); }catch(e){}
   try{ map.fitBounds(streetLayer.getBounds(),{padding:[40,40],maxZoom:17}); }catch(e){}
+  lastStreetName=name;
   setStreetStatus(seq,'Przebieg ulicy zaznaczony na mapie (złota linia).');
+}
+
+// ---- numery domów (oficjalny rejestr adresowy GUGiK)
+const GUGIK_EP="https://services.gugik.gov.pl/uug/";
+const geocodeCache={};   // adres → punkt (cache w sesji)
+let houseSeq=0;
+function clearHouse(){ if(houseLayer && map){ map.removeLayer(houseLayer); } houseLayer=null; }
+function setHouseStatus(msg){ const el=document.getElementById('houseStatus'); if(el) el.textContent=msg; }
+async function geocodeHouse(street, number){
+  const key=norm(street)+'|'+norm(number);
+  if(key in geocodeCache) return geocodeCache[key];
+  const url=GUGIK_EP+"?request=GetAddress&srid=4326&address="+encodeURIComponent("Głogów, "+street+" "+number);
+  try{
+    const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),10000);
+    const r=await fetch(url,{signal:ctrl.signal});
+    clearTimeout(t);
+    if(!r.ok) return null;                 // błąd serwera → nie cache'uj, pozwól ponowić
+    const j=await r.json();
+    const res=j&&j.results&&j.results["1"];
+    if(!res){ return (geocodeCache[key]=null); }   // numer nie istnieje w rejestrze
+    const lat=parseFloat(res.y), lon=parseFloat(res.x);   // srid=4326: x=lon, y=lat
+    if(!isFinite(lat)||!isFinite(lon)) return (geocodeCache[key]=null);
+    return (geocodeCache[key]={lat,lon,number:res.number||number,code:res.code||''});
+  }catch(e){ return null; }                // sieć/timeout → nie cache'uj
+}
+async function showHouse(street, number){
+  if(!map) return;
+  number=(""+number).trim();
+  if(!number){ clearHouse(); setHouseStatus('Wpisz numer domu, np. 5.'); return; }
+  const seq=++houseSeq;
+  setHouseStatus('Szukam numeru '+number+'…');
+  let res=null;
+  try{ res=await geocodeHouse(street, number); }catch(e){ res=null; }
+  if(seq!==houseSeq) return;              // w międzyczasie wpisano inny numer
+  if(!res){ setHouseStatus('Nie znaleziono numeru '+number+' przy ul. '+street+' w rejestrze adresowym.'); return; }
+  clearHouse();
+  houseLayer=L.featureGroup();
+  const mk=L.circleMarker([res.lat,res.lon],{radius:9,color:'#0c1f15',weight:2,fillColor:'#d8b94b',fillOpacity:1})
+    .addTo(houseLayer);
+  try{ mk.bindTooltip(street+' '+res.number,{permanent:true,direction:'top',offset:[0,-8],className:'house-tip'}); }catch(e){}
+  houseLayer.addTo(map);
+  try{ map.setView([res.lat,res.lon], 18); }catch(e){}
+  setHouseStatus('Numer '+res.number+' zaznaczony na mapie'+(res.code?(' • '+res.code):'')+'.');
 }
 function highlight(name){
   if(!geoLayer) return;
