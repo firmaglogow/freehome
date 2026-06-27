@@ -64,8 +64,6 @@ function PriceMark() {
 type Tile = {
   key: string;
   icon: React.ReactNode;
-  /** Jasne (białe) tło kafelka ikony — dla kolorowego logo na białym tle. */
-  iconLight?: boolean;
   badge?: string;
   title: string;
   desc: string;
@@ -88,16 +86,15 @@ const tiles: Tile[] = [
   {
     key: "mapa",
     icon: (
-      // Statyczne, malutkie logo z public/ — zwykły <img> z prefiksem BASE_PATH
-      // (spójnie z linkami external na tej stronie); next/image tu zbędny.
+      // Statyczne logo z public/ (PNG z przezroczystym tłem) — zwykły <img>
+      // z prefiksem BASE_PATH, spójnie z linkami external; next/image tu zbędny.
       // eslint-disable-next-line @next/next/no-img-element
       <img
-        src={`${BASE_PATH}/brand/logo-glogow.jpg`}
+        src={`${BASE_PATH}/brand/logo-glogow.png`}
         alt=""
-        className="h-full w-full object-cover"
+        className="h-full w-full object-contain"
       />
     ),
-    iconLight: true,
     badge: "Interaktywna",
     title: "Mapa osiedli Głogowa",
     desc: "Interaktywna mapa miasta z podziałem na osiedla i wyszukiwarką ulic — sprawdź, do którego osiedla należy dany adres.",
@@ -133,11 +130,7 @@ export default function DlaKlientaPage() {
               const inner = (
                 <>
                   <div className="flex items-center justify-between">
-                    <span
-                      className={`flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl ring-1 ring-gold-500/20 ${
-                        t.iconLight ? "bg-white" : "bg-forest-950/60"
-                      }`}
-                    >
+                    <span className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-forest-950/60 ring-1 ring-gold-500/20">
                       {t.icon}
                     </span>
                     {t.badge && (
