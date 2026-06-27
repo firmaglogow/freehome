@@ -261,20 +261,14 @@ let map=null, geoLayer=null, streetLayer=null, houseLayer=null, lastStreetName=n
 function scrollToMap(){
   const el=document.getElementById('map'); if(!el) return;
   const card=el.closest('.card')||el;
-  // Na tej stronie natywny smooth-scroll jest ignorowany (no-op), więc
-  // animujemy ręcznie przez requestAnimationFrame; instant scrollIntoView
-  // jako pewny fallback, gdyby rAF nie był dostępny.
-  const targetY=card.getBoundingClientRect().top + window.pageYOffset - 8;
-  if(typeof requestAnimationFrame!=='function'){ card.scrollIntoView({block:'start'}); return; }
-  const startY=window.pageYOffset, dist=targetY-startY, dur=420; let t0=null;
-  if(Math.abs(dist)<2) return;
-  function step(ts){
-    if(t0===null) t0=ts;
-    const p=Math.min((ts-t0)/dur,1);
-    window.scrollTo(0, startY + dist*(0.5-0.5*Math.cos(Math.PI*p)));
-    if(p<1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
+  const targetY=Math.max(0, Math.round(card.getBoundingClientRect().top + window.pageYOffset - 8));
+  if(Math.abs(window.pageYOffset - targetY) < 4) return;
+  // Płynne przewinięcie (ładne, gdy karta jest na wierzchu).
+  try{ window.scrollTo({top:targetY, behavior:'smooth'}); }
+  catch(e){ window.scrollTo(0, targetY); }
+  // Gwarancja: gdyby płynne przewijanie zostało zdławione (np. nieaktywna
+  // karta) i nie ruszyło, po chwili ustawiamy pozycję natychmiast.
+  setTimeout(()=>{ if(Math.abs(window.pageYOffset - targetY) > 4){ window.scrollTo(0, targetY); } }, 700);
 }
 // Serwery Overpass (geometria ulicy z OpenStreetMap). Dwa, dla niezawodności.
 const OVERPASS_EP=[
