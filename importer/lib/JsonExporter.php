@@ -65,6 +65,11 @@ final class JsonExporter
                 'typeName'        => $o['type_name'],
                 'location'        => $this->location($o),
                 'city'            => $o['city'],
+                // Adres szczegółowy: ulica + typ ("ul.") i osiedle/dzielnica.
+                // Front (formatOfferPlace) składa z nich pełną lokalizację.
+                'street'          => $o['street'] ?: null,
+                'streetType'      => $o['street_type'] ?: null,
+                'estate'          => $o['precinct'] ?: null,
                 'price'           => $o['price'] !== null ? (float) $o['price'] : null,
                 'pricePerMeter'   => $o['price_permeter'] !== null ? (int) round((float) $o['price_permeter']) : null,
                 'areaTotal'       => $o['area_total'] !== null ? (float) $o['area_total'] : null,

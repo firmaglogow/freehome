@@ -1,9 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import OfferCard from "@/components/ui/OfferCard";
 import OfferGallery from "@/components/oferty/OfferGallery";
+import OfferDetailsPanel from "@/components/oferty/OfferDetailsPanel";
+import OfferDescription from "@/components/oferty/OfferDescription";
 import ContactForm from "@/components/ContactForm";
 import Placeholder from "@/components/ui/Placeholder";
 import { offers, formatArea, formatPrice } from "@/lib/offers";
@@ -86,25 +87,29 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
               badge="Sprzedaż"
             />
 
+            {/* Telefon: moduł z ceną i szczegółami zaraz po zdjęciach. */}
+            <div className="mt-6 lg:hidden">
+              <OfferDetailsPanel
+                offer={offer}
+                agentName={agent.name}
+                agentPhoto={agent.photo}
+                agentPhone={agentPhone}
+                agentPhoneHref={agentPhoneHref}
+              />
+            </div>
+
             <h2 className="mt-10 font-display text-2xl text-cream">
               Opis nieruchomości
             </h2>
-            <div className="mt-4">
-              {descHtml ? (
-                <div
-                  className="space-y-3 text-base leading-relaxed text-cream/80 [&_b]:font-semibold [&_b]:text-cream [&_strong]:font-semibold [&_strong]:text-cream [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1"
-                  dangerouslySetInnerHTML={{ __html: descHtml }}
-                />
-              ) : offer.description ? (
-                <div className="space-y-3 whitespace-pre-line text-base leading-relaxed text-cream/80">
-                  {offer.description}
-                </div>
-              ) : (
+            {descHtml || offer.description ? (
+              <OfferDescription html={descHtml} text={offer.description} />
+            ) : (
+              <div className="mt-4">
                 <Placeholder>
                   Opis oferty {offer.id} zostanie uzupełniony.
                 </Placeholder>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Mapa lokalizacji (Google Maps embed, bez klucza API) */}
             {mapSrc ? (
@@ -144,65 +149,19 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
 
           {/* Panel boczny */}
           <aside className="h-fit lg:sticky lg:top-24">
-            <div className="rounded-3xl border border-gold-500/15 bg-forest-800 p-6">
-              <p className="text-sm text-cream/60">
-                {offer.type} · {offer.location}
-              </p>
-              <h1 className="mt-1 font-display text-2xl text-cream">
-                {offer.title}
-              </h1>
-              <p className="mt-3 font-display text-3xl text-gold-400">
-                {formatPrice(offer.price)}
-              </p>
-
-              <dl className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-forest-600/50 bg-forest-600/30 text-sm">
-                <div className="bg-forest-900 p-3">
-                  <dt className="text-cream/50">Powierzchnia</dt>
-                  <dd className="mt-0.5 text-cream">
-                    {formatArea(offer.areaTotal)}
-                  </dd>
-                </div>
-                <div className="bg-forest-900 p-3">
-                  <dt className="text-cream/50">Pokoje</dt>
-                  <dd className="mt-0.5 text-cream">{offer.rooms ?? "—"}</dd>
-                </div>
-                <div className="bg-forest-900 p-3">
-                  <dt className="text-cream/50">Piętro</dt>
-                  <dd className="mt-0.5 text-cream">{offer.floor ?? "—"}</dd>
-                </div>
-                <div className="bg-forest-900 p-3">
-                  <dt className="text-cream/50">Cena za m²</dt>
-                  <dd className="mt-0.5 text-cream">
-                    {offer.pricePerMeter
-                      ? `${formatPrice(offer.pricePerMeter)}/m²`
-                      : "—"}
-                  </dd>
-                </div>
-              </dl>
-
-              <div className="mt-5 flex items-center gap-3 rounded-xl border border-gold-500/15 bg-forest-900 p-3">
-                <div className="relative h-12 w-12 flex-none overflow-hidden rounded-full">
-                  <Image
-                    src={agent.photo}
-                    alt={agent.name}
-                    fill
-                    sizes="48px"
-                    className="object-cover object-top"
-                  />
-                </div>
-                <div className="text-sm">
-                  <p className="text-cream">{agent.name}</p>
-                  <a
-                    href={agentPhoneHref}
-                    className="text-gold-400 hover:underline"
-                  >
-                    {agentPhone}
-                  </a>
-                </div>
-              </div>
+            {/* Desktop: ten sam moduł z ceną w przyklejonym panelu bocznym.
+                Na telefonie ukryty — pokazujemy jego kopię pod galerią. */}
+            <div className="hidden lg:block">
+              <OfferDetailsPanel
+                offer={offer}
+                agentName={agent.name}
+                agentPhoto={agent.photo}
+                agentPhone={agentPhone}
+                agentPhoneHref={agentPhoneHref}
+              />
             </div>
 
-            <div className="mt-5 rounded-3xl border border-gold-500/15 bg-forest-800 p-6">
+            <div className="rounded-3xl border border-gold-500/15 bg-forest-800 p-6 lg:mt-5">
               <h3 className="text-lg text-cream">Zapytaj o tę ofertę</h3>
               <p className="mt-1 mb-4 text-sm text-cream/60">
                 Podaj numer — oddzwonimy z szczegółami oferty {offer.id}.

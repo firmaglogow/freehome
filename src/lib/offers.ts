@@ -28,6 +28,11 @@ export type Offer = {
   estiId?: number | null;
   typeName?: string | null;
   city?: string | null;
+  // Adres szczegółowy z Esti (JsonExporter): ulica, typ ulicy ("ul."/"al.") i
+  // osiedle/dzielnica (precinct). Opcjonalne — mock i część ofert ich nie mają.
+  street?: string | null;
+  streetType?: string | null;
+  estate?: string | null;
   areaPlot?: number | null;
   gallery?: string[];
   // Rzuty / plany mieszkania (Esti picture type=120). Oddzielone od `gallery`
@@ -64,3 +69,23 @@ export const formatPrice = (n: number) =>
 
 export const formatArea = (n: number) =>
   `${new Intl.NumberFormat("pl-PL", { maximumFractionDigits: 1 }).format(n)} m²`;
+
+// Pełna lokalizacja oferty do nagłówka karty: miasto, osiedle i ulica.
+// Składamy z osobnych pól (city/estate/street) zamiast gotowego `location`,
+// żeby pokazać ulicę i osiedle obok siebie. Puste pola pomijamy, duplikaty
+// (np. osiedle = miasto w niektórych rekordach Esti) usuwamy. Gdy brak danych
+// szczegółowych — wracamy do `location`.
+export const formatOfferPlace = (offer: Offer): string => {
+  const streetType = offer.streetType?.trim();
+  const rawStreet = offer.street?.trim();
+  const street = rawStreet
+    ? `${streetType ? `${streetType} ` : "ul. "}${rawStreet}`
+    : null;
+  const parts = [
+    offer.city?.trim() || offer.location,
+    offer.estate?.trim(),
+    street,
+  ].filter((p): p is string => Boolean(p));
+  const unique = parts.filter((p, i) => parts.indexOf(p) === i);
+  return unique.join(", ") || offer.location;
+};
