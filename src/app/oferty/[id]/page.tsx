@@ -7,7 +7,12 @@ import OfferDetailsPanel from "@/components/oferty/OfferDetailsPanel";
 import OfferDescription from "@/components/oferty/OfferDescription";
 import ContactForm from "@/components/ContactForm";
 import Placeholder from "@/components/ui/Placeholder";
-import { offers, formatArea, formatPrice } from "@/lib/offers";
+import {
+  offers,
+  formatArea,
+  formatPrice,
+  formatTransactionBadge,
+} from "@/lib/offers";
 import { sanitizeOfferHtml } from "@/lib/sanitizeHtml";
 import { people, site } from "@/lib/site";
 
@@ -84,7 +89,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
               images={galleryImages}
               plans={plans}
               title={offer.title}
-              badge="Sprzedaż"
+              badge={formatTransactionBadge(offer)}
             />
 
             {/* Telefon: moduł z ceną i szczegółami zaraz po zdjęciach. */}

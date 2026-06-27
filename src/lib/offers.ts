@@ -89,3 +89,31 @@ export const formatOfferPlace = (offer: Offer): string => {
   const unique = parts.filter((p, i) => parts.indexOf(p) === i);
   return unique.join(", ") || offer.location;
 };
+
+// Etykieta transakcji w mianowniku rzeczownika oferty: „Mieszkanie NA SPRZEDAŻ".
+const TRANSACTION_SUFFIX: Record<Transaction, string> = {
+  sprzedaz: "na sprzedaż",
+  wynajem: "na wynajem",
+  najem: "na wynajem",
+  kupno: "— kupno",
+};
+
+// Krótka etykieta transakcji na „pigułkę" (badge) przy zdjęciu.
+const TRANSACTION_BADGE: Record<Transaction, string> = {
+  sprzedaz: "Sprzedaż",
+  wynajem: "Wynajem",
+  najem: "Wynajem",
+  kupno: "Kupno",
+};
+
+export const formatTransactionBadge = (offer: Offer): string =>
+  TRANSACTION_BADGE[offer.transaction] ?? "Sprzedaż";
+
+// Nagłówek oferty: typ + transakcja, np. „Mieszkanie na sprzedaż".
+// Zastępuje surowy `title` z Esti, który zwykle powtarza typ i miejscowość
+// („Mieszkanie na sprzedaż, Jędrzychowice") — miejsce pokazujemy osobno przez
+// formatOfferPlace, więc nie dublujemy tych samych danych w jednej sekcji.
+export const formatOfferHeading = (offer: Offer): string => {
+  const suffix = TRANSACTION_SUFFIX[offer.transaction];
+  return suffix ? `${offer.type} ${suffix}` : offer.type;
+};
