@@ -16,6 +16,11 @@ export default function FeaturedOffers() {
     )
     .slice(0, 8);
 
+  // Brak ofert (np. pusty build bez danych z importera Esti) — nie pokazujemy
+  // pustej sekcji „Najnowsze oferty". Na żywej stronie lista zawsze ma dane
+  // z Esti, więc sekcja jest widoczna normalnie.
+  if (list.length === 0) return null;
+
   return (
     <section className="bg-forest-950 py-20 sm:py-28">
       <Container>
