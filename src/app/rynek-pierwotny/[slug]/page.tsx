@@ -11,6 +11,8 @@ import {
   getDevelopment,
   offersForDevelopment,
 } from "@/lib/developments";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return developments.map((d) => ({ slug: d.slug }));
@@ -22,13 +24,15 @@ export async function generateMetadata(
   const { slug } = await props.params;
   const dev = getDevelopment(slug);
   if (!dev) return { title: "Inwestycja nieznaleziona" };
-  return {
+  return pageMetadata({
     title: `${dev.name} — ${dev.developer}`,
     description:
       dev.tagline ??
       dev.intro ??
       `Inwestycja deweloperska ${dev.name} (${dev.developer}). Aktualne oferty z rynku pierwotnego — FREE HOME Nieruchomości.`,
-  };
+    path: `/rynek-pierwotny/${dev.slug}/`,
+    ogImage: "/og/rynek-pierwotny.jpg",
+  });
 }
 
 export default async function DevelopmentPage(
@@ -90,6 +94,12 @@ export default async function DevelopmentPage(
 
   return (
     <article className="pt-28 pb-20">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Rynek pierwotny", path: "/rynek-pierwotny" },
+          { name: dev.name, path: `/rynek-pierwotny/${dev.slug}/` },
+        ])}
+      />
       <Container>
         <nav className="mb-6 text-sm text-cream/55">
           <Link href="/rynek-pierwotny" className="hover:text-gold-300">

@@ -5,13 +5,17 @@ import Reveal from "@/components/ui/Reveal";
 import Calculator from "@/components/kariera/Calculator";
 import KarieraForm from "@/components/kariera/KarieraForm";
 import { site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Praca — dołącz do lokalnego biura nieruchomości w Głogowie",
   description:
     "Dołącz do FREE HOME — lokalnego biura nieruchomości z Głogowa z jedną z najlepszych reputacji w mieście. Doświadczenia nie wymagamy. Realny zarobek bez sufitu, wolność zamiast korpo.",
-  alternates: { canonical: "/praca" },
-};
+  path: "/praca",
+  ogImage: "/og/praca.jpg",
+  ogTitle: "Praca w FREE HOME · biuro nieruchomości Głogów",
+});
 
 const whoCards = [
   {
@@ -59,6 +63,7 @@ const whyPoints = [
 export default function PracaPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Praca", path: "/praca" }])} />
       {/* HERO */}
       <section className="relative isolate flex min-h-[85vh] items-center overflow-hidden border-b border-gold-500/10 pt-32 pb-24">
         {/* Tło — zdjęcie biurka z kluczami w klimacie marki */}

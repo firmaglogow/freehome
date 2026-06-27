@@ -3,12 +3,16 @@ import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import DevelopmentCard from "@/components/rynek/DevelopmentCard";
 import { activeDevelopments } from "@/lib/developments";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Rynek pierwotny — inwestycje deweloperskie",
   description:
     "Nowe osiedla i inwestycje deweloperskie w Głogowie i okolicach. Mieszkania i domy z rynku pierwotnego — FREE HOME Nieruchomości.",
-};
+  path: "/rynek-pierwotny",
+  ogImage: "/og/rynek-pierwotny.jpg",
+});
 
 export default function RynekPierwotnyPage() {
   // Galeria pokazuje wyłącznie osiedla z aktywnymi ofertami (reguła widoczności
@@ -18,6 +22,11 @@ export default function RynekPierwotnyPage() {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Rynek pierwotny", path: "/rynek-pierwotny" },
+        ])}
+      />
       <PageHeader
         eyebrow="Rynek pierwotny"
         title="Inwestycje deweloperskie"

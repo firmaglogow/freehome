@@ -10,6 +10,12 @@ import ContactSection from "@/components/home/ContactSection";
 import { offers } from "@/lib/offers";
 import { site } from "@/lib/site";
 
+// Tylko canonical — tytuł/opis/Open Graph dziedziczymy z layoutu (gdybyśmy
+// ustawili tu openGraph, zastąpiłby cały obiekt z layoutu, a nie scalił).
+export const metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default function Home() {
   const jsonLd = {
     "@context": "https://schema.org",

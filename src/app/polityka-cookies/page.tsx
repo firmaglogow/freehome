@@ -2,16 +2,24 @@ import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import { site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Polityka cookies",
   description:
     "Polityka plików cookies serwisu FREE HOME Nieruchomości — jakie pliki wykorzystujemy i w jakim celu.",
-};
+  path: "/polityka-cookies",
+});
 
 export default function PolitykaCookiesPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Polityka cookies", path: "/polityka-cookies" },
+        ])}
+      />
       <PageHeader
         eyebrow="Dokumenty"
         title="Polityka cookies"

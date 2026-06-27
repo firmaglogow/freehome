@@ -3,6 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import { posts, formatDate } from "@/lib/blog";
+import { site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd, absoluteUrl } from "@/lib/seo";
 
 export function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
@@ -12,7 +15,13 @@ export async function generateMetadata(props: PageProps<"/blog/[slug]">) {
   const { slug } = await props.params;
   const post = posts.find((p) => p.slug === slug);
   if (!post) return { title: "Wpis nieznaleziony" };
-  return { title: post.title, description: post.excerpt };
+  return pageMetadata({
+    title: post.title,
+    description: post.excerpt,
+    path: `/blog/${post.slug}/`,
+    // Karta social pokazuje okładkę wpisu (16:9); fallback to markowy OG bloga.
+    ogImage: post.image || "/og/blog.jpg",
+  });
 }
 
 export default async function PostPage(props: PageProps<"/blog/[slug]">) {
@@ -20,8 +29,32 @@ export default async function PostPage(props: PageProps<"/blog/[slug]">) {
   const post = posts.find((p) => p.slug === slug);
   if (!post) notFound();
 
+  // Dane strukturalne artykułu (rich result „Article") + okruszki.
+  const articleLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    image: [absoluteUrl(post.image)],
+    datePublished: post.date,
+    dateModified: post.date,
+    articleSection: post.category,
+    author: { "@type": "Organization", name: site.fullName, url: site.url },
+    publisher: { "@type": "Organization", name: site.fullName, url: site.url },
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}/`),
+  };
+
   return (
     <article className="pt-28 pb-20">
+      <JsonLd
+        data={[
+          articleLd,
+          breadcrumbJsonLd([
+            { name: "Blog", path: "/blog" },
+            { name: post.title, path: `/blog/${post.slug}/` },
+          ]),
+        ]}
+      />
       <Container className="max-w-3xl">
         <nav className="mb-6 text-sm text-cream/55">
           <Link href="/blog" className="hover:text-gold-300">

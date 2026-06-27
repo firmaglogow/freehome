@@ -2,16 +2,22 @@ import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import { site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Regulamin",
   description:
     "Regulamin korzystania z serwisu oraz świadczenia usług FREE HOME Nieruchomości.",
-};
+  path: "/regulamin",
+});
 
 export default function RegulaminPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([{ name: "Regulamin", path: "/regulamin" }])}
+      />
       <PageHeader
         eyebrow="Dokumenty"
         title="Regulamin"

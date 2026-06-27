@@ -3,16 +3,21 @@ import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import { services } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Usługi",
   description:
     "Sprzedaż, zakup, obsługa deweloperów i finansowanie. Kompleksowa obsługa nieruchomości w Głogowie i okolicach.",
-};
+  path: "/uslugi",
+  ogImage: "/og/uslugi.jpg",
+});
 
 export default function UslugiPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Usługi", path: "/uslugi" }])} />
       <PageHeader
         eyebrow="Usługi"
         title="Jak możemy Ci pomóc"

@@ -3,12 +3,16 @@ import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import { site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Dla klienta",
   description:
     "Narzędzia dla klientów FREE HOME: opinie Google naszych klientów, interaktywna mapa osiedli Głogowa z wyszukiwarką ulic oraz realne ceny transakcyjne mieszkań w okolicy (akty notarialne, RCN/GUGiK).",
-};
+  path: "/dla-klienta",
+  ogImage: "/og/dla-klienta.jpg",
+});
 
 // basePath musi być spójny z next.config.ts / image-loader.ts.
 // Mapa osiedli to samodzielny plik statyczny w public/mapa-osiedli/ — nie jest
@@ -155,6 +159,9 @@ const tiles: Tile[] = [
 export default function DlaKlientaPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([{ name: "Dla klienta", path: "/dla-klienta" }])}
+      />
       <PageHeader
         eyebrow="Dla klienta"
         title="Narzędzia dla klientów"

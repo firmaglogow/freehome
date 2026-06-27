@@ -4,16 +4,21 @@ import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import { posts, formatDate } from "@/lib/blog";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Blog",
   description:
     "Porady, analizy rynku i przewodniki dla kupujących i sprzedających nieruchomości w Głogowie i okolicach.",
-};
+  path: "/blog",
+  ogImage: "/og/blog.jpg",
+});
 
 export default function BlogPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Blog", path: "/blog" }])} />
       <PageHeader
         eyebrow="Blog"
         title="Wiedza o rynku nieruchomości"

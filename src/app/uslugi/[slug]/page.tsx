@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import { services, site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -12,7 +14,12 @@ export async function generateMetadata(props: PageProps<"/uslugi/[slug]">) {
   const { slug } = await props.params;
   const service = services.find((s) => s.slug === slug);
   if (!service) return { title: "Usługa nieznaleziona" };
-  return { title: service.title, description: service.desc };
+  return pageMetadata({
+    title: service.title,
+    description: service.desc,
+    path: `/uslugi/${service.slug}/`,
+    ogImage: "/og/uslugi.jpg",
+  });
 }
 
 export default async function ServicePage(props: PageProps<"/uslugi/[slug]">) {
@@ -22,6 +29,12 @@ export default async function ServicePage(props: PageProps<"/uslugi/[slug]">) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Usługi", path: "/uslugi" },
+          { name: service.title, path: `/uslugi/${service.slug}/` },
+        ])}
+      />
       <PageHeader eyebrow="Usługa" title={service.title} subtitle={service.desc} />
       <section className="py-16 sm:py-20">
         <Container className="max-w-3xl">

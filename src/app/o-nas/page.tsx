@@ -4,16 +4,21 @@ import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import People from "@/components/home/People";
 import { awards, site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "O nas",
   description:
     "FREE HOME Nieruchomości — lokalne biuro z Głogowa. Ludzie, których znasz, i transakcje, którym możesz zaufać.",
-};
+  path: "/o-nas",
+  ogImage: "/og/o-nas.jpg",
+});
 
 export default function ONasPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "O nas", path: "/o-nas" }])} />
       <PageHeader
         eyebrow="O nas"
         title="Lokalne biuro, które zna Twoją okolicę"

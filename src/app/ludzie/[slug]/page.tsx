@@ -5,6 +5,8 @@ import Container from "@/components/ui/Container";
 import OfferCard from "@/components/ui/OfferCard";
 import { people } from "@/lib/site";
 import { offers } from "@/lib/offers";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return people.map((p) => ({ slug: p.slug }));
@@ -14,12 +16,14 @@ export async function generateMetadata(props: PageProps<"/ludzie/[slug]">) {
   const { slug } = await props.params;
   const person = people.find((p) => p.slug === slug);
   if (!person) return { title: "Osoba nieznaleziona" };
-  return {
+  return pageMetadata({
     title: person.name,
     description: person.partner
       ? `${person.name} — ${person.role}, zaufany partner kredytowy (Lendi) współpracujący z FREE HOME Nieruchomości w Głogowie.`
       : `${person.name} — ${person.role} w FREE HOME Nieruchomości (Głogów).`,
-  };
+    path: `/ludzie/${person.slug}/`,
+    ogImage: "/og/zespol.jpg",
+  });
 }
 
 export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
@@ -36,6 +40,12 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
 
   return (
     <article className="pt-28 pb-20">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Zespół", path: "/ludzie" },
+          { name: person.name, path: `/ludzie/${person.slug}/` },
+        ])}
+      />
       <Container>
         <nav className="mb-6 text-sm text-cream/55">
           <Link href="/ludzie" className="hover:text-gold-300">

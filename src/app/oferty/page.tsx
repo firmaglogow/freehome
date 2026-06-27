@@ -1,16 +1,21 @@
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import OffersExplorer from "@/components/oferty/OffersExplorer";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Oferty nieruchomości",
   description:
     "Aktualne oferty sprzedaży — domy, mieszkania i działki w Głogowie, Polkowicach i okolicach. FREE HOME Nieruchomości.",
-};
+  path: "/oferty",
+  ogImage: "/og/oferty.jpg",
+});
 
 export default function OfertyPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Oferty", path: "/oferty" }])} />
       <PageHeader
         eyebrow="Oferty"
         title="Znajdź swoją nieruchomość"

@@ -15,6 +15,8 @@ import {
 } from "@/lib/offers";
 import { sanitizeOfferHtml } from "@/lib/sanitizeHtml";
 import { people, site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd, offerJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return offers.map((o) => ({ id: o.id }));
@@ -24,12 +26,15 @@ export async function generateMetadata(props: PageProps<"/oferty/[id]">) {
   const { id } = await props.params;
   const offer = offers.find((o) => o.id === id);
   if (!offer) return { title: "Oferta nieznaleziona" };
-  return {
+  return pageMetadata({
     title: offer.title,
     description: `${offer.type} · ${offer.location} · ${formatArea(
       offer.areaTotal
     )} · ${formatPrice(offer.price)}.`,
-  };
+    path: `/oferty/${offer.id}/`,
+    // Karta social pokazuje zdjęcie nieruchomości; gdy brak — markowy OG ofert.
+    ogImage: offer.image || "/og/oferty.jpg",
+  });
 }
 
 export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
@@ -75,6 +80,15 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
 
   return (
     <article className="pt-28 pb-20">
+      <JsonLd
+        data={[
+          offerJsonLd(offer),
+          breadcrumbJsonLd([
+            { name: "Oferty", path: "/oferty" },
+            { name: offer.title, path: `/oferty/${offer.id}/` },
+          ]),
+        ]}
+      />
       <Container>
         <nav className="mb-6 text-sm text-cream/55">
           <Link href="/oferty" className="hover:text-gold-300">

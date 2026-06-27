@@ -2,12 +2,16 @@ import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import ValuationForm from "@/components/ValuationForm";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Wyceń nieruchomość",
   description:
     "Bezpłatna i niezobowiązująca wycena nieruchomości w Głogowie i okolicach. Poznaj realną wartość rynkową swojego domu, mieszkania lub działki.",
-};
+  path: "/wycena",
+  ogImage: "/og/wycena.jpg",
+});
 
 const benefits = [
   {
@@ -27,6 +31,7 @@ const benefits = [
 export default function WycenaPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Wycena", path: "/wycena" }])} />
       <PageHeader
         eyebrow="Wycena"
         title="Ile naprawdę warta jest Twoja nieruchomość?"

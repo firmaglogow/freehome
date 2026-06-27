@@ -2,15 +2,20 @@ import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import { reviews, site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Opinie",
   description: `Ponad ${site.reviewsCount} opinii klientów FREE HOME Nieruchomości. Zobacz, co mówią o współpracy z nami.`,
-};
+  path: "/opinie",
+  ogImage: "/og/opinie.jpg",
+});
 
 export default function OpiniePage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Opinie", path: "/opinie" }])} />
       <PageHeader
         eyebrow="Opinie"
         title="Co mówią nasi klienci"

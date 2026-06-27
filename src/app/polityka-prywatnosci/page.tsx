@@ -2,16 +2,24 @@ import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import { site } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Polityka prywatności",
   description:
     "Polityka prywatności FREE HOME Nieruchomości — zasady przetwarzania danych osobowych zgodnie z RODO.",
-};
+  path: "/polityka-prywatnosci",
+});
 
 export default function PolitykaPrywatnosciPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Polityka prywatności", path: "/polityka-prywatnosci" },
+        ])}
+      />
       <PageHeader
         eyebrow="Dokumenty"
         title="Polityka prywatności"
