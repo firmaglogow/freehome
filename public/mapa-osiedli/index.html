@@ -160,9 +160,11 @@ OSIEDLA.forEach(o=>{
 function showAnswer(u){
   const c=colorOf[u.osiedle]||'#888';
   $answer.innerHTML = `<div class="big">${u.ulica}</div>
-    <div style="margin-top:6px">osiedle: <span class="pill" style="background:${c}">${u.osiedle}</span></div>`;
+    <div style="margin-top:6px">osiedle: <span class="pill" style="background:${c}">${u.osiedle}</span></div>
+    <div id="streetStatus" style="margin-top:8px;font-size:13px;color:var(--cream-dim)"></div>`;
   setOsiedle(u.osiedle,false);
   highlight(u.osiedle);
+  showStreet(u.ulica);
 }
 function renderSugg(q){
   const nq=norm(q);
@@ -191,6 +193,7 @@ $street.addEventListener('keydown', e=>{
 // ---- osiedle -> ulice
 function setOsiedle(name, focusMap){
   $osiedle.value=name;
+  if(focusMap) clearStreet();
   const list=(byOsiedle[name]||[]).slice().sort(collator.compare);
   $count.textContent = name ? `${list.length} ulic na osiedlu ${name}` : '';
   $streets.innerHTML='';
@@ -200,7 +203,54 @@ function setOsiedle(name, focusMap){
 $osiedle.addEventListener('change', e=> setOsiedle(e.target.value, true));
 
 // ---- mapa
-let map=null, geoLayer=null;
+let map=null, geoLayer=null, streetLayer=null;
+// Serwery Overpass (geometria ulicy z OpenStreetMap). Dwa, dla niezawodności.
+const OVERPASS_EP=[
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.kumi.systems/api/interpreter"
+];
+const streetCache={};        // pobrane przebiegi ulic (cache w sesji)
+let streetSeq=0;             // numer żądania — ignoruje spóźnione odpowiedzi
+function clearStreet(){ if(streetLayer && map){ map.removeLayer(streetLayer); } streetLayer=null; }
+function setStreetStatus(seq,msg){ if(seq!==streetSeq) return; const el=document.getElementById('streetStatus'); if(el) el.textContent=msg; }
+async function fetchStreetGeom(name){
+  const key=norm(name);
+  if(streetCache[key]) return streetCache[key];
+  const safe=name.replace(/"/g,' ');
+  const q=`[out:json][timeout:25];area["name"="Głogów"]["boundary"="administrative"]["admin_level"="7"]->.g;way["highway"]["name"="${safe}"](area.g);out geom;`;
+  for(const ep of OVERPASS_EP){
+    try{
+      const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),12000);
+      const r=await fetch(ep,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"data="+encodeURIComponent(q),signal:ctrl.signal});
+      clearTimeout(t);
+      if(!r.ok) continue;                 // serwer zajęty → spróbuj kolejnego
+      const j=await r.json();
+      const lines=(j.elements||[]).filter(e=>e.geometry&&e.geometry.length>=2)
+        .map(e=>e.geometry.map(p=>[p.lat,p.lon]));
+      return lines.length ? (streetCache[key]=lines) : null; // OK: zwróć przebieg albo brak
+    }catch(e){ /* błąd sieci → spróbuj kolejnego serwera */ }
+  }
+  return null;
+}
+async function showStreet(name){
+  if(!map) return;                        // offline / brak mapy → zostaje sama wyszukiwarka
+  clearStreet();
+  const seq=++streetSeq;
+  setStreetStatus(seq,'Rysuję przebieg ulicy na mapie…');
+  let lines=null;
+  try{ lines=await fetchStreetGeom(name); }catch(e){ lines=null; }
+  if(seq!==streetSeq) return;             // w międzyczasie wybrano inną ulicę
+  if(!lines){ setStreetStatus(seq,'Nie udało się wczytać przebiegu ulicy — osiedle pozostaje zaznaczone.'); return; }
+  streetLayer=L.featureGroup();
+  lines.forEach(latlngs=>{
+    L.polyline(latlngs,{color:'#0c1f15',weight:8,opacity:0.55,lineCap:'round',lineJoin:'round'}).addTo(streetLayer);
+    L.polyline(latlngs,{color:'#d8b94b',weight:4,opacity:0.95,lineCap:'round',lineJoin:'round'}).addTo(streetLayer);
+  });
+  streetLayer.addTo(map);
+  try{ streetLayer.bindTooltip(name,{sticky:true,direction:'top'}); }catch(e){}
+  try{ map.fitBounds(streetLayer.getBounds(),{padding:[40,40],maxZoom:17}); }catch(e){}
+  setStreetStatus(seq,'Przebieg ulicy zaznaczony na mapie (złota linia).');
+}
 function highlight(name){
   if(!geoLayer) return;
   let target=null;
