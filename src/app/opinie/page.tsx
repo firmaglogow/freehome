@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import { reviews, site } from "@/lib/site";
@@ -19,6 +20,13 @@ export default function OpiniePage() {
 
       <section className="py-16 sm:py-20">
         <Container>
+          <Link
+            href="/dla-klienta"
+            className="mb-8 inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-forest-800 px-4 py-2 text-sm font-semibold text-gold-400 transition hover:border-gold-500/50 hover:bg-forest-600"
+          >
+            <span className="text-base leading-none">←</span> Wróć do: Dla klienta
+          </Link>
+
           <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
             {reviews.map((r, i) => (
               <figure

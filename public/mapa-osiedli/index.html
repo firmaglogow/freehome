@@ -22,6 +22,15 @@
   h1 span{color:var(--gold-400)}
   .sub{color:var(--cream-dim);font-size:13px;margin:0 0 16px}
   .wrap{max-width:1180px;margin:0 auto}
+  .back{
+    display:inline-flex;align-items:center;gap:7px;margin:0 0 14px;
+    padding:8px 14px;border-radius:999px;text-decoration:none;
+    background:var(--forest-800);border:1px solid rgba(201,162,39,.25);
+    color:var(--gold-400);font-size:13px;font-weight:600;
+    transition:border-color .15s,background .15s
+  }
+  .back:hover{border-color:var(--gold-500);background:var(--forest-600)}
+  .back span{font-size:16px;line-height:1}
   .grid{display:grid;gap:16px;grid-template-columns:1fr 1fr}
   @media(max-width:880px){.grid{grid-template-columns:1fr}}
   .card{
@@ -72,6 +81,7 @@
 </head>
 <body>
 <div class="wrap">
+  <a class="back" href="../dla-klienta/"><span>←</span> Wróć do: Dla klienta</a>
   <h1>Głogów — <span>ulice i osiedla</span></h1>
   <p class="sub">Wpisz ulicę, żeby zobaczyć osiedle — albo wybierz osiedle, żeby zobaczyć jego ulice. Dane: OpenStreetMap.</p>
 
