@@ -292,8 +292,8 @@ async function runWycena(){
     return;
   }
   vShow(
-    '<div class="vbig">'+vFmt(med)+' <small>zł/m² (mediana)</small></div>'+
-    '<div class="vsub">Mediana ceny mieszkania: <b>'+vFmt(medCena)+' zł</b></div>'+
+    '<div class="vbig">'+vFmt(medCena)+' <small>zł (mediana ceny mieszkania)</small></div>'+
+    '<div class="vsub">Mediana ceny za m²: <b>'+vFmt(med)+' zł/m²</b></div>'+
     '<div class="vmeta">Na podstawie <b>'+punkty.length+'</b> transakcji '+zasiegTxt+' • '+okresTxt+
       (geo.opis?(' • '+geo.opis):'')+'</div>'+
     '<div class="vmeta">Średnia: '+vFmt(sr)+' zł/m² • widełki: '+vFmt(minV)+'–'+vFmt(maxV)+' zł/m²</div>'+

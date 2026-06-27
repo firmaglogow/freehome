@@ -40,58 +40,23 @@ function GoogleMark() {
   );
 }
 
-// Bezpieczna grafika miasta — stylizowana mapa ze złotą pinezką (NIE herb
-// Głogowa, który bywa chroniony uchwałą). W kolorach marki (currentColor=złoto).
-function MapMark() {
-  return (
-    <svg
-      viewBox="0 0 48 48"
-      fill="none"
-      aria-hidden
-      className="h-9 w-9 text-gold-400"
-    >
-      <path
-        d="M6 13 18 9l12 4 12-4v26l-12 4-12-4-12 4z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-        opacity="0.5"
-      />
-      <path
-        d="M18 9v26M30 13v26"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        opacity="0.5"
-      />
-      <path
-        d="M24 13c-4.3 0-7.8 3.4-7.8 7.6 0 5.4 7.8 13.4 7.8 13.4s7.8-8 7.8-13.4c0-4.2-3.5-7.6-7.8-7.6z"
-        fill="currentColor"
-      />
-      <circle cx="24" cy="20.6" r="2.7" fill="#0D2618" />
-    </svg>
-  );
-}
-
 // Ikona narzędzia cen: lupa nad rosnącymi słupkami = „sprawdź ceny".
-// W kolorach marki (currentColor = złoto), spójna z MapMark.
 function PriceMark() {
+  // Kolorowa wersja: lupa nad rosnącymi słupkami w kolorach legendy mapy cen
+  // (zielony = taniej, złoty = ~mediana, czerwony = drożej). Lupa kremowa,
+  // żeby była czytelna na ciemnym kafelku ikony.
   return (
-    <svg
-      viewBox="0 0 48 48"
-      fill="none"
-      aria-hidden
-      className="h-9 w-9 text-gold-400"
-    >
-      <circle cx="21" cy="21" r="13" stroke="currentColor" strokeWidth="2.2" />
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden className="h-9 w-9">
+      <rect x="14.6" y="22" width="3.4" height="6" rx="1" fill="#45b35e" />
+      <rect x="19.3" y="18" width="3.4" height="10" rx="1" fill="#e0b13c" />
+      <rect x="24" y="14" width="3.4" height="14" rx="1" fill="#d24c3a" />
+      <circle cx="21" cy="21" r="13" stroke="#f3efe3" strokeWidth="2.2" />
       <path
         d="M31 31l9 9"
-        stroke="currentColor"
+        stroke="#f3efe3"
         strokeWidth="3.2"
         strokeLinecap="round"
       />
-      <rect x="14.6" y="22" width="3.4" height="6" rx="1" fill="currentColor" />
-      <rect x="19.3" y="18" width="3.4" height="10" rx="1" fill="currentColor" />
-      <rect x="24" y="14" width="3.4" height="14" rx="1" fill="currentColor" />
     </svg>
   );
 }
@@ -99,6 +64,8 @@ function PriceMark() {
 type Tile = {
   key: string;
   icon: React.ReactNode;
+  /** Jasne (białe) tło kafelka ikony — dla kolorowego logo na białym tle. */
+  iconLight?: boolean;
   badge?: string;
   title: string;
   desc: string;
@@ -120,7 +87,17 @@ const tiles: Tile[] = [
   },
   {
     key: "mapa",
-    icon: <MapMark />,
+    icon: (
+      // Statyczne, malutkie logo z public/ — zwykły <img> z prefiksem BASE_PATH
+      // (spójnie z linkami external na tej stronie); next/image tu zbędny.
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={`${BASE_PATH}/brand/logo-glogow.jpg`}
+        alt=""
+        className="h-full w-full object-cover"
+      />
+    ),
+    iconLight: true,
     badge: "Interaktywna",
     title: "Mapa osiedli Głogowa",
     desc: "Interaktywna mapa miasta z podziałem na osiedla i wyszukiwarką ulic — sprawdź, do którego osiedla należy dany adres.",
@@ -156,7 +133,11 @@ export default function DlaKlientaPage() {
               const inner = (
                 <>
                   <div className="flex items-center justify-between">
-                    <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-forest-950/60 ring-1 ring-gold-500/20">
+                    <span
+                      className={`flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl ring-1 ring-gold-500/20 ${
+                        t.iconLight ? "bg-white" : "bg-forest-950/60"
+                      }`}
+                    >
                       {t.icon}
                     </span>
                     {t.badge && (
