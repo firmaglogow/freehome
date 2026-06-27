@@ -98,6 +98,44 @@
     border-top:1px solid rgba(255,255,255,.08);padding-top:13px;max-width:900px}
   .disc b{color:var(--cream-dim)}
   .foot{color:var(--cream-dim);font-size:12px;text-align:center;margin-top:16px;line-height:1.5}
+
+  /* --- prawa kolumna: wynik + ekspert kredytowy --- */
+  .rightcol{display:flex;flex-direction:column;gap:16px}
+
+  /* --- karta eksperta + formularz leada --- */
+  .expert-head{display:flex;align-items:center;gap:14px;margin-bottom:13px}
+  .expert-head img{width:64px;height:64px;border-radius:50%;object-fit:cover;
+    border:2px solid var(--gold-500);flex:none}
+  .expert-head .nm{font-size:17px;font-weight:800;color:var(--cream);margin:0}
+  .expert-head .rl{font-size:12px;color:var(--gold-400);margin:3px 0 0;font-weight:600}
+  .expert-head .ph{font-size:13px;color:var(--cream-dim);margin:5px 0 0}
+  .expert-head .ph a{color:var(--cream);text-decoration:none;font-weight:700}
+  .expert-intro{font-size:13px;color:var(--cream-dim);line-height:1.55;margin:0 0 14px}
+
+  .lead .field{margin-bottom:11px}
+  .lead label.fl{display:block;font-size:12px;color:var(--cream-dim);margin:0 0 5px;font-weight:600}
+  .lead input[type=text],.lead input[type=tel],.lead input[type=email],.lead textarea{
+    width:100%;background:var(--forest-950);border:1px solid var(--forest-600);
+    border-radius:9px;padding:10px 12px;color:var(--cream);font-size:14px;
+    font-family:inherit;outline:none;transition:border-color .15s}
+  .lead input:focus,.lead textarea:focus{border-color:var(--gold-500)}
+  .lead textarea{resize:vertical;min-height:58px}
+  .lead .consent{display:flex;gap:9px;align-items:flex-start;margin:4px 0 14px}
+  .lead .consent input{margin-top:3px;flex:none;accent-color:var(--gold-500)}
+  .lead .consent label{font-size:11px;color:var(--cream-dim);line-height:1.5}
+  .lead .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .lead button{
+    width:100%;background:var(--gold-500);color:var(--forest-950);border:0;
+    border-radius:10px;padding:13px;font-size:15px;font-weight:800;cursor:pointer;
+    font-family:inherit;transition:background .15s,opacity .15s}
+  .lead button:hover{background:var(--gold-400)}
+  .lead button:disabled{opacity:.6;cursor:default}
+  .lead .msg{font-size:13px;margin-top:11px;line-height:1.5;display:none}
+  .lead .msg.err{display:block;color:var(--red)}
+  .thanks{display:none;text-align:center;padding:18px 4px 6px}
+  .thanks.show{display:block}
+  .thanks .big{font-size:20px;font-weight:800;color:var(--gold-400);margin:0 0 6px}
+  .thanks p{font-size:13px;color:var(--cream-dim);margin:0;line-height:1.55}
 </style>
 </head>
 <body>
@@ -159,19 +197,76 @@
       </div>
     </div>
 
-    <!-- WYNIK -->
-    <div class="card resultcard">
-      <p class="rlead">Orientacyjna rata miesięczna</p>
-      <div class="rbig"><span id="rRata">—</span> <small>zł</small></div>
+    <!-- PRAWA KOLUMNA: wynik + ekspert kredytowy -->
+    <div class="rightcol">
+      <!-- WYNIK -->
+      <div class="card resultcard">
+        <p class="rlead">Orientacyjna rata miesięczna</p>
+        <div class="rbig"><span id="rRata">—</span> <small>zł</small></div>
 
-      <div class="rsplit">
-        <div class="ritem"><p class="k">Kwota kredytu</p><p class="v kred" id="rKredyt">—</p></div>
-        <div class="ritem"><p class="k">Wkład własny</p><p class="v" id="rWklad">—</p></div>
-        <div class="ritem"><p class="k">Suma odsetek</p><p class="v odset" id="rOdsetki">—</p></div>
-        <div class="ritem"><p class="k">Całkowita spłata</p><p class="v" id="rSuma">—</p></div>
+        <div class="rsplit">
+          <div class="ritem"><p class="k">Kwota kredytu</p><p class="v kred" id="rKredyt">—</p></div>
+          <div class="ritem"><p class="k">Wkład własny</p><p class="v" id="rWklad">—</p></div>
+          <div class="ritem"><p class="k">Suma odsetek</p><p class="v odset" id="rOdsetki">—</p></div>
+          <div class="ritem"><p class="k">Całkowita spłata</p><p class="v" id="rSuma">—</p></div>
+        </div>
+
+        <p class="rnote" id="rNote">Rata liczona metodą rat równych (annuitowych): przez cały okres płacisz tę samą kwotę.</p>
       </div>
 
-      <p class="rnote" id="rNote">Rata liczona metodą rat równych (annuitowych): przez cały okres płacisz tę samą kwotę.</p>
+      <!-- EKSPERT KREDYTOWY + ZGŁOSZENIE (LEAD) -->
+      <div class="card expertcard">
+        <h2>Potrzebujesz kredytu? Zapytaj eksperta</h2>
+
+        <div class="expert-head">
+          <img src="../zespol/sara.jpg" alt="Sara Grzegorska — ekspert ds. kredytów">
+          <div>
+            <p class="nm">Sara Grzegorska</p>
+            <p class="rl">Ekspert ds. kredytów · partner Lendi</p>
+            <p class="ph">tel. <a href="tel:+48517349150">517 349 150</a></p>
+          </div>
+        </div>
+
+        <p class="expert-intro">
+          Porówna oferty wielu banków i bezpłatnie dobierze najlepsze finansowanie pod Twoje mieszkanie.
+          Zostaw dane — odezwiemy się i odpowiemy na pytania o kredyt.
+        </p>
+
+        <form class="lead" id="leadForm" novalidate>
+          <!-- honeypot (anty-spam, ukryte) -->
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <div class="field">
+            <label class="fl" for="lname">Imię i nazwisko *</label>
+            <input id="lname" name="name" type="text" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label class="fl" for="lphone">Telefon *</label>
+            <input id="lphone" name="phone" type="tel" required autocomplete="tel">
+          </div>
+          <div class="field">
+            <label class="fl" for="lemail">E-mail</label>
+            <input id="lemail" name="email" type="email" autocomplete="email">
+          </div>
+          <div class="field">
+            <label class="fl" for="lmsg">Wiadomość (opcjonalnie)</label>
+            <textarea id="lmsg" name="message" placeholder="np. interesuje mnie kredyt na mieszkanie ok. 350 000 zł"></textarea>
+          </div>
+
+          <div class="consent">
+            <input id="lrodo" type="checkbox" required>
+            <label for="lrodo">Wyrażam zgodę na przetwarzanie moich danych osobowych (imię, telefon, e-mail) przez FREE HOME Nieruchomości (ul. Grodzka 18, Głogów, NIP 693-210-77-22) w celu kontaktu i przedstawienia oferty kredytowej, zgodnie z RODO (Rozporządzenie UE 2016/679).</label>
+          </div>
+
+          <button type="submit" id="lbtn">Zgłoś się i zapytaj o kredyt</button>
+          <p class="msg" id="lmsgbox"></p>
+        </form>
+
+        <div class="thanks" id="leadThanks">
+          <p class="big">Dziękujemy!</p>
+          <p>Twoje zgłoszenie do nas dotarło — ekspert kredytowy skontaktuje się z Tobą wkrótce.</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -279,6 +374,63 @@ oproN .addEventListener("blur", ()=>tidy(oproN, true));
 // stan początkowy
 [cenaR,wkladR,okresR,oproR].forEach(paint);
 recalc();
+
+// ===================================================================
+//  Lead kredytowy → FormSubmit.co (ten sam kanał, co reszta strony)
+// ===================================================================
+(function(){
+  const form   = document.getElementById("leadForm");
+  if(!form) return;
+  const btn    = document.getElementById("lbtn");
+  const box    = document.getElementById("lmsgbox");
+  const thanks = document.getElementById("leadThanks");
+  const rodo   = document.getElementById("lrodo");
+  const ENDPOINT = "https://formsubmit.co/ajax/kontakt@freehome.com.pl";
+  const val = (n)=> form.elements[n] ? String(form.elements[n].value).trim() : "";
+
+  form.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    box.className = "msg";
+
+    // honeypot — jeśli ukryte pole wypełnione, to bot: cicho udajemy sukces
+    if(val("_honey")){ form.style.display="none"; thanks.classList.add("show"); return; }
+
+    const name = val("name"), phone = val("phone"), email = val("email"), message = val("message");
+
+    if(!name || !phone){
+      box.textContent = "Podaj imię i nazwisko oraz telefon."; box.className = "msg err"; return;
+    }
+    if(!rodo.checked){
+      box.textContent = "Zaznacz zgodę na kontakt (RODO), aby wysłać zgłoszenie."; box.className = "msg err"; return;
+    }
+
+    btn.disabled = true;
+    const orig = btn.textContent;
+    btn.textContent = "Wysyłanie…";
+
+    try{
+      const res = await fetch(ENDPOINT, {
+        method:"POST",
+        headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body: JSON.stringify({
+          name, phone, email, message,
+          _subject: "Nowy lead KREDYT z kalkulatora — " + name,
+          _template: "table",
+          _captcha: "false"
+        })
+      });
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok || data.success === "false" || data.success === false) throw new Error("send failed");
+      form.style.display = "none";
+      thanks.classList.add("show");
+    }catch(err){
+      box.textContent = "Nie udało się wysłać zgłoszenia. Zadzwoń: 517 349 150 lub spróbuj ponownie.";
+      box.className = "msg err";
+      btn.disabled = false;
+      btn.textContent = orig;
+    }
+  });
+})();
 </script>
 </body>
 </html>
