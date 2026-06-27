@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 export const metadata = {
   title: "Dla klienta",
   description:
-    "Narzędzia dla klientów FREE HOME: opinie Google naszych klientów oraz interaktywna mapa osiedli Głogowa z wyszukiwarką ulic.",
+    "Narzędzia dla klientów FREE HOME: opinie Google naszych klientów, interaktywna mapa osiedli Głogowa z wyszukiwarką ulic oraz realne ceny transakcyjne mieszkań w okolicy (akty notarialne, RCN/GUGiK).",
 };
 
 // basePath musi być spójny z next.config.ts / image-loader.ts.
@@ -72,6 +72,30 @@ function MapMark() {
   );
 }
 
+// Ikona narzędzia cen: lupa nad rosnącymi słupkami = „sprawdź ceny".
+// W kolorach marki (currentColor = złoto), spójna z MapMark.
+function PriceMark() {
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      fill="none"
+      aria-hidden
+      className="h-9 w-9 text-gold-400"
+    >
+      <circle cx="21" cy="21" r="13" stroke="currentColor" strokeWidth="2.2" />
+      <path
+        d="M31 31l9 9"
+        stroke="currentColor"
+        strokeWidth="3.2"
+        strokeLinecap="round"
+      />
+      <rect x="14.6" y="22" width="3.4" height="6" rx="1" fill="currentColor" />
+      <rect x="19.3" y="18" width="3.4" height="10" rx="1" fill="currentColor" />
+      <rect x="24" y="14" width="3.4" height="14" rx="1" fill="currentColor" />
+    </svg>
+  );
+}
+
 type Tile = {
   key: string;
   icon: React.ReactNode;
@@ -104,6 +128,16 @@ const tiles: Tile[] = [
     cta: "Otwórz mapę",
     external: true,
   },
+  {
+    key: "ceny",
+    icon: <PriceMark />,
+    badge: "Dane od notariusza",
+    title: "Sprawdź ceny w swojej okolicy",
+    desc: "Zobacz, za ile naprawdę sprzedały się mieszkania w pobliżu Twojego adresu — realne ceny transakcyjne z aktów notarialnych (RCN/GUGiK), dokładnie takie, jakie były. Wpisz adres, wybierz okres i promień, a zobaczysz je na mapie i w liczbach.",
+    href: `${BASE_PATH}/ceny-w-okolicy/`,
+    cta: "Sprawdź ceny",
+    external: true,
+  },
 ];
 
 export default function DlaKlientaPage() {
@@ -117,7 +151,7 @@ export default function DlaKlientaPage() {
       />
       <section className="py-16 sm:py-20">
         <Container>
-          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2">
+          <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {tiles.map((t, i) => {
               const inner = (
                 <>
