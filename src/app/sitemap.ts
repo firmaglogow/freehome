@@ -29,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/uslugi", priority: 0.7, changeFrequency: "monthly" },
     { path: "/o-nas", priority: 0.6, changeFrequency: "monthly" },
     { path: "/ludzie", priority: 0.6, changeFrequency: "monthly" },
+    { path: "/dla-klienta", priority: 0.6, changeFrequency: "monthly" },
     { path: "/opinie", priority: 0.6, changeFrequency: "weekly" },
     { path: "/blog", priority: 0.6, changeFrequency: "weekly" },
     { path: "/wycena", priority: 0.7, changeFrequency: "monthly" },

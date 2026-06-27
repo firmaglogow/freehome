@@ -71,7 +71,10 @@ export const nav: NavItem[] = [
   { label: "Usługi", href: "/uslugi" },
   { label: "O nas", href: "/o-nas" },
   { label: "Zespół", href: "/ludzie" },
-  { label: "Opinie", href: "/opinie" },
+  // „Dla klienta" — hub narzędzi (opinie Google, mapa osiedli, kolejne w przyszłości).
+  // Zastąpiło pozycję „Opinie" w belce; sama strona /opinie i sekcja opinii na
+  // stronie głównej zostają — są podpięte z wnętrza „Dla klienta".
+  { label: "Dla klienta", href: "/dla-klienta" },
   { label: "Blog", href: "/blog" },
   { label: "Praca", href: "/praca" },
   { label: "Kontakt", href: "/kontakt" },

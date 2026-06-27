@@ -6,17 +6,24 @@ import Reveal from "@/components/ui/Reveal";
 import { offers } from "@/lib/offers";
 
 export default function FeaturedOffers() {
-  // Strona główna: pokazujemy 8 ofert w układzie 4 + 4 (na laptopie/desktopie).
-  const list = offers.slice(0, 8);
+  // Strona główna: pokazujemy 8 NAJNOWSZYCH ofert (układ 4 + 4 na desktopie),
+  // sortowanych po addDate malejąco. Dzięki temu nowo dodana w CRM oferta sama
+  // wskakuje na górę przy każdym imporcie (cron przebudowuje stronę) — bez
+  // ręcznego wybierania. Fallback na updatedAt, gdy addDate puste (dane mock).
+  const list = [...offers]
+    .sort((a, b) =>
+      (b.addDate ?? b.updatedAt ?? "").localeCompare(a.addDate ?? a.updatedAt ?? "")
+    )
+    .slice(0, 8);
 
   return (
     <section className="bg-forest-950 py-20 sm:py-28">
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeading
-            eyebrow="Polecane"
-            title="Wybrane oferty"
-            subtitle="Nieruchomości, które warto zobaczyć — prosto z naszej bazy."
+            eyebrow="Świeżo w ofercie"
+            title="Najnowsze oferty"
+            subtitle="Ostatnio dodane nieruchomości — prosto z naszej bazy, aktualizowane na bieżąco."
           />
           <Link
             href="/oferty"

@@ -5,7 +5,7 @@
 # Co robi:
 #   1. php import.php  — pobiera paczki z Esti, aktualizuje MySQL,
 #      regeneruje src/data/offers.json i public/oferty-esti/ (zdjęcia).
-#   2. jeśli oferty się zmieniły → npm run build (statyczny eksport do out/).
+#   2. jeśli oferty się zmieniły → next build --debug-prerender (eksport do out/).
 #   3. rsync out/ → katalog publiczny domeny (publikacja na żywo).
 #
 # Build z PUSTYM basePath → strona działa w root domeny (np. freehome.com.pl).
@@ -52,9 +52,21 @@ fi
 # 3. Build statyczny dla własnej domeny (root, bez prefiksu /freehome,
 #    adres kanoniczny = SITE_URL).
 eval "$ACTIVATE"
+# CloudLinux Node Selector (nodevenv) ustawia NODE_PATH na DWA katalogi z
+# node_modules → Next widzi dwie kopie Reacta → null hooks dispatcher i build
+# wywala się przy prerenderze ("Cannot read properties of null (reading
+# 'useState')"). Czyścimy NODE_PATH, żeby React rozwiązywał się jednoznacznie.
+# Dodatkowo nodevenv zostawia NODE_ENV pusty — wymuszamy production.
+unset NODE_PATH
+export NODE_ENV=production
 [ -d node_modules ] || npm install
 rm -rf .next out
-NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" npm run build
+# CloudLinux nodevenv: zwykły build (worker prerender) wywala null React
+# dispatcher przy `output: export` — w workerze React rozwiązuje się do null:
+#   „Cannot read properties of null (reading 'useState'/'useContext')".
+# `--debug-prerender` renderuje prerender IN-PROCESS (jeden proces) zamiast w
+# workerach i buduje poprawnie. Wynik (statyczny out/) jest identyczny.
+NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" ./node_modules/.bin/next build --debug-prerender
 
 # 4. Publikacja: zsynchronizuj kompletny out/ do katalogu domeny.
 #    --delete sprząta stare pliki (out/ zawiera całą stronę, też zdjęcia ofert,
