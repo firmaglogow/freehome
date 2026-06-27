@@ -66,7 +66,12 @@ export NODE_ENV=production
 # taskset przypina build do 2 rdzeni — os.availableParallelism() oraz pula
 # wątków Turbopacka (Rust) respektują maskę affinity → ~7× mniej pamięci.
 # NODE_OPTIONS dodatkowo ścina stertę V8, która sama rośnie do RAM hosta (78 GB).
-export NODE_OPTIONS="--max-old-space-size=1536"
+# MALLOC_ARENA_MAX=2: glibc na 14 rdzeniach tworzy do 8×14=112 aren malloc
+# (~64 MB każda → ~7 GB pamięci na proces). Limit aren do 2 zbija RSS/VSZ
+# każdego procesu node ~kilkukrotnie — to był główny powód SIGKILL (suma
+# pamięci wszystkich workerów przekraczała ukryty limit LVE).
+export MALLOC_ARENA_MAX=2
+export NODE_OPTIONS="--max-old-space-size=1024"
 TASKSET="taskset -c 0-1"
 command -v taskset >/dev/null 2>&1 || TASKSET=""
 [ -d node_modules ] || npm install
