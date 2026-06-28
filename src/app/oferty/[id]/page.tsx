@@ -12,6 +12,7 @@ import {
   formatArea,
   formatPrice,
   formatTransactionBadge,
+  resolveAgentSlug,
 } from "@/lib/offers";
 import { sanitizeOfferHtml } from "@/lib/sanitizeHtml";
 import { people, site } from "@/lib/site";
@@ -42,7 +43,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
   const offer = offers.find((o) => o.id === id);
   if (!offer) notFound();
 
-  const agent = people.find((p) => p.slug === offer.agent) ?? people[0];
+  const agent = people.find((p) => p.slug === resolveAgentSlug(offer)) ?? people[0];
   const agentHasPhone = !!agent.phone && /\d/.test(agent.phone);
   const agentPhone = agentHasPhone ? agent.phone! : site.phone;
   const agentPhoneHref = agentHasPhone

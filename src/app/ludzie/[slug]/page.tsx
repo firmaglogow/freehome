@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import OfferCard from "@/components/ui/OfferCard";
 import { people } from "@/lib/site";
-import { offers } from "@/lib/offers";
+import { offers, resolveAgentSlug } from "@/lib/offers";
 import JsonLd from "@/components/seo/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
@@ -31,7 +31,7 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
   const person = people.find((p) => p.slug === slug);
   if (!person) notFound();
 
-  const agentOffers = offers.filter((o) => o.agent === person.slug);
+  const agentOffers = offers.filter((o) => resolveAgentSlug(o) === person.slug);
   const hasPhone = !!person.phone && /\d/.test(person.phone);
   const hasEmail = !!person.email && person.email.includes("@");
   const telHref = hasPhone
@@ -101,14 +101,21 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
                   )}
                 </div>
 
-                <Link
-                  href={person.partner ? "/uslugi/kredyty" : "/kontakt"}
-                  className="mt-6 block rounded-full bg-gold-500 px-6 py-3 text-center text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
-                >
-                  {person.partner
-                    ? "Skontaktuj się w sprawie kredytu"
-                    : "Napisz do nas"}
-                </Link>
+                {person.partner ? (
+                  <a
+                    href={telHref ?? "/uslugi/kredyty"}
+                    className="mt-6 block rounded-full bg-gold-500 px-6 py-3 text-center text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
+                  >
+                    Skontaktuj się w sprawie kredytu
+                  </a>
+                ) : (
+                  <Link
+                    href="/kontakt"
+                    className="mt-6 block rounded-full bg-gold-500 px-6 py-3 text-center text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
+                  >
+                    Napisz do nas
+                  </Link>
+                )}
               </div>
             </div>
           </aside>
@@ -134,14 +141,6 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
                     bezpośrednio albo poznaj naszą usługę finansowania.
                   </p>
                   <div className="mt-5 flex flex-wrap gap-3">
-                    {telHref && (
-                      <a
-                        href={telHref}
-                        className="rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
-                      >
-                        Skontaktuj się w sprawie kredytu
-                      </a>
-                    )}
                     <Link
                       href="/uslugi/kredyty"
                       className="rounded-full border border-gold-500/30 px-6 py-3 text-sm font-semibold text-gold-400 transition hover:border-gold-400 hover:bg-gold-500/10 hover:text-gold-300"

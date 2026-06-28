@@ -4,6 +4,7 @@
 // przy budowaniu, więc strona pozostaje w pełni statyczna (GitHub Pages / hosting).
 import offersData from "@/data/offers.json";
 import glogowOsiedlaData from "@/data/glogow-osiedla.json";
+import { people } from "@/lib/site";
 
 export type Transaction = "sprzedaz" | "wynajem" | "kupno" | "najem";
 
@@ -133,6 +134,19 @@ export const resolveEstate = (offer: Offer): string | null => {
     if (c && OSIEDLA_ULICE[c]) return OSIEDLA_ULICE[c];
   }
   return null;
+};
+
+// Slug opiekuna oferty. Priorytet ma offer.agent (ustawiany przez agent_map
+// w imporcie EstiCRM). Gdy puste — dopasowujemy opiekuna z Esti (offer.agentName)
+// do osoby z zespołu po znormalizowanym nazwisku. Dzięki temu profil agenta
+// pokazuje jego oferty, a strona oferty wskazuje właściwego opiekuna nawet bez
+// skonfigurowanego agent_map (dziś wszystkie offer.agent są puste).
+export const resolveAgentSlug = (offer: Offer): string | null => {
+  if (offer.agent) return offer.agent;
+  const name = normName(offer.agentName);
+  if (!name) return null;
+  const match = people.find((p) => normName(p.name) === name);
+  return match ? match.slug : null;
 };
 
 // Pełna lokalizacja oferty do nagłówka karty: miasto, osiedle i ulica.

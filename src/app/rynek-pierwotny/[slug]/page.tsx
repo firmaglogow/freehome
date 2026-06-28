@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import OfferCard from "@/components/ui/OfferCard";
 import DevelopmentBody from "@/components/rynek/DevelopmentBody";
-import { formatArea, formatPrice } from "@/lib/offers";
+import { formatArea, formatPrice, resolveAgentSlug } from "@/lib/offers";
 import { people, site } from "@/lib/site";
 import {
   developments,
@@ -62,7 +62,8 @@ export default async function DevelopmentPage(
 
   // Opiekun inwestycji: override z konfiguracji, w przeciwnym razie agent z ofert
   // tej inwestycji (auto z Esti), a na końcu fallback na pierwszą osobę z zespołu.
-  const agentSlug = dev.agentSlug ?? list.find((o) => o.agent)?.agent ?? null;
+  const agentSlug =
+    dev.agentSlug ?? list.map(resolveAgentSlug).find(Boolean) ?? null;
   const agent = people.find((p) => p.slug === agentSlug) ?? people[0];
   const agentHasPhone = !!agent.phone && /\d/.test(agent.phone);
   const agentPhone = agentHasPhone ? agent.phone! : site.phone;
