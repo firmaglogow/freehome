@@ -81,6 +81,9 @@ export const nav: NavItem[] = [
   // z kart ofert („opiekun oferty”) i z sitemap (SEO). Stopka też czyta tę tablicę,
   // więc znika z obu miejsc naraz.
   { label: "O nas", href: "/o-nas" },
+  // „Dlaczego my" — ściana dowodowa: nagrody, rankingi, status ®, prasa. Po „O nas",
+  // żeby ciąg był naturalny: kim jesteśmy → dlaczego warto nam zaufać.
+  { label: "Dlaczego my", href: "/dlaczego-my" },
   // „Dla klienta" — hub narzędzi (opinie Google, mapa osiedli, kolejne w przyszłości).
   // Zastąpiło pozycję „Opinie" w belce; sama strona /opinie i sekcja opinii na
   // stronie głównej zostają — są podpięte z wnętrza „Dla klienta".
@@ -226,13 +229,9 @@ export const services: Service[] = [
   },
 ];
 
-export const awards: string[] = [
-  "TOP 25 Otodom Polska",
-  "Orły Nieruchomości GOLD ×4",
-  "Złota Firma 2025",
-  "Prestiżowa Marka 2026",
-  "Orły Branży 2026",
-];
+// UWAGA: dawna tablica `awards` została przeniesiona i poprawiona w `src/lib/awards.ts`
+// (jedno źródło prawdy: `awardHighlights` = krótkie chipy; pełny katalog = pozostałe eksporty).
+// Konsumenci (stopka, O nas, SocialProof) importują teraz `awardHighlights` z "@/lib/awards".
 
 export type Review = {
   name: string;

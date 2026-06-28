@@ -4,7 +4,9 @@ import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import People from "@/components/home/People";
 import AwardSeal from "@/components/ui/AwardSeal";
-import { awards, site } from "@/lib/site";
+import { site } from "@/lib/site";
+import { awardHighlights as awards } from "@/lib/awards";
+import { history } from "@/lib/history";
 import JsonLd from "@/components/seo/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
@@ -84,6 +86,60 @@ export default function ONasPage() {
               </span>
             ))}
           </div>
+          <p className="mt-5 text-sm">
+            <Link
+              href="/dlaczego-my"
+              className="inline-flex items-center gap-1.5 font-semibold text-gold-400 transition hover:text-gold-300"
+            >
+              Zobacz wszystkie nagrody i wyróżnienia
+              <span aria-hidden="true">→</span>
+            </Link>
+          </p>
+        </Container>
+      </section>
+
+      {/* Oś czasu — droga firmy 2016–2026 */}
+      <section className="border-t border-gold-500/10 bg-forest-900 py-16 sm:py-24">
+        <Container className="max-w-3xl">
+          <div className="text-center">
+            <p className="eyebrow">Nasza droga</p>
+            <h2 className="mt-3 font-display text-3xl text-cream sm:text-4xl">
+              Historia FREE HOME
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-cream/70">
+              Droga, którą przeszliśmy, by stać się Twoim zaufanym partnerem —
+              od pierwszych transakcji po dekadę skuteczności.
+            </p>
+          </div>
+
+          <ol className="relative mt-12 space-y-7 border-l border-gold-500/20 pl-7 sm:pl-9">
+            {history.map((m, i) => (
+              <Reveal as="li" key={m.year} delay={i * 60} className="relative">
+                <span
+                  aria-hidden="true"
+                  className={`absolute top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full ring-4 ring-forest-900 ${
+                    m.highlight ? "bg-gold-400" : "bg-gold-500/50"
+                  }`}
+                  style={{ left: "-2.05rem" }}
+                />
+                <div
+                  className={`rounded-2xl border p-5 sm:p-6 ${
+                    m.highlight
+                      ? "border-gold-500/40 bg-gold-500/[0.06]"
+                      : "border-gold-500/15 bg-forest-800"
+                  }`}
+                >
+                  <span className="inline-block rounded-full border border-gold-500/30 bg-forest-950/40 px-3 py-0.5 font-display text-sm text-gold-300">
+                    {m.year}
+                  </span>
+                  <h3 className="mt-3 font-display text-xl text-cream">
+                    {m.title}
+                  </h3>
+                  <p className="mt-2 text-cream/75 leading-relaxed">{m.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </ol>
         </Container>
       </section>
 

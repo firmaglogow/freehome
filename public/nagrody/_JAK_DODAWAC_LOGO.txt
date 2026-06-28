@@ -1,0 +1,6 @@
+# Logotypy wyróżnień FREE HOME (strona /dlaczego-my).
+# Nazwa pliku = pole `id` z src/lib/awards.ts, format .webp (lub .png z przezroczystością).
+# Po wgraniu logo ustaw w awards.ts pole: logo: "/nagrody/<id>.webp".
+# Przyklady id: prestizowa-marka, orly-gold, zlota-firma, orly-branzy,
+#   top25-otodom, lider-jakosci-otodom, opinie-google, certyfikat-partnerstwa,
+#   osobowosc-roku, mistrzowie-handlu, znak-towarowy.

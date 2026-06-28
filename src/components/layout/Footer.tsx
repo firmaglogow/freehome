@@ -2,7 +2,8 @@ import Link from "next/link";
 import Logo from "@/components/ui/Logo";
 import Container from "@/components/ui/Container";
 import AwardSeal from "@/components/ui/AwardSeal";
-import { awards, nav, site } from "@/lib/site";
+import { nav, site } from "@/lib/site";
+import { awardHighlights as awards } from "@/lib/awards";
 
 export default function Footer() {
   return (

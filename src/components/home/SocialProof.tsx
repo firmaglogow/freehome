@@ -3,7 +3,8 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ReviewsCarousel from "@/components/opinie/ReviewsCarousel";
 import AwardSeal from "@/components/ui/AwardSeal";
-import { awards, reviews, site } from "@/lib/site";
+import { reviews, site } from "@/lib/site";
+import { awardHighlights as awards } from "@/lib/awards";
 
 export default function SocialProof() {
   return (
