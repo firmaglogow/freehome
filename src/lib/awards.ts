@@ -193,6 +193,7 @@ export const companyAwards: Award[] = [
     year: "2022",
     kind: "certyfikat",
     icon: "people",
+    logo: "/nagrody/certyfikat-partnerstwa.webp",
     desc: "Wyróżnienie portalu za skuteczną promocję ofert i profesjonalizm współpracy.",
     detail:
       "Certyfikat Partnerstwa przyznany przez portal nieruchomosci-online.pl za skuteczną promocję ofert oraz profesjonalizm współpracy — potwierdzenie wysokiej jakości prezentacji nieruchomości.",
@@ -209,6 +210,7 @@ export const rankings: Award[] = [
     title: `${site.reviewsCount}+ opinii Google — średnia 5.0`,
     kind: "ranking",
     icon: "google",
+    logo: "/nagrody/opinie-google.webp",
     desc: "Największa liczba wyłącznie pozytywnych opinii wśród biur w regionie głogowskim.",
     detail:
       "Średnia ocen 5,0 przy największej liczbie opinii wśród biur nieruchomości w regionie głogowskim. Wyłącznie pozytywne opinie realnych klientów — najtwardszy dowód jakości obsługi.",
@@ -219,6 +221,7 @@ export const rankings: Award[] = [
     title: "TOP 25 biur w Polsce — Otodom",
     kind: "ranking",
     icon: "trending",
+    logo: "/nagrody/top25-otodom.svg",
     desc: "Jakość ogłoszeń 100/100. Ranking oparty wyłącznie na danych.",
     detail:
       "Miejsce w TOP 25 biur nieruchomości w Polsce wg Otodom przy jakości ogłoszeń 100/100. Ranking oparty wyłącznie na twardych danych: kompletność ogłoszeń, jakość zdjęć, terminowość aktualizacji.",
@@ -236,6 +239,7 @@ export const grzegorzAwards: Award[] = [
     year: "2025",
     kind: "wyroznienie",
     icon: "sparkle",
+    logo: "/nagrody/osobowosc-roku.webp",
     desc:
       "Kategoria Biznes i Przedsiębiorczość. Wybór mieszkańców; nagroda odebrana na gali we Wrocławiu.",
     detail:
@@ -271,6 +275,7 @@ export const dariaAwards: Award[] = [
     year: "2025",
     kind: "wyroznienie",
     icon: "medal",
+    logo: "/nagrody/mistrzowie-handlu.webp",
     desc:
       "5. miejsce wśród agentów nieruchomości w województwie dolnośląskim.",
     detail:
@@ -289,6 +294,7 @@ export const partnerships: Award[] = [
     title: "Ambasador Chrobry Głogów",
     kind: "wyroznienie",
     icon: "handshake",
+    logo: "/nagrody/ambasador-chrobry.webp",
     desc:
       "Współpraca z lokalnym klubem piłkarskim — obecność na meczach i budowanie relacji z lokalną społecznością i biznesem.",
   },
@@ -297,6 +303,7 @@ export const partnerships: Award[] = [
     title: "Sponsoring MMA",
     kind: "wyroznienie",
     icon: "handshake",
+    logo: "/nagrody/sponsoring-mma.webp",
     desc:
       "Logo FREE HOME na ramieniu Denisa Labrygi podczas głośnych gal MMA — niestandardowy marketing o szerokim zasięgu.",
   },
@@ -306,6 +313,7 @@ export const partnerships: Award[] = [
     year: "2025",
     kind: "wyroznienie",
     icon: "book",
+    logo: "/nagrody/ebook-academy.webp",
     desc:
       "Autorska publikacja i program edukacyjny — dzielenie się wiedzą i wyznaczanie trendów w nowoczesnej obsłudze klienta.",
   },
