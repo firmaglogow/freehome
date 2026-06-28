@@ -2,7 +2,9 @@ import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import GoogleMark from "@/components/ui/GoogleMark";
-import { reviews, site } from "@/lib/site";
+import ReviewsList from "@/components/opinie/ReviewsList";
+import { site } from "@/lib/site";
+import { googleReviews } from "@/lib/googleReviews";
 import JsonLd from "@/components/seo/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
@@ -14,7 +16,10 @@ export const metadata = pageMetadata({
 });
 
 // Dane strukturalne opinii (Review + AggregateRating) — pomagają Google wyświetlić
-// gwiazdki w wynikach i wzmacniają SEO treścią opinii klientów.
+// gwiazdki w wynikach i wzmacniają SEO treścią opinii klientów. Z realnymi datami
+// i ocenami z wizytówki. Liczbę pozycji w JSON-LD ograniczamy do najnowszych,
+// by nie rozdmuchiwać wagi strony (pełna lista i tak jest widoczna w gridzie).
+const JSONLD_REVIEW_LIMIT = 80;
 const reviewsJsonLd = {
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
@@ -26,10 +31,15 @@ const reviewsJsonLd = {
     bestRating: "5",
     reviewCount: String(site.reviewsCount),
   },
-  review: reviews.map((r) => ({
+  review: googleReviews.slice(0, JSONLD_REVIEW_LIMIT).map((r) => ({
     "@type": "Review",
     author: { "@type": "Person", name: r.name },
-    reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+    datePublished: r.date,
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: String(r.rating),
+      bestRating: "5",
+    },
     reviewBody: r.text,
   })),
 };
@@ -86,29 +96,7 @@ export default function OpiniePage() {
             </span>
           </a>
 
-          <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
-            {reviews.map((r, i) => (
-              <figure
-                key={i}
-                className="mb-6 break-inside-avoid rounded-2xl border border-gold-500/15 bg-forest-800 p-6"
-              >
-                <div className="text-gold-400" aria-label="5 na 5 gwiazdek">
-                  ★★★★★
-                </div>
-                <blockquote className="mt-3 text-sm leading-relaxed text-cream/80">
-                  „{r.text}"
-                </blockquote>
-                <figcaption className="mt-4 flex items-center justify-between gap-2 text-sm font-semibold text-cream">
-                  <span>— {r.name}</span>
-                  {r.source && (
-                    <span className="text-xs font-normal text-cream/60">
-                      {r.source}
-                    </span>
-                  )}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          <ReviewsList reviews={googleReviews} />
 
           <p className="mt-10 text-center text-sm text-cream/50">
             Wszystkie opinie pochodzą z naszej wizytówki Google (średnia 5,0).

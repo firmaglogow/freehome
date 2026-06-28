@@ -41,7 +41,9 @@ export const site = {
     label: "FREE HOME Design Studio",
     href: "https://www.freehomedesign.pl/",
   },
-  reviewsCount: 269,
+  // Łączna liczba opinii na wizytówce Google (z treścią + same gwiazdki bez treści).
+  // Pełna lista opinii z treścią: src/lib/googleReviews.ts (obecnie 253 z treścią).
+  reviewsCount: 271,
   // Link do wizytówki Google z opiniami (jedno źródło prawdy: /opinie + /dla-klienta).
   // Domyślnie wyszukiwarka Map Google po nazwie firmy (zawsze działa, trafia na wizytówkę).
   // TODO(właściciel): podmień na DOKŁADNY link wizytówki (np. udostępnianie z Map Google
@@ -236,6 +238,10 @@ export type Review = {
   name: string;
   text: string;
   source?: string;
+  /** Data publikacji w formacie ISO RRRR-MM-DD (opcjonalna). */
+  date?: string;
+  /** Ocena w gwiazdkach 1–5 (opcjonalna; brak = traktujemy jako 5). */
+  rating?: number;
 };
 
 // Prawdziwe opinie z wizytówki Google FREE HOME (5★).
