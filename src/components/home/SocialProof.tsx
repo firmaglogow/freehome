@@ -38,7 +38,6 @@ export default function SocialProof() {
               </li>
             ))}
           </ul>
-          {/* [DO UZUPEŁNIENIA: pliki logotypów odznak nagród] */}
         </div>
       </Container>
     </section>

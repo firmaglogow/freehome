@@ -6,7 +6,7 @@ import { site } from "@/lib/site";
 export default function Hero({ offersCount }: { offersCount: number }) {
   return (
     <section className="relative isolate overflow-hidden">
-      {/* Tło hero — [DO UZUPEŁNIENIA: docelowe zdjęcie Głogowa / nieruchomości] */}
+      {/* Tło hero (WebP, priorytet — element LCP strony głównej). */}
       <Image
         src="/hero/hero-dom.webp"
         alt=""

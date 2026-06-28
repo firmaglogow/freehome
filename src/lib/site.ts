@@ -1,5 +1,4 @@
-// Centralna konfiguracja treści FREE HOME.
-// Treści [DO UZUPEŁNIENIA] są oznaczone i łatwe do podmiany przez właściciela.
+// Centralna konfiguracja treści FREE HOME — jedno źródło prawdy dla całego serwisu.
 
 // Adres kanoniczny serwisu — sterowany zmienną, żeby ten sam kod działał na:
 //  • staging   → https://www.freehome.com.pl  (skrypt buildu ustawia NEXT_PUBLIC_SITE_URL)
@@ -11,13 +10,13 @@ export const site = {
   name: "FREE HOME",
   fullName: "FREE HOME Nieruchomości",
   tagline: "Twoje lokalne biuro nieruchomości",
-  subtitle: "Głogów i okolice. Ludzie, których znasz.", // [DO UZUPEŁNIENIA — warianty hasła]
+  subtitle: "Głogów i okolice. Ludzie, których znasz.",
   // Domena bez www, wyliczana z siteUrl — nigdy się nie rozjedzie z url.
   domain: new URL(siteUrl).host.replace(/^www\./, ""),
   url: siteUrl,
   phone: "537 264 666",
   phoneHref: "tel:+48537264666",
-  email: "kontakt@freehome.com.pl", // [POTWIERDZIĆ dokładny adres]
+  email: "kontakt@freehome.com.pl", // ogólny adres biura (formularze + stopka)
   address: {
     street: "ul. Grodzka 18",
     city: "Głogów",
@@ -69,8 +68,11 @@ export const nav: NavItem[] = [
   // „Rynek pierwotny" — osobna, samodzielna pozycja (wyróżnik biura), nie pod „Oferty".
   { label: "Rynek pierwotny", href: "/rynek-pierwotny" },
   { label: "Usługi", href: "/uslugi" },
+  // „Zespół” (/ludzie) celowo POZA górnym menu — ludzie żyją teraz w „O nas”
+  // (sekcja <People/>). Podstrony profili /ludzie/* zostają: linkowane z „O nas”,
+  // z kart ofert („opiekun oferty”) i z sitemap (SEO). Stopka też czyta tę tablicę,
+  // więc znika z obu miejsc naraz.
   { label: "O nas", href: "/o-nas" },
-  { label: "Zespół", href: "/ludzie" },
   // „Dla klienta" — hub narzędzi (opinie Google, mapa osiedli, kolejne w przyszłości).
   // Zastąpiło pozycję „Opinie" w belce; sama strona /opinie i sekcja opinii na
   // stronie głównej zostają — są podpięte z wnętrza „Dla klienta".
