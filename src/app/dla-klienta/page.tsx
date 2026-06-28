@@ -9,7 +9,7 @@ import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "Dla klienta",
   description:
-    "Narzędzia dla klientów FREE HOME: opinie Google naszych klientów, interaktywna mapa osiedli Głogowa z wyszukiwarką ulic oraz realne ceny transakcyjne mieszkań w okolicy (akty notarialne, RCN/GUGiK).",
+    "Narzędzia dla klientów FREE HOME: opinie Google naszych klientów, interaktywna mapa osiedli Głogowa z wyszukiwarką ulic, realne ceny transakcyjne mieszkań w okolicy (akty notarialne, RCN/GUGiK) oraz najczęstsze pytania (FAQ) o kupnie i sprzedaży nieruchomości.",
   path: "/dla-klienta",
   ogImage: "/og/dla-klienta.jpg",
 });
@@ -90,6 +90,29 @@ function LoanMark() {
   );
 }
 
+// Ikona FAQ: dymek rozmowy ze znakiem zapytania = „masz pytania, mamy odpowiedzi".
+// Złoty dymek + kremowy znak zapytania (spójnie z paletą kafelków).
+function FaqMark() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden className="h-9 w-9">
+      {/* dymek z ogonkiem */}
+      <path
+        d="M10 9h28a4 4 0 0 1 4 4v15a4 4 0 0 1-4 4H22l-7 6v-6h-5a4 4 0 0 1-4-4V13a4 4 0 0 1 4-4z"
+        fill="#e0b13c"
+      />
+      {/* znak zapytania */}
+      <path
+        d="M20.4 18.6c0-2 1.6-3.5 3.6-3.5s3.6 1.4 3.6 3.3c0 1.5-.9 2.3-2 3-.9.6-1.5 1.1-1.5 2.3v.5"
+        stroke="#0c1f15"
+        strokeWidth="2.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="24.1" cy="28.4" r="1.7" fill="#0c1f15" />
+    </svg>
+  );
+}
+
 type Tile = {
   key: string;
   icon: React.ReactNode;
@@ -153,6 +176,15 @@ const tiles: Tile[] = [
     href: `${BASE_PATH}/kalkulator-kredytowy/`,
     cta: "Policz ratę",
     external: true,
+  },
+  {
+    key: "faq",
+    icon: <FaqMark />,
+    badge: "Masz pytania?",
+    title: "Najczęstsze pytania (FAQ)",
+    desc: "Prowizja, koszty zakupu, dokumenty, umowa na wyłączność, kredyt — zebraliśmy odpowiedzi na pytania, które najczęściej słyszymy od klientów w Głogowie.",
+    href: "/faq",
+    cta: "Zobacz odpowiedzi",
   },
 ];
 
