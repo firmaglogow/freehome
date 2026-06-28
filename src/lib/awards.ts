@@ -130,6 +130,7 @@ export const companyAwards: Award[] = [
     year: "2022 · 2023 · 2024 · 2025 · 2026",
     kind: "nagroda",
     icon: "trophy",
+    logo: "/nagrody/orly-gold.webp",
     desc:
       "Pięć lat z rzędu w gronie najlepiej ocenianych firm nieruchomości w Polsce — na podstawie opinii klientów.",
     detail:
@@ -142,13 +143,12 @@ export const companyAwards: Award[] = [
     year: "2026",
     kind: "nagroda",
     icon: "crown",
+    logo: "/nagrody/prestizowa-marka.webp",
     desc:
       "Certyfikat i list gratulacyjny za realizację usług w standardzie premium oraz dbałość o każdy detal procesu sprzedaży.",
     detail:
       "Tytuł Prestiżowa Marka 2026 z 1. miejscem (TOP 1) — wyróżnienie za realizację usług w standardzie premium i dbałość o każdy detal procesu sprzedaży. W komplecie certyfikat i list gratulacyjny.",
     organizer: "K&K Promotion",
-    // Właściciel ma plik logo (wersja na ciemnym tle). Po wgraniu do public/nagrody/ ustaw:
-    // logo: "/nagrody/prestizowa-marka.webp",
   },
   {
     id: "zlota-firma",
@@ -156,6 +156,7 @@ export const companyAwards: Award[] = [
     year: "2023 · 2025",
     kind: "nagroda",
     icon: "star",
+    logo: "/nagrody/zlota-firma.webp",
     desc:
       "Tytuł dla firm utrzymujących min. 75% pozytywnych recenzji — kryteria spełnia ~10% podmiotów w Polsce.",
     detail:
@@ -177,6 +178,7 @@ export const companyAwards: Award[] = [
     year: "2025",
     kind: "wyroznienie",
     icon: "medal",
+    logo: "/nagrody/lider-jakosci-otodom.webp",
     desc:
       "2. miejsce w Polsce wśród biur butikowych (do 49 ogłoszeń). Ocena kwartalna przez AI Otodom.",
     detail:

@@ -1,9 +1,11 @@
 import Link from "next/link";
+import Image from "next/image";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AwardsGrid from "@/components/dlaczego-my/AwardsGrid";
+import CountUp from "@/components/dlaczego-my/CountUp";
 import JsonLd from "@/components/seo/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { site, people } from "@/lib/site";
@@ -21,7 +23,7 @@ import {
 export const metadata = pageMetadata({
   title: "Dlaczego my",
   description:
-    `Nagrody, rankingi i status prawny FREE HOME: Orły Nieruchomości GOLD ×5, Prestiżowa Marka 2026, Złota Firma, TOP 25 Otodom, ${site.reviewsCount}+ opinii Google 5,0 i zastrzeżony znak towarowy ®. Zobacz, dlaczego warto nam zaufać.`,
+    `Nagrody, rankingi i status prawny FREE HOME: Orły Nieruchomości GOLD ×5, Prestiżowa Marka 2026 TOP 1, Złota Firma, TOP 25 Otodom, ${site.reviewsCount}+ opinii Google 5,0 i Osobowość Roku 2025. Zobacz, dlaczego warto nam zaufać.`,
   path: "/dlaczego-my",
   ogImage: "/og/o-nas.jpg",
   ogTitle: "Dlaczego FREE HOME — nagrody i wyróżnienia",
@@ -29,6 +31,42 @@ export const metadata = pageMetadata({
 
 const grzegorz = people.find((p) => p.slug === "grzegorz-lukasik");
 const daria = people.find((p) => p.slug === "daria-lukasik");
+
+// Trzy najmocniejsze wyróżnienia — „spotlight" otwierający stronę zamiast statusu ®.
+type Spot = {
+  id: string;
+  tag: string;
+  title: string;
+  blurb: string;
+  logo?: string;
+  icon?: "sparkle";
+};
+const spotlight: Spot[] = [
+  {
+    id: "osobowosc-roku",
+    tag: "Grzegorz Łukasik",
+    title: "Osobowość Roku 2025",
+    blurb:
+      "Wybór mieszkańców powiatu głogowskiego w kategorii Biznes i Przedsiębiorczość. Nagroda odebrana na gali wojewódzkiej we Wrocławiu.",
+    icon: "sparkle",
+  },
+  {
+    id: "orly-gold",
+    tag: "5× z rzędu · 2022–2026",
+    title: "Orły Nieruchomości GOLD",
+    blurb:
+      "Pięć lat nieprzerwanie w gronie 3,37% najlepiej ocenianych firm nieruchomości w Polsce — na podstawie opinii klientów.",
+    logo: "/nagrody/orly-gold.webp",
+  },
+  {
+    id: "prestizowa-marka",
+    tag: "1. miejsce w Polsce",
+    title: "Prestiżowa Marka 2026",
+    blurb:
+      "Tytuł TOP 1 za realizację usług w standardzie premium i dbałość o każdy detal procesu sprzedaży.",
+    logo: "/nagrody/prestizowa-marka.webp",
+  },
+];
 
 export default function DlaczegoMyPage() {
   return (
@@ -44,7 +82,7 @@ export default function DlaczegoMyPage() {
         image="/hero/klucze-dom.webp"
       />
 
-      {/* SEKCJA 1+2 — wstęp + LICZBY */}
+      {/* SEKCJA 1+2 — wstęp + LICZBY (animowane liczniki) */}
       <section className="py-16 sm:py-20">
         <Container>
           <Reveal className="mx-auto max-w-2xl text-center">
@@ -59,10 +97,12 @@ export default function DlaczegoMyPage() {
           <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5">
             {stats.map((s, i) => (
               <Reveal key={s.label} delay={(i % 3) * 70}>
-                <div className="h-full rounded-2xl border border-gold-500/20 bg-forest-800 p-6 text-center">
-                  <p className="font-display text-4xl text-gold-400 sm:text-5xl">
-                    {s.value}
-                  </p>
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-gold-500/20 bg-forest-800 p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/45 hover:shadow-[0_20px_50px_-24px_rgba(197,164,78,0.5)]">
+                  <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-400/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <CountUp
+                    value={s.value}
+                    className="block font-display text-4xl text-gold-400 [text-shadow:0_2px_18px_rgba(197,164,78,0.35)] sm:text-5xl"
+                  />
                   <p className="mt-2 text-sm font-semibold text-cream">
                     {s.label}
                   </p>
@@ -76,62 +116,66 @@ export default function DlaczegoMyPage() {
         </Container>
       </section>
 
-      {/* SEKCJA 3 — STATUS PRAWNY MARKI + certyfikaty */}
-      <section className="border-t border-gold-500/10 bg-forest-900 py-16 sm:py-24">
-        <Container>
+      {/* SEKCJA SPOTLIGHT — trzy najmocniejsze wyróżnienia */}
+      <section className="relative overflow-hidden border-t border-gold-500/10 bg-forest-900 py-16 sm:py-24">
+        <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-gold-500/10 blur-[100px]" />
+        <Container className="relative">
           <SectionHeading
             align="center"
-            eyebrow="Status prawny i kwalifikacje"
-            title="Marka chroniona prawem"
-            subtitle="To nie są puste deklaracje — FREE HOME jest zastrzeżonym znakiem towarowym, a nasze kwalifikacje potwierdzają niezależne instytucje."
+            eyebrow="Najważniejsze wyróżnienia"
+            title="Trzy powody, dla których nas zapamiętasz"
+            subtitle="Z dziesiątek nagród i tytułów wybraliśmy te, które mówią najwięcej: o ludziach, o powtarzalności i o pozycji nr 1."
           />
 
-          <Reveal className="mx-auto mt-12 max-w-4xl">
-            <div className="relative overflow-hidden rounded-3xl border border-gold-500/30 bg-gradient-to-br from-forest-800 to-forest-950 p-8 sm:p-10">
-              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold-500/10 blur-3xl" />
-              <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-                <span className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-forest-950/60 text-gold-400 ring-1 ring-gold-500/30">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={1.4}
-                    aria-hidden="true"
-                    className="h-12 w-12"
-                  >
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M9.6 16.5V7.5h3a2.25 2.25 0 0 1 0 4.5h-3M12.2 12 15 16.5" />
-                  </svg>
-                </span>
-                <div>
-                  <span className="rounded-full border border-gold-500/25 bg-gold-500/5 px-3 py-0.5 text-xs font-medium text-gold-300">
-                    Status prawny
+          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+            {spotlight.map((s, i) => (
+              <Reveal key={s.id} delay={i * 110}>
+                <div className="group relative flex h-full flex-col items-center overflow-hidden rounded-3xl border border-gold-500/25 bg-gradient-to-b from-forest-800 to-forest-950 p-8 text-center transition-all duration-500 hover:-translate-y-2 hover:border-gold-500/60 hover:shadow-[0_30px_80px_-30px_rgba(197,164,78,0.55)]">
+                  <span className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold-500/15 blur-3xl transition-all duration-500 group-hover:bg-gold-500/25" />
+
+                  <span className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl bg-cream shadow-sm ring-1 ring-gold-500/30">
+                    {s.logo ? (
+                      <Image
+                        src={s.logo}
+                        alt=""
+                        fill
+                        sizes="96px"
+                        className="object-contain p-2.5"
+                      />
+                    ) : (
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#a9772a"
+                        strokeWidth={1.5}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                        className="h-12 w-12"
+                      >
+                        <path d="M12 3c.6 4.2 1.2 4.8 5.4 5.4-4.2.6-4.8 1.2-5.4 5.4-.6-4.2-1.2-4.8-5.4-5.4C10.8 7.8 11.4 7.2 12 3Z" />
+                        <path d="M18.5 14c.25 1.6.65 2 2.25 2.25-1.6.25-2 .65-2.25 2.25-.25-1.6-.65-2-2.25-2.25 1.6-.25 2-.65 2.25-2.25Z" />
+                      </svg>
+                    )}
                   </span>
-                  <h3 className="mt-3 font-display text-2xl text-cream sm:text-3xl">
-                    {trademark.title}
+
+                  <span className="relative mt-5 rounded-full border border-gold-500/30 bg-gold-500/5 px-3 py-1 text-xs font-medium text-gold-300">
+                    {s.tag}
+                  </span>
+                  <h3 className="relative mt-3 font-display text-2xl text-cream transition-colors duration-300 group-hover:text-gold-300">
+                    {s.title}
                   </h3>
-                  <p className="mt-3 max-w-2xl leading-relaxed text-cream/80">
-                    {trademark.desc}
-                  </p>
-                  <p className="mt-4 text-sm text-cream/55">
-                    <span className="text-cream/40">Organizator: </span>
-                    {trademark.organizer}
+                  <p className="relative mt-3 text-sm leading-relaxed text-cream/70">
+                    {s.blurb}
                   </p>
                 </div>
-              </div>
-            </div>
-          </Reveal>
-
-          <h3 className="mt-14 text-center font-display text-xl text-cream/90">
-            Certyfikaty i licencje
-          </h3>
-          <div className="mt-7">
-            <AwardsGrid items={certificates} columns={3} />
+              </Reveal>
+            ))}
           </div>
         </Container>
       </section>
 
-      {/* SEKCJA 4 — NAGRODY BRANŻOWE (FIRMA) */}
+      {/* SEKCJA — NAGRODY BRANŻOWE (FIRMA) */}
       <section className="py-16 sm:py-24">
         <Container>
           <SectionHeading
@@ -146,7 +190,7 @@ export default function DlaczegoMyPage() {
         </Container>
       </section>
 
-      {/* SEKCJA 5 — OCENY I POZYCJE RANKINGOWE */}
+      {/* SEKCJA — OCENY I POZYCJE RANKINGOWE */}
       <section className="border-t border-gold-500/10 bg-forest-900 py-16 sm:py-24">
         <Container>
           <SectionHeading
@@ -161,8 +205,23 @@ export default function DlaczegoMyPage() {
         </Container>
       </section>
 
-      {/* SEKCJA 6 — LUDZIE */}
+      {/* SEKCJA — STATUS PRAWNY I KWALIFIKACJE (znak ® jako jeden z dowodów, nie hero) */}
       <section className="py-16 sm:py-24">
+        <Container>
+          <SectionHeading
+            align="center"
+            eyebrow="Status prawny i kwalifikacje"
+            title="Marka chroniona prawem"
+            subtitle="FREE HOME jest zastrzeżonym znakiem towarowym, a nasze kwalifikacje potwierdzają niezależne instytucje — to nie są puste deklaracje."
+          />
+          <div className="mt-12">
+            <AwardsGrid items={[trademark, ...certificates]} columns={3} />
+          </div>
+        </Container>
+      </section>
+
+      {/* SEKCJA — LUDZIE */}
+      <section className="border-t border-gold-500/10 bg-forest-900 py-16 sm:py-24">
         <Container>
           <SectionHeading
             align="center"
@@ -211,8 +270,8 @@ export default function DlaczegoMyPage() {
         </Container>
       </section>
 
-      {/* SEKCJA dodatkowa — NIESTANDARDOWY MARKETING I WSPÓŁPRACA */}
-      <section className="border-t border-gold-500/10 bg-forest-900 py-16 sm:py-24">
+      {/* SEKCJA — NIESTANDARDOWY MARKETING I WSPÓŁPRACA */}
+      <section className="py-16 sm:py-24">
         <Container>
           <SectionHeading
             align="center"
@@ -226,8 +285,8 @@ export default function DlaczegoMyPage() {
         </Container>
       </section>
 
-      {/* SEKCJA 7 — MEDIA / PRASA (placeholder do uzupełnienia) */}
-      <section className="py-16 sm:py-24">
+      {/* SEKCJA — MEDIA / PRASA (placeholder do uzupełnienia) */}
+      <section className="border-t border-gold-500/10 bg-forest-900 py-16 sm:py-24">
         <Container>
           <SectionHeading
             align="center"
@@ -266,7 +325,7 @@ export default function DlaczegoMyPage() {
         </Container>
       </section>
 
-      {/* SEKCJA 8 — ZAMKNIĘCIE + CTA */}
+      {/* SEKCJA — ZAMKNIĘCIE + CTA */}
       <section className="border-t border-gold-500/15 bg-gradient-to-b from-forest-900 to-forest-950 py-20 sm:py-24">
         <Container className="max-w-2xl text-center">
           <SectionHeading

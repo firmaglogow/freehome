@@ -1,21 +1,35 @@
-"use client";
-
-import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import Image from "next/image";
 import Reveal from "@/components/ui/Reveal";
 import { type Award, kindLabel } from "@/lib/awards";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Ikony-zastępcze (gdy dana pozycja nie ma pliku logo). Linia złota = currentColor.
-// Proste, czytelne kształty utrzymane w stylu marki.
+// Złoty gradient dla ikon-zastępczych (metaliczny połysk, nie płaska kreska).
+// Definicja raz na siatkę; powtórzone `id` między siatkami jest nieszkodliwe
+// (przeglądarka bierze pierwsze trafienie url(#fhGold)).
+// ─────────────────────────────────────────────────────────────────────────────
+function GoldGradientDefs() {
+  return (
+    <svg width="0" height="0" aria-hidden="true" className="absolute">
+      <defs>
+        <linearGradient id="fhGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#f0dca8" />
+          <stop offset="48%" stopColor="#d4b86a" />
+          <stop offset="100%" stopColor="#a9772a" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Ikony-zastępcze (gdy dana pozycja nie ma pliku logo). Kreska = złoty gradient.
 // ─────────────────────────────────────────────────────────────────────────────
 function Icon({ name, className = "h-8 w-8" }: { name: string; className?: string }) {
   const p = {
     className,
     viewBox: "0 0 24 24",
     fill: "none",
-    stroke: "currentColor",
+    stroke: "url(#fhGold)",
     strokeWidth: 1.6,
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
@@ -123,10 +137,11 @@ function Icon({ name, className = "h-8 w-8" }: { name: string; className?: strin
 }
 
 /**
- * Siatka klikalnych kafelków wyróżnień. Po kliknięciu otwiera modal z pełnym
- * opisem (detail), organizatorem i notą. Modal renderowany przez portal do
- * <body> (omija CSS `transform` z <Reveal>, który uwięziłby `position: fixed`).
- * Zamykanie: ✕, Esc, kliknięcie w tło. Kafelek bez logo pokazuje ikonę.
+ * Siatka wyróżnień — czytelne, samodzielne kafelki (bez klikania/modala: cała treść
+ * jest na wierzchu). Realne logotypy lądują na jasnej plakietce (żeby ciemne i kolorowe
+ * znaki były widoczne na zielonym tle); pozycje bez logo dostają kolorową ikonę w złotym
+ * gradiencie. Efekty „wow": unoszenie, złota poświata i rozjaśnienie krawędzi na hover.
+ * Flexbox `justify-center` wyśrodkowuje niepełny ostatni rząd, pełne rzędy = 100% szer.
  */
 export default function AwardsGrid({
   items,
@@ -135,152 +150,64 @@ export default function AwardsGrid({
   items: Award[];
   columns?: 2 | 3;
 }) {
-  // Modal renderowany jest dopiero po kliknięciu (active != null), więc zawsze po
-  // stronie klienta — `document` jest wtedy dostępny i nie ma ryzyka rozjazdu
-  // hydratacji (przy pierwszym renderze active === null, portal się nie tworzy).
-  const [active, setActive] = useState<Award | null>(null);
-  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
-
-  const close = useCallback(() => setActive(null), []);
-
-  useEffect(() => {
-    if (!active) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-    };
-    document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    closeBtnRef.current?.focus();
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [active, close]);
-
-  // Szerokość kafelka liczona calc-iem, bo używamy flexa (nie grida): dzięki temu
-  // `flex-wrap justify-center` wyśrodkowuje niepełny ostatni rząd (np. 2 z 3 albo
-  // pojedynczy kafelek), a pełne rzędy nadal wypełniają całą szerokość. gap-5 = 1.25rem.
   const itemCls =
     columns === 2
       ? "w-full sm:w-[calc((100%_-_1.25rem)/2)]"
       : "w-full sm:w-[calc((100%_-_1.25rem)/2)] lg:w-[calc((100%_-_2.5rem)/3)]";
 
   const cardCls =
-    "group flex h-full w-full cursor-pointer flex-col rounded-2xl border border-gold-500/15 bg-forest-800 p-6 text-left transition hover:-translate-y-0.5 hover:border-gold-500/40 hover:bg-forest-800/80";
+    "group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-gold-500/15 bg-forest-800 p-6 text-left transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-500/45 hover:bg-forest-800/90 hover:shadow-[0_24px_60px_-24px_rgba(197,164,78,0.5)]";
 
   return (
-    <>
-      <div className="flex flex-wrap justify-center gap-5">
-        {items.map((a, i) => (
-          <Reveal key={a.id} delay={(i % 3) * 70} className={`${itemCls} h-full`}>
-            <button type="button" onClick={() => setActive(a)} className={cardCls}>
-              <div className="flex items-start justify-between gap-3">
-                <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-forest-950/60 text-gold-400 ring-1 ring-gold-500/20">
-                  {a.logo ? (
-                    <Image
-                      src={a.logo}
-                      alt=""
-                      fill
-                      sizes="56px"
-                      className="object-contain p-2"
-                    />
-                  ) : (
-                    <Icon name={a.icon} />
-                  )}
-                </span>
-                <span className="flex flex-col items-end gap-1.5 text-right">
-                  <span className="rounded-full border border-gold-500/25 bg-forest-950/40 px-2.5 py-0.5 text-[11px] font-medium text-gold-300">
-                    {kindLabel[a.kind]}
-                  </span>
-                  {a.year && (
-                    <span className="text-xs text-cream/50">{a.year}</span>
-                  )}
-                </span>
-              </div>
-              <h3 className="mt-5 font-display text-xl text-cream group-hover:text-gold-300">
-                {a.title}
-              </h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-cream/70">
-                {a.desc}
-              </p>
-              {a.organizer && (
-                <p className="mt-4 text-xs text-cream/45">{a.organizer}</p>
-              )}
-              <span className="mt-4 text-sm font-semibold text-gold-400">
-                Zobacz szczegóły →
-              </span>
-            </button>
-          </Reveal>
-        ))}
-      </div>
+    <div className="flex flex-wrap justify-center gap-5">
+      <GoldGradientDefs />
+      {items.map((a, i) => (
+        <Reveal key={a.id} delay={(i % 3) * 70} className={`${itemCls} h-full`}>
+          <article className={cardCls}>
+            {/* poświata na hover */}
+            <span className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-gold-500/15 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
+            {/* górna linia połysku na hover */}
+            <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-400/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-      {active &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-forest-950/85 p-4 backdrop-blur-sm"
-            onClick={(e) => {
-              if (e.target === e.currentTarget) close();
-            }}
-            role="dialog"
-            aria-modal="true"
-            aria-label={active.title}
-          >
-            <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-gold-500/20 bg-forest-900 p-7 shadow-2xl sm:p-9">
-              <button
-                ref={closeBtnRef}
-                type="button"
-                onClick={close}
-                aria-label="Zamknij"
-                className="absolute right-3.5 top-3.5 flex h-10 w-10 items-center justify-center rounded-xl bg-forest-950/80 text-cream transition hover:rotate-90 hover:bg-forest-950"
-              >
-                ✕
-              </button>
-
-              <span className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-forest-950/60 text-gold-400 ring-1 ring-gold-500/25">
-                {active.logo ? (
+            <div className="relative flex items-start justify-between gap-3">
+              {a.logo ? (
+                <span className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-cream shadow-sm ring-1 ring-gold-500/30">
                   <Image
-                    src={active.logo}
+                    src={a.logo}
                     alt=""
                     fill
-                    sizes="80px"
-                    className="object-contain p-2.5"
+                    sizes="64px"
+                    className="object-contain p-1.5"
                   />
-                ) : (
-                  <Icon name={active.icon} className="h-10 w-10" />
-                )}
-              </span>
-
-              <div className="mt-5 flex flex-wrap items-center gap-2">
-                <span className="rounded-full border border-gold-500/25 bg-gold-500/5 px-3 py-0.5 text-xs font-medium text-gold-300">
-                  {kindLabel[active.kind]}
                 </span>
-                {active.year && (
-                  <span className="rounded-full border border-gold-500/15 bg-forest-950/40 px-3 py-0.5 text-xs text-cream/60">
-                    {active.year}
-                  </span>
-                )}
-              </div>
-
-              <h3 className="mt-4 font-display text-2xl text-cream">
-                {active.title}
-              </h3>
-              <p className="mt-3 leading-relaxed text-cream/80">
-                {active.detail ?? active.desc}
-              </p>
-              {active.organizer && (
-                <p className="mt-5 text-sm text-cream/55">
-                  <span className="text-cream/40">Organizator: </span>
-                  {active.organizer}
-                </p>
+              ) : (
+                <span className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-gold-500/25 via-gold-400/10 to-forest-950/40 ring-1 ring-gold-500/25 transition-transform duration-300 group-hover:scale-105">
+                  <Icon name={a.icon} />
+                </span>
               )}
-              {active.note && (
-                <p className="mt-1 text-sm text-gold-300/80">{active.note}</p>
-              )}
+              <span className="flex flex-col items-end gap-1.5 text-right">
+                <span className="rounded-full border border-gold-500/25 bg-forest-950/40 px-2.5 py-0.5 text-[11px] font-medium text-gold-300">
+                  {kindLabel[a.kind]}
+                </span>
+                {a.year && <span className="text-xs text-cream/50">{a.year}</span>}
+              </span>
             </div>
-          </div>,
-          document.body,
-        )}
-    </>
+
+            <h3 className="relative mt-5 font-display text-xl text-cream transition-colors duration-300 group-hover:text-gold-300">
+              {a.title}
+            </h3>
+            <p className="relative mt-2 flex-1 text-sm leading-relaxed text-cream/70">
+              {a.desc}
+            </p>
+            {a.organizer && (
+              <p className="relative mt-4 text-xs text-cream/45">{a.organizer}</p>
+            )}
+            {a.note && (
+              <p className="relative mt-1 text-xs italic text-gold-300/70">{a.note}</p>
+            )}
+          </article>
+        </Reveal>
+      ))}
+    </div>
   );
 }
