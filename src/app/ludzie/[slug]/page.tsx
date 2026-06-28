@@ -47,7 +47,7 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
         ])}
       />
       <Container>
-        <nav className="mb-6 text-sm text-cream/55">
+        <nav aria-label="Okruszki" className="mb-6 text-sm text-cream/55">
           <Link href="/ludzie" className="hover:text-gold-300">
             ← Wróć do zespołu
           </Link>
@@ -73,7 +73,7 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
                 </h1>
                 <p className="mt-1 text-sm text-gold-400">{person.role}</p>
                 {person.partnerLabel && (
-                  <p className="mt-0.5 text-xs uppercase tracking-wide text-cream/45">
+                  <p className="mt-0.5 text-xs uppercase tracking-wide text-cream/60">
                     {person.partnerLabel}
                   </p>
                 )}

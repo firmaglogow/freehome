@@ -112,7 +112,7 @@ export default function Footer() {
           </div>
 
           {/* Menu */}
-          <nav className="flex flex-col gap-2.5">
+          <nav aria-label="Nawigacja w stopce" className="flex flex-col gap-2.5">
             <h3 className="mb-1 text-sm font-semibold uppercase tracking-widest text-gold-400">
               Nawigacja
             </h3>
@@ -181,7 +181,7 @@ export default function Footer() {
               Regulamin
             </Link>
           </div>
-          <p className="text-cream/35">
+          <p className="text-cream/60">
             Projekt i realizacja —{" "}
             <a
               href={site.creator.href}

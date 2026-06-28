@@ -95,9 +95,11 @@ export default function OfferDetailsPanel({
   return (
     <div className="rounded-3xl border border-gold-500/15 bg-forest-800 p-6">
       <p className="text-sm text-cream/60">{formatOfferPlace(offer)}</p>
-      <h1 className="mt-1 font-display text-2xl text-cream">
+      {/* Wizualny tytuł panelu. Prawdziwy <h1> strony jest sr-only w page.tsx —
+          tu zostaje <p>, by nie dublować h1 (panel renderuje się dwukrotnie). */}
+      <p className="mt-1 font-display text-2xl text-cream">
         {formatOfferHeading(offer)}
-      </h1>
+      </p>
       <p className="mt-3 font-display text-3xl text-gold-400">
         {formatPrice(offer.price)}
       </p>

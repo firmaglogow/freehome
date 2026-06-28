@@ -101,7 +101,7 @@ export default async function DevelopmentPage(
         ])}
       />
       <Container>
-        <nav className="mb-6 text-sm text-cream/55">
+        <nav aria-label="Okruszki" className="mb-6 text-sm text-cream/55">
           <Link href="/rynek-pierwotny" className="hover:text-gold-300">
             ← Wróć do inwestycji
           </Link>

@@ -72,8 +72,13 @@ export default function RootLayout({
       className={`${cinzel.variable} ${cormorant.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-forest-950 text-cream">
+        <a href="#main" className="skip-link">
+          Przejdź do treści
+        </a>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

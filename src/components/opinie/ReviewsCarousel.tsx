@@ -107,7 +107,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
               <figcaption className="mt-4 flex items-center justify-between gap-2 text-sm font-semibold text-cream">
                 <span>— {r.name}</span>
                 {r.source && (
-                  <span className="text-xs font-normal text-cream/40">
+                  <span className="text-xs font-normal text-cream/60">
                     {r.source}
                   </span>
                 )}

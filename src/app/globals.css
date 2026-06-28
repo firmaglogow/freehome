@@ -52,6 +52,52 @@ body {
   color: var(--color-forest-950);
 }
 
+/* ------------------------------------------------------------------ */
+/*  Dostępność: widoczny focus z klawiatury (WCAG 2.4.7)              */
+/*  Złoty pierścień + ciemne tło-offset, widoczny na każdym tle.      */
+/*  :focus-visible → nie pokazuje się przy kliknięciu myszą.          */
+/* ------------------------------------------------------------------ */
+:focus-visible {
+  outline: 2px solid var(--color-gold-400);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+/* Element bez własnego tła (np. linki w tekście) — dorzuć kontrastowy
+   cień, by pierścień był czytelny także na złotych przyciskach. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-gold-400);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--color-forest-950);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Link „przejdź do treści" (skip link, WCAG 2.4.1)                  */
+/*  Schowany do czasu uzyskania focusu z klawiatury.                  */
+/* ------------------------------------------------------------------ */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  margin: 0.5rem;
+  transform: translateY(-150%);
+  border-radius: 0.5rem;
+  background: var(--color-gold-500);
+  color: var(--color-forest-950);
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: transform 0.15s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 /* Domyślne nagłówki — elegancki serif */
 h1, h2, h3, h4 {
   font-family: var(--font-serif);

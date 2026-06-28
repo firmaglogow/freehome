@@ -139,6 +139,7 @@ export default function OffersExplorer() {
           <div className="flex gap-2">
             <input
               type="number"
+              aria-label="Cena od (zł)"
               placeholder="cena od"
               value={priceFrom}
               onChange={(e) => setPriceFrom(e.target.value)}
@@ -146,6 +147,7 @@ export default function OffersExplorer() {
             />
             <input
               type="number"
+              aria-label="Cena do (zł)"
               placeholder="cena do"
               value={priceTo}
               onChange={(e) => setPriceTo(e.target.value)}
@@ -179,6 +181,7 @@ export default function OffersExplorer() {
 
       {/* Wyniki */}
       <div>
+        <h2 className="sr-only">Wyniki wyszukiwania ofert</h2>
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-cream/70">
             Znaleziono{" "}

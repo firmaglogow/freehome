@@ -7,7 +7,7 @@ import { glogowOsiedla } from "@/lib/offers";
 import { cn } from "@/lib/cn";
 
 const fieldCls =
-  "w-full rounded-lg border border-forest-600/60 bg-forest-950/60 px-3.5 py-3 text-sm text-cream placeholder:text-cream/40 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
+  "w-full rounded-lg border border-forest-600/60 bg-forest-950/60 px-3.5 py-3 text-sm text-cream placeholder:text-cream/55 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
 
 const labelCls = "mb-1.5 block text-xs font-medium tracking-wide text-cream/70";
 
@@ -68,7 +68,7 @@ export default function SearchBar({
 
         <div>
           <label className={labelCls} htmlFor="s-osiedle">
-            Osiedle <span className="text-cream/40">· Głogów</span>
+            Osiedle <span className="text-cream/60">· Głogów</span>
           </label>
           <select
             id="s-osiedle"
@@ -105,11 +105,15 @@ export default function SearchBar({
         </div>
 
         <div>
-          <label className={labelCls}>Cena (zł)</label>
+          <label className={labelCls} htmlFor="s-cena-od">
+            Cena (zł)
+          </label>
           <div className="flex gap-2">
             <input
+              id="s-cena-od"
               type="number"
               inputMode="numeric"
+              aria-label="Cena od (zł)"
               placeholder="od"
               value={priceFrom}
               onChange={(e) => setPriceFrom(e.target.value)}
@@ -118,6 +122,7 @@ export default function SearchBar({
             <input
               type="number"
               inputMode="numeric"
+              aria-label="Cena do (zł)"
               placeholder="do"
               value={priceTo}
               onChange={(e) => setPriceTo(e.target.value)}

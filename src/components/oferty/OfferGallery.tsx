@@ -88,7 +88,7 @@ export default function OfferGallery({
         e.stopPropagation();
         go(dir);
       }}
-      className="absolute top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-forest-950/70 text-cream backdrop-blur transition hover:bg-forest-950/90 hover:text-gold-300"
+      className="absolute top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-forest-950/70 text-cream backdrop-blur transition hover:bg-forest-950/90 hover:text-gold-300"
       style={dir < 0 ? { left: "0.75rem" } : { right: "0.75rem" }}
     >
       <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
@@ -137,8 +137,7 @@ export default function OfferGallery({
 
       {/* Główne zdjęcie */}
       <div
-        className="group relative aspect-[16/10] cursor-zoom-in overflow-hidden rounded-3xl border border-gold-500/15"
-        onClick={() => setLightbox(true)}
+        className="group relative aspect-[16/10] overflow-hidden rounded-3xl border border-gold-500/15"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
@@ -154,6 +153,16 @@ export default function OfferGallery({
               ? "bg-ivory object-contain p-2"
               : "object-cover transition-transform duration-700 group-hover:scale-105"
           }
+        />
+
+        {/* Przezroczysty przycisk na całym zdjęciu — otwiera lightbox.
+            Dostępny z klawiatury (Tab → Enter/Spacja). Strzałki mają wyższy
+            z-index (z-20), więc pozostają osobnymi, klikalnymi przyciskami. */}
+        <button
+          type="button"
+          onClick={() => setLightbox(true)}
+          aria-label={`Powiększ ${isPlan ? "plan" : "zdjęcie"} ${index + 1}`}
+          className="absolute inset-0 z-10 cursor-zoom-in"
         />
 
         {badge && !isPlan ? (

@@ -41,7 +41,10 @@ export default function Header() {
         <Logo />
 
         {/* Nawigacja desktop */}
-        <nav className="hidden lg:flex items-center gap-4 xl:gap-6">
+        <nav
+          aria-label="Główna nawigacja"
+          className="hidden lg:flex items-center gap-4 xl:gap-6"
+        >
           {nav.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(item.href + "/");
@@ -76,8 +79,9 @@ export default function Header() {
                   </Link>
 
                   {/* Rozwijane podkategorie. pt-3 mostkuje odstęp od nagłówka,
-                      żeby kursor nie „gubił" hovera w drodze do menu. */}
-                  <div className="invisible absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                      żeby kursor nie „gubił" hovera w drodze do menu.
+                      group-focus-within → menu otwiera się też z klawiatury (Tab). */}
+                  <div className="invisible absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                     <div className="min-w-[190px] rounded-xl border border-gold-500/20 bg-forest-950/98 p-2 shadow-xl shadow-black/40 backdrop-blur">
                       {item.children.map((child) => (
                         <Link
@@ -157,15 +161,17 @@ export default function Header() {
         </div>
       </Container>
 
-      {/* Panel mobilny */}
+      {/* Panel mobilny. inert gdy zamknięty → linki znikają z kolejności Tab
+          i z drzewa dostępności, mimo że pozostają w DOM (max-h-0). */}
       <div
+        inert={!open}
         className={cn(
           "lg:hidden overflow-hidden border-t border-gold-500/10 bg-forest-950/98 backdrop-blur transition-[max-height] duration-300",
           open ? "max-h-[760px]" : "max-h-0"
         )}
       >
         <Container className="py-4">
-          <nav className="flex flex-col">
+          <nav aria-label="Nawigacja mobilna" className="flex flex-col">
             {nav.map((item) => {
               // Pozycja z podkategoriami — rozwijana tapnięciem w strzałkę.
               // Nagłówek pozostaje linkiem do pełnego listingu.

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/cn";
 
 const fieldCls =
-  "w-full rounded-lg border border-forest-600/60 bg-forest-950/50 px-3.5 py-3 text-sm text-cream placeholder:text-cream/40 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
+  "w-full rounded-lg border border-forest-600/60 bg-forest-950/50 px-3.5 py-3 text-sm text-cream placeholder:text-cream/55 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
 
 // Wysyłka przez FormSubmit.co — bez własnego backendu (działa na GitHub Pages).
 // Ten sam adres, co formularz wyceny i rekrutacji (endpoint jest już aktywny).
@@ -66,7 +66,10 @@ export default function ContactForm({
 
   if (sent) {
     return (
-      <div className="rounded-2xl border border-gold-500/30 bg-forest-800 p-8 text-center">
+      <div
+        role="status"
+        className="rounded-2xl border border-gold-500/30 bg-forest-800 p-8 text-center"
+      >
         <p className="font-display text-xl text-gold-400">Dziękujemy!</p>
         <p className="mt-2 text-sm text-cream/75">
           Wiadomość została wysłana. Odezwiemy się najszybciej, jak to możliwe.
@@ -91,6 +94,8 @@ export default function ContactForm({
         <input
           required
           name="name"
+          aria-label="Imię i nazwisko"
+          autoComplete="name"
           placeholder="Imię i nazwisko"
           className={fieldCls}
         />
@@ -98,17 +103,32 @@ export default function ContactForm({
           required
           name="phone"
           type="tel"
+          aria-label="Telefon"
+          autoComplete="tel"
           placeholder="Telefon"
           className={fieldCls}
         />
       </div>
-      <input name="email" type="email" placeholder="E-mail" className={fieldCls} />
+      <input
+        name="email"
+        type="email"
+        aria-label="E-mail"
+        autoComplete="email"
+        placeholder="E-mail"
+        className={fieldCls}
+      />
       {!compact && (
-        <input name="subject" placeholder="Temat" className={fieldCls} />
+        <input
+          name="subject"
+          aria-label="Temat"
+          placeholder="Temat"
+          className={fieldCls}
+        />
       )}
       <textarea
         required
         name="message"
+        aria-label="Wiadomość"
         rows={compact ? 3 : 4}
         placeholder="Wiadomość"
         className={cn(fieldCls, "resize-none")}
@@ -134,7 +154,10 @@ export default function ContactForm({
       </label>
 
       {error && (
-        <p className="rounded-lg border border-red-500/40 bg-red-500/10 px-3.5 py-2.5 text-sm text-red-300">
+        <p
+          role="alert"
+          className="rounded-lg border border-red-500/40 bg-red-500/10 px-3.5 py-2.5 text-sm text-red-300"
+        >
           {error}
         </p>
       )}

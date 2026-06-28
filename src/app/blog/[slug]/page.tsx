@@ -56,7 +56,7 @@ export default async function PostPage(props: PageProps<"/blog/[slug]">) {
         ]}
       />
       <Container className="max-w-3xl">
-        <nav className="mb-6 text-sm text-cream/55">
+        <nav aria-label="Okruszki" className="mb-6 text-sm text-cream/55">
           <Link href="/blog" className="hover:text-gold-300">
             ← Wróć do bloga
           </Link>
@@ -123,7 +123,7 @@ export default async function PostPage(props: PageProps<"/blog/[slug]">) {
         </div>
 
         {post.note && (
-          <p className="mt-10 border-t border-gold-500/15 pt-5 text-xs leading-relaxed text-cream/45">
+          <p className="mt-10 border-t border-gold-500/15 pt-5 text-xs leading-relaxed text-cream/60">
             {post.note}
           </p>
         )}

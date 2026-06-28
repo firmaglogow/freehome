@@ -13,13 +13,17 @@ export default function People({
   return (
     <section className="border-y border-gold-500/10 bg-forest-800 py-20 sm:py-28">
       <Container>
-        {withHeading && (
+        {withHeading ? (
           <SectionHeading
             eyebrow="Poznaj nas"
             title="Zespół FREE HOME"
             subtitle="Ludzie, do których trafiasz bezpośrednio — i zaufany partner kredytowy. Bez hierarchii, bez infolinii."
             align="center"
           />
+        ) : (
+          // Bez widocznego nagłówka (np. na /ludzie pod PageHeader) i tak
+          // potrzebny h2, by nie powstała luka w hierarchii (h1 → h3).
+          <h2 className="sr-only">Zespół FREE HOME</h2>
         )}
 
         <div className="mx-auto mt-12 grid max-w-6xl gap-7 sm:grid-cols-2 lg:grid-cols-4">
@@ -44,7 +48,7 @@ export default function People({
                   </h3>
                   <p className="text-sm text-gold-400">{p.role}</p>
                   {p.partnerLabel && (
-                    <p className="mt-0.5 text-xs uppercase tracking-wide text-cream/45">
+                    <p className="mt-0.5 text-xs uppercase tracking-wide text-cream/60">
                       {p.partnerLabel}
                     </p>
                   )}

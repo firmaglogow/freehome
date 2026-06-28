@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/cn";
 
 const fieldCls =
-  "w-full rounded-lg border border-forest-600/60 bg-forest-950/50 px-3.5 py-3 text-sm text-cream placeholder:text-cream/40 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
+  "w-full rounded-lg border border-forest-600/60 bg-forest-950/50 px-3.5 py-3 text-sm text-cream placeholder:text-cream/55 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
 const labelCls = "mb-1.5 block text-xs font-medium text-cream/60";
 
 // Wysyłka przez FormSubmit.co — bez własnego backendu (działa na GitHub Pages).
@@ -201,7 +201,7 @@ export default function KarieraForm() {
             className="sr-only"
             onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
           />
-          <p className="mt-1.5 text-xs text-cream/45">
+          <p className="mt-1.5 text-xs text-cream/60">
             Nie masz CV pod ręką? Nie szkodzi — napisz parę zdań wyżej.
           </p>
         </div>

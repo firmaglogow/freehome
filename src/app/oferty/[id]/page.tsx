@@ -90,11 +90,17 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
         ]}
       />
       <Container>
-        <nav className="mb-6 text-sm text-cream/55">
+        <nav aria-label="Okruszki" className="mb-6 text-sm text-cream/55">
           <Link href="/oferty" className="hover:text-gold-300">
             ← Wróć do ofert
           </Link>
         </nav>
+
+        {/* Jedyny h1 strony. Tytuł oferty wizualnie pojawia się w panelu z ceną
+            (renderowanym dwukrotnie: mobile + desktop), więc tam jest tylko <p>.
+            Ten sr-only h1 gwarantuje poprawną hierarchię (h1 → h2) w obu
+            układach, niezależnie od kolejności kolumn w siatce. */}
+        <h1 className="sr-only">{offer.title}</h1>
 
         <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
           {/* Galeria + opis */}
@@ -158,7 +164,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
                     style={{ border: 0 }}
                   />
                 </div>
-                <p className="mt-2 text-xs text-cream/45">
+                <p className="mt-2 text-xs text-cream/60">
                   Lokalizacja przybliżona — dokładny adres podajemy przy
                   kontakcie.
                 </p>
