@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalkulator kosztów notarialnych — koszty zakupu nieruchomości | FREE HOME</title>
+<meta name="description" content="Policz orientacyjne koszty notarialne i okołotransakcyjne przy zakupie mieszkania lub domu: taksa notarialna, podatek PCC, opłaty sądowe (wpis do księgi wieczystej, hipoteka), wypisy aktu. Wynik orientacyjny (czerwiec 2026).">
+<style>
+  :root{
+    --forest-950:#0c1f15; --forest-900:#11291c; --forest-800:#173626;
+    --forest-600:#2f5a41; --gold-500:#c9a227; --gold-400:#d8b94b;
+    --cream:#f3efe3; --cream-dim:#bfc7bd;
+    --green:#45b35e; --red:#d24c3a; --blue:#5b8fc9; --purple:#b07fd0;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,var(--forest-950),var(--forest-900));
+    color:var(--cream); padding:18px; min-height:100%;
+  }
+  h1{font-size:24px;margin:0 0 4px;letter-spacing:.3px}
+  h1 span{color:var(--gold-400)}
+  .sub{color:var(--cream-dim);font-size:14px;margin:0 0 16px;max-width:820px;line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto}
+  .back{
+    display:inline-flex;align-items:center;gap:7px;margin:0 0 14px;
+    padding:8px 14px;border-radius:999px;text-decoration:none;
+    background:var(--forest-800);border:1px solid rgba(201,162,39,.25);
+    color:var(--gold-400);font-size:13px;font-weight:600;
+    transition:border-color .15s,background .15s
+  }
+  .back:hover{border-color:var(--gold-500);background:var(--forest-600)}
+  .back span{font-size:16px;line-height:1}
+  .grid{display:grid;gap:16px}
+  @media(min-width:820px){.grid{grid-template-columns:1.15fr 1fr;align-items:start}}
+  .card{
+    background:var(--forest-800);border:1px solid rgba(201,162,39,.18);
+    border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.35)
+  }
+  .card h2{font-size:13px;margin:0 0 16px;color:var(--gold-400);text-transform:uppercase;letter-spacing:1px}
+
+  /* --- pojedynczy parametr (label + pole + suwak) --- */
+  .ctrl{margin-bottom:20px}
+  .ctrl:last-child{margin-bottom:0}
+  .ctrl .top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}
+  .ctrl label{font-size:14px;color:var(--cream);font-weight:600}
+  .ctrl .hint{font-size:12px;color:var(--cream-dim)}
+  .valbox{display:inline-flex;align-items:baseline;gap:5px;
+    background:var(--forest-950);border:1px solid var(--forest-600);
+    border-radius:9px;padding:7px 11px}
+  .valbox input{
+    width:120px;background:transparent;border:0;outline:none;color:var(--gold-400);
+    font-size:18px;font-weight:800;text-align:right;letter-spacing:.3px;
+    font-variant-numeric:tabular-nums
+  }
+  .valbox .unit{font-size:13px;color:var(--cream-dim);font-weight:600}
+
+  /* --- suwak --- */
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
+    background:linear-gradient(90deg,var(--gold-500) var(--p,40%),var(--forest-600) var(--p,40%));
+    outline:none;cursor:pointer;margin:0
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:var(--gold-400);border:3px solid var(--forest-950);
+    box-shadow:0 2px 6px rgba(0,0,0,.5);cursor:pointer
+  }
+  input[type=range]::-moz-range-thumb{
+    width:22px;height:22px;border-radius:50%;background:var(--gold-400);
+    border:3px solid var(--forest-950);box-shadow:0 2px 6px rgba(0,0,0,.5);cursor:pointer
+  }
+  .ends{display:flex;justify-content:space-between;font-size:11px;color:var(--cream-dim);margin-top:5px}
+
+  /* --- przełączniki (segmented) --- */
+  .seg{display:flex;gap:8px;background:var(--forest-950);border:1px solid var(--forest-600);
+    border-radius:11px;padding:5px}
+  .seg button{
+    flex:1;background:transparent;border:0;cursor:pointer;color:var(--cream-dim);
+    font-family:inherit;font-size:13.5px;font-weight:700;padding:10px 8px;border-radius:8px;
+    transition:background .15s,color .15s;line-height:1.25
+  }
+  .seg button small{display:block;font-weight:500;font-size:11px;opacity:.75;margin-top:2px}
+  .seg button.on{background:var(--gold-500);color:var(--forest-950)}
+  .seg button.on small{opacity:.8}
+
+  /* --- checkbox opcji --- */
+  .opt{display:flex;gap:9px;align-items:flex-start;margin-top:14px;
+    background:var(--forest-950);border:1px solid var(--forest-600);border-radius:11px;padding:12px 13px}
+  .opt input{margin-top:2px;flex:none;accent-color:var(--gold-500);width:17px;height:17px}
+  .opt label{font-size:13px;color:var(--cream);line-height:1.45;cursor:pointer}
+  .opt label small{display:block;color:var(--cream-dim);font-size:11.5px;margin-top:2px}
+  .opt.off{opacity:.45}
+
+  /* --- wynik --- */
+  .resultcard{background:linear-gradient(160deg,var(--forest-800),#143020);
+    border:1px solid rgba(201,162,39,.3)}
+  .rlead{font-size:13px;color:var(--cream-dim);text-transform:uppercase;letter-spacing:1px;margin:0 0 6px}
+  .rbig{font-size:46px;font-weight:800;line-height:1;color:var(--gold-400);letter-spacing:.5px;
+    font-variant-numeric:tabular-nums}
+  .rbig small{font-size:20px;font-weight:600;color:var(--cream-dim);margin-left:6px}
+  .rtotal{margin-top:10px;font-size:13px;color:var(--cream-dim)}
+  .rtotal b{color:var(--cream);font-weight:700;font-variant-numeric:tabular-nums}
+
+  /* --- pasek udziału kosztów (zamiast wykresu) --- */
+  .bar{display:flex;height:14px;border-radius:99px;overflow:hidden;margin:18px 0 14px;
+    background:var(--forest-950);border:1px solid var(--forest-600)}
+  .bar span{height:100%;transition:width .25s ease}
+  .seg-taksa{background:var(--gold-500)} .seg-pcc{background:var(--red)}
+  .seg-sad{background:var(--blue)} .seg-wyp{background:var(--purple)} .seg-hip{background:var(--green)}
+
+  /* --- lista pozycji kosztów --- */
+  .lines{list-style:none;margin:6px 0 0;padding:0}
+  .lines li{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px}
+  .lines li:last-child{border-bottom:0}
+  .lines .nm{display:flex;align-items:center;gap:9px;color:var(--cream)}
+  .lines .dot{width:11px;height:11px;border-radius:3px;flex:none}
+  .lines .nm small{display:block;color:var(--cream-dim);font-size:11.5px;font-weight:400}
+  .lines .vl{font-weight:700;color:var(--cream);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .lines li.muted .nm,.lines li.muted .vl{color:var(--cream-dim);opacity:.7}
+
+  .btn-print{
+    width:100%;margin-top:16px;background:transparent;color:var(--gold-400);
+    border:1px solid rgba(201,162,39,.4);border-radius:10px;padding:12px;font-size:14px;
+    font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;
+    justify-content:center;gap:8px;transition:background .15s,border-color .15s}
+  .btn-print:hover{background:var(--forest-600);border-color:var(--gold-500)}
+
+  /* --- karta CTA (kontakt z agentem) --- */
+  .ctacard h2{margin-bottom:10px}
+  .cta-intro{font-size:13px;color:var(--cream-dim);line-height:1.55;margin:0 0 14px}
+  .cta-row{display:flex;gap:10px;flex-wrap:wrap}
+  .cta-btn{flex:1;min-width:150px;text-align:center;text-decoration:none;border-radius:10px;
+    padding:12px;font-size:14px;font-weight:800;font-family:inherit;transition:opacity .15s,background .15s}
+  .cta-btn.gold{background:var(--gold-500);color:var(--forest-950)} .cta-btn.gold:hover{background:var(--gold-400)}
+  .cta-btn.ghost{background:transparent;color:var(--cream);border:1px solid var(--forest-600)}
+  .cta-btn.ghost:hover{border-color:var(--gold-500)}
+
+  .disc{color:var(--cream-dim);font-size:11px;margin-top:18px;line-height:1.6;
+    border-top:1px solid rgba(255,255,255,.08);padding-top:13px;max-width:900px}
+  .disc b{color:var(--cream-dim)}
+  .foot{color:var(--cream-dim);font-size:12px;text-align:center;margin-top:16px;line-height:1.5}
+
+  /* --- nagłówek raportu — widoczny tylko przy druku --- */
+  .printhead{display:none}
+
+  @media print{
+    body{background:#fff;color:#111;padding:0}
+    .back,.btn-print,.ctacard,input[type=range],.ends,.seg,.opt{display:none !important}
+    .printhead{display:block;margin:0 0 14px;border-bottom:2px solid #c9a227;padding-bottom:10px}
+    .printhead .ph-brand{font-size:18px;font-weight:800;color:#111}
+    .printhead .ph-brand b{color:#9a7d1e}
+    .printhead .ph-meta{font-size:12px;color:#555;margin-top:3px}
+    h1,h1 span{color:#111}
+    .sub{color:#444}
+    .card{background:#fff;border:1px solid #ddd;box-shadow:none;break-inside:avoid}
+    .card h2{color:#9a7d1e}
+    .resultcard{background:#faf8f1}
+    .rbig,.rbig small{color:#111}
+    .rtotal,.rtotal b{color:#111}
+    .lines .nm,.lines .nm small,.lines .vl{color:#111}
+    .valbox{border-color:#ccc}.valbox input{color:#111}
+    .disc,.foot{color:#555}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../dla-klienta/"><span>&larr;</span> Wróć do: Dla klienta</a>
+
+  <div class="printhead">
+    <div class="ph-brand">FREE HOME <b>Nieruchomości</b></div>
+    <div class="ph-meta">Raport — orientacyjne koszty notarialne zakupu nieruchomości · <span id="phDate"></span></div>
+  </div>
+
+  <h1>Kalkulator kosztów <span>notarialnych</span></h1>
+  <p class="sub">Sprawdź orientacyjnie, ile poza ceną mieszkania lub domu zapłacisz przy zakupie: taksa notarialna, podatek PCC, opłaty sądowe (wpis do księgi wieczystej, hipoteka) i wypisy aktu. Przesuń suwak ceny i wybierz opcje — koszty przeliczą się od razu.</p>
+
+  <div class="grid">
+    <!-- PARAMETRY -->
+    <div class="card">
+      <h2>Parametry zakupu</h2>
+
+      <!-- Cena nieruchomości -->
+      <div class="ctrl">
+        <div class="top">
+          <label for="cenaN">Cena nieruchomości</label>
+          <span class="valbox"><input id="cenaN" type="text" inputmode="numeric" value="350 000"><span class="unit">zł</span></span>
+        </div>
+        <input id="cenaR" type="range" min="50000" max="2000000" step="10000" value="350000">
+        <div class="ends"><span>50 000 zł</span><span>2 000 000 zł</span></div>
+      </div>
+
+      <!-- Rynek -->
+      <div class="ctrl">
+        <div class="top"><label>Rodzaj rynku</label><span class="hint">wpływa na podatek</span></div>
+        <div class="seg" id="segRynek">
+          <button type="button" data-v="wtorny" class="on">Rynek wtórny<small>z drugiej ręki · PCC 2%</small></button>
+          <button type="button" data-v="pierwotny">Rynek pierwotny<small>od dewelopera · cena z VAT</small></button>
+        </div>
+      </div>
+
+      <!-- Finansowanie -->
+      <div class="ctrl">
+        <div class="top"><label>Sposób zakupu</label><span class="hint">kredyt = wpis hipoteki</span></div>
+        <div class="seg" id="segFin">
+          <button type="button" data-v="gotowka" class="on">Gotówka</button>
+          <button type="button" data-v="kredyt">Na kredyt<small>+ hipoteka w KW</small></button>
+        </div>
+      </div>
+
+      <!-- Opcja: pierwsze mieszkanie (zwolnienie z PCC) -->
+      <div class="opt" id="optPierwsze">
+        <input id="pierwsze" type="checkbox">
+        <label for="pierwsze">To moje pierwsze mieszkanie / dom
+          <small>Zakup pierwszej nieruchomości na rynku wtórnym jest zwolniony z podatku PCC 2% (ustawa o PCC, art. 9 pkt 17).</small>
+        </label>
+      </div>
+    </div>
+
+    <!-- PRAWA KOLUMNA: wynik + CTA -->
+    <div class="rightcol">
+      <!-- WYNIK -->
+      <div class="card resultcard">
+        <p class="rlead">Koszty dodatkowe (poza ceną)</p>
+        <div class="rbig"><span id="rSuma">—</span> <small>zł</small></div>
+        <p class="rtotal">Razem z ceną nieruchomości: <b id="rRazem">—</b></p>
+
+        <div class="bar" id="bar">
+          <span class="seg-taksa" id="bTaksa"></span>
+          <span class="seg-pcc" id="bPcc"></span>
+          <span class="seg-sad" id="bSad"></span>
+          <span class="seg-hip" id="bHip"></span>
+          <span class="seg-wyp" id="bWyp"></span>
+        </div>
+
+        <ul class="lines">
+          <li id="liTaksa">
+            <span class="nm"><span class="dot seg-taksa"></span>Taksa notarialna <small>maksymalna wg rozporządzenia + 23% VAT</small></span>
+            <span class="vl" id="vTaksa">—</span>
+          </li>
+          <li id="liPcc">
+            <span class="nm"><span class="dot seg-pcc"></span>Podatek PCC <small id="sPcc">2% od ceny</small></span>
+            <span class="vl" id="vPcc">—</span>
+          </li>
+          <li id="liSad">
+            <span class="nm"><span class="dot seg-sad"></span>Opłaty sądowe (KW) <small id="sSad">wpis prawa własności</small></span>
+            <span class="vl" id="vSad">—</span>
+          </li>
+          <li id="liHip">
+            <span class="nm"><span class="dot seg-hip"></span>Koszty hipoteki <small>wpis hipoteki 200 zł + PCC 19 zł</small></span>
+            <span class="vl" id="vHip">—</span>
+          </li>
+          <li id="liWyp">
+            <span class="nm"><span class="dot seg-wyp"></span>Wypisy aktu (szac.) <small>ok. 6 zł + VAT za stronę</small></span>
+            <span class="vl" id="vWyp">—</span>
+          </li>
+        </ul>
+
+        <button type="button" class="btn-print" onclick="window.print()">🖨️ Drukuj / zapisz PDF</button>
+      </div>
+
+      <!-- CTA: kontakt z agentem -->
+      <div class="card ctacard">
+        <h2>Masz pytania o koszty zakupu?</h2>
+        <p class="cta-intro">Przy zakupie z FREE HOME przeprowadzimy Cię przez całość — od rezerwacji notariusza, przez dokumenty, po podpisanie aktu. Bez ukrytych kosztów. Zadzwoń lub napisz, policzymy wszystko pod konkretną nieruchomość.</p>
+        <div class="cta-row">
+          <a class="cta-btn gold" href="tel:+48537264666">Zadzwoń: 537 264 666</a>
+          <a class="cta-btn ghost" href="../kontakt/">Napisz do nas</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="disc">
+    <b>Uwaga:</b> To kalkulator <b>orientacyjny</b>. <b>Taksa notarialna</b> liczona jest według <b>maksymalnych</b>
+    stawek z rozporządzenia Ministra Sprawiedliwości z 28.06.2004 r. — w praktyce notariusz może zaproponować stawkę
+    niższą, więc realny koszt bywa mniejszy. <b>PCC</b> (2% rynek wtórny) płaci kupujący; zakup od dewelopera (rynek
+    pierwotny) jest objęty VAT zawartym w cenie i nie podlega PCC. Zwolnienie z PCC dotyczy zakupu <b>pierwszego</b>
+    mieszkania/domu na rynku wtórnym (przy spełnieniu warunków ustawy). Opłaty sądowe i wypisy mają charakter
+    szacunkowy (liczba stron aktu i wypisów bywa różna). Wynik nie jest ofertą ani poradą prawną/podatkową
+    (art. 66 §1 Kodeksu cywilnego); wiążące koszty potwierdza kancelaria notarialna. Stan: czerwiec 2026.
+  </p>
+
+  <p class="foot">FREE HOME Nieruchomości • narzędzie poglądowe dla klientów</p>
+</div>
+
+<script>
+// ===================================================================
+//  Kalkulator kosztów notarialnych przy zakupie nieruchomości.
+//  Wszystko po stronie klienta. Suwak ↔ pole tekstowe zsynchronizowane.
+// ===================================================================
+function fmt(n){
+  if(n==null || !isFinite(n)) return "—";
+  return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g," ");
+}
+function parseInt2(s){
+  const v = parseInt(String(s).replace(/[^\d]/g,""),10);
+  return isNaN(v) ? 0 : v;
+}
+function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
+
+const VAT = 1.23;
+
+// Taksa notarialna — MAKSYMALNA stawka wg rozporządzenia z 28.06.2004 r. (§ 3).
+function taksaNetto(w){
+  let t;
+  if(w <= 3000)            t = 100;
+  else if(w <= 10000)      t = 100  + 0.03  * (w - 3000);
+  else if(w <= 30000)      t = 310  + 0.02  * (w - 10000);
+  else if(w <= 60000)      t = 710  + 0.01  * (w - 30000);
+  else if(w <= 1000000)    t = 1010 + 0.004 * (w - 60000);
+  else if(w <= 2000000)    t = 4770 + 0.002 * (w - 1000000);
+  else                     t = 6770 + 0.0025 * (w - 2000000);
+  return Math.min(t, 10000); // ustawowy limit maksymalnej taksy
+}
+
+const cenaR=document.getElementById("cenaR"), cenaN=document.getElementById("cenaN");
+let rynek="wtorny", fin="gotowka", pierwsze=false;
+
+function paint(r){
+  const p = (r.value - r.min) / (r.max - r.min) * 100;
+  r.style.setProperty("--p", p + "%");
+}
+
+function setSeg(group, value){
+  group.querySelectorAll("button").forEach(b=>{
+    b.classList.toggle("on", b.dataset.v === value);
+  });
+}
+
+function recalc(){
+  const cena = clamp(parseInt2(cenaN.value), 0, 50000000);
+
+  // 1) Taksa notarialna (brutto, z VAT)
+  const taksa = taksaNetto(cena) * VAT;
+
+  // 2) PCC — 2% (rynek wtórny). Pierwotny: 0%. Pierwsze mieszkanie (wtórny): zwolnienie.
+  const pierwszeAktywne = (rynek === "wtorny");
+  const pccZakup = (rynek === "wtorny" && !(pierwsze && pierwszeAktywne)) ? 0.02 * cena : 0;
+
+  // 3) Opłaty sądowe (KW): wpis własności 200 zł; rynek pierwotny dodatkowo założenie KW 100 zł.
+  const wpisWlasnosc = 200;
+  const zalozenieKW = (rynek === "pierwotny") ? 100 : 0;
+  const sad = wpisWlasnosc + zalozenieKW;
+
+  // 4) Koszty hipoteki (tylko kredyt): wpis hipoteki 200 zł + PCC od hipoteki 19 zł.
+  const hip = (fin === "kredyt") ? (200 + 19) : 0;
+
+  // 5) Wypisy aktu — szacunek: 6 zł netto/strona * VAT, ~ 10 stron * potrzebne wypisy.
+  const wyp = Math.round(6 * VAT * 26); // ~192 zł, wartość poglądowa
+
+  const suma = taksa + pccZakup + sad + hip + wyp;
+  const razem = cena + suma;
+
+  // — wynik liczbowy —
+  document.getElementById("rSuma").textContent  = fmt(suma);
+  document.getElementById("rRazem").textContent = fmt(razem) + " zł";
+  document.getElementById("vTaksa").textContent = fmt(taksa) + " zł";
+  document.getElementById("vPcc").textContent   = fmt(pccZakup) + " zł";
+  document.getElementById("vSad").textContent   = fmt(sad) + " zł";
+  document.getElementById("vHip").textContent   = fmt(hip) + " zł";
+  document.getElementById("vWyp").textContent   = fmt(wyp) + " zł";
+
+  // — podpisy dynamiczne —
+  document.getElementById("sPcc").textContent =
+    (rynek === "pierwotny") ? "0% — zakup od dewelopera (VAT w cenie)"
+    : (pierwsze ? "0% — zwolnienie (pierwsze mieszkanie)" : "2% od ceny");
+  document.getElementById("sSad").textContent =
+    (rynek === "pierwotny") ? "wpis własności + założenie KW" : "wpis prawa własności";
+
+  // — wyszarzenie pozycji zerowych —
+  document.getElementById("liPcc").classList.toggle("muted", pccZakup === 0);
+  document.getElementById("liHip").classList.toggle("muted", hip === 0);
+
+  // — opcja „pierwsze mieszkanie" aktywna tylko na rynku wtórnym —
+  document.getElementById("optPierwsze").classList.toggle("off", rynek !== "wtorny");
+  document.getElementById("pierwsze").disabled = (rynek !== "wtorny");
+
+  // — pasek udziału kosztów —
+  const tot = suma || 1;
+  document.getElementById("bTaksa").style.width = (taksa/tot*100) + "%";
+  document.getElementById("bPcc").style.width   = (pccZakup/tot*100) + "%";
+  document.getElementById("bSad").style.width   = (sad/tot*100) + "%";
+  document.getElementById("bHip").style.width   = (hip/tot*100) + "%";
+  document.getElementById("bWyp").style.width   = (wyp/tot*100) + "%";
+}
+
+// suwak ↔ pole
+function syncFromRange(){ cenaN.value = fmt(parseInt2(cenaR.value)); paint(cenaR); recalc(); }
+function syncFromInput(){
+  const v = clamp(parseInt2(cenaN.value), +cenaR.min, +cenaR.max);
+  cenaR.value = v; paint(cenaR); recalc();
+}
+cenaR.addEventListener("input", syncFromRange);
+cenaN.addEventListener("input", syncFromInput);
+cenaN.addEventListener("blur", ()=>{ cenaN.value = fmt(parseInt2(cenaN.value)); });
+
+// przełączniki
+document.getElementById("segRynek").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  rynek = b.dataset.v; setSeg(e.currentTarget, rynek); recalc();
+});
+document.getElementById("segFin").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  fin = b.dataset.v; setSeg(e.currentTarget, fin); recalc();
+});
+document.getElementById("pierwsze").addEventListener("change", e=>{
+  pierwsze = e.target.checked; recalc();
+});
+
+// data w nagłówku raportu (druk)
+document.getElementById("phDate").textContent =
+  new Date().toLocaleDateString("pl-PL", {day:"numeric", month:"long", year:"numeric"});
+
+// stan początkowy
+paint(cenaR);
+recalc();
+</script>
+</body>
+</html>

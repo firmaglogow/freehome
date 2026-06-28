@@ -2,6 +2,7 @@ import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
+import NotaryCalcCard from "@/components/dla-klienta/NotaryCalcCard";
 import { site } from "@/lib/site";
 import JsonLd from "@/components/seo/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
@@ -9,7 +10,7 @@ import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "Dla klienta",
   description:
-    "Narzędzia dla klientów FREE HOME: opinie Google naszych klientów, interaktywna mapa osiedli Głogowa z wyszukiwarką ulic, realne ceny transakcyjne mieszkań w okolicy (akty notarialne, RCN/GUGiK) oraz najczęstsze pytania (FAQ) o kupnie i sprzedaży nieruchomości.",
+    "Narzędzia dla klientów FREE HOME: opinie Google naszych klientów, interaktywna mapa osiedli Głogowa z wyszukiwarką ulic, realne ceny transakcyjne mieszkań w okolicy (akty notarialne, RCN/GUGiK), kalkulator raty kredytu hipotecznego, kalkulator kosztów notarialnych zakupu oraz najczęstsze pytania (FAQ) o kupnie i sprzedaży nieruchomości.",
   path: "/dla-klienta",
   ogImage: "/og/dla-klienta.jpg",
 });
@@ -249,6 +250,12 @@ export default function DlaKlientaPage() {
                 </Reveal>
               );
             })}
+
+            {/* Szósty kafelek — kalkulator kosztów notarialnych (modal + iframe).
+                Komponent kliencki: dopasowany do siatki, otwiera modal zamiast linku. */}
+            <Reveal delay={tiles.length * 80}>
+              <NotaryCalcCard />
+            </Reveal>
           </div>
         </Container>
       </section>
