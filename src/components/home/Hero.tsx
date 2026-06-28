@@ -41,18 +41,11 @@ export default function Hero({ offersCount }: { offersCount: number }) {
           <p className="mt-5 max-w-xl text-lg text-cream/80">{site.subtitle}</p>
         </div>
 
-        {/* Wyszukiwarka — serce hero */}
-        <div className="mt-9 max-w-4xl">
+        {/* Wyszukiwarka — serce hero. Przesunięta niżej, węższa o ~20%
+            (max-w-4xl 56rem → 45rem). Wysokość i układ mobilny: w SearchBar. */}
+        <div className="mt-16 max-w-[45rem] sm:mt-24">
           <SearchBar offersCount={offersCount} />
         </div>
-
-        {/* Pasek zaufania */}
-        <p className="mt-6 text-sm text-cream/70">
-          <span className="font-semibold text-gold-400">
-            {site.reviewsCount}+ opinii
-          </span>{" "}
-          ★★★★★ · TOP 25 Otodom · Orły Nieruchomości GOLD ×4
-        </p>
       </Container>
     </section>
   );

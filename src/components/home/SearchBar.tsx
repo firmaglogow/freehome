@@ -7,9 +7,9 @@ import { glogowOsiedla } from "@/lib/offers";
 import { cn } from "@/lib/cn";
 
 const fieldCls =
-  "w-full rounded-lg border border-forest-600/60 bg-forest-950/60 px-3.5 py-3 text-sm text-cream placeholder:text-cream/55 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
+  "w-full rounded-lg border border-forest-600/60 bg-forest-950/60 px-3 py-2.5 text-sm text-cream placeholder:text-cream/55 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
 
-const labelCls = "mb-1.5 block text-xs font-medium tracking-wide text-cream/70";
+const labelCls = "mb-1 block text-xs font-medium tracking-wide text-cream/70";
 
 export default function SearchBar({
   offersCount,
@@ -42,11 +42,11 @@ export default function SearchBar({
     <form
       onSubmit={submit}
       className={cn(
-        "rounded-2xl border border-gold-500/20 bg-forest-800/80 p-4 shadow-2xl shadow-black/40 backdrop-blur-md sm:p-5",
+        "rounded-2xl border border-gold-500/20 bg-forest-800/80 p-3 shadow-2xl shadow-black/40 backdrop-blur-md sm:p-4",
         variant === "hero" && "ring-1 ring-white/5"
       )}
     >
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-2.5 grid-flow-row-dense lg:grid-cols-3 xl:grid-cols-5">
         <div>
           <label className={labelCls} htmlFor="s-lok">
             Lokalizacja
@@ -104,7 +104,7 @@ export default function SearchBar({
           </select>
         </div>
 
-        <div>
+        <div className="col-span-2 lg:col-span-1">
           <label className={labelCls} htmlFor="s-cena-od">
             Cena (zł)
           </label>
@@ -153,7 +153,7 @@ export default function SearchBar({
 
       <button
         type="submit"
-        className="mt-4 w-full rounded-full bg-gold-500 px-6 py-3.5 text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
+        className="mt-3 w-full rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-forest-950 transition hover:bg-gold-400"
       >
         Szukaj — {offersCount}{" "}
         {offersCount === 1 ? "oferta" : offersCount < 5 ? "oferty" : "ofert"}
