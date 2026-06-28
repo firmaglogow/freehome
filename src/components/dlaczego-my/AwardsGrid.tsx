@@ -162,7 +162,7 @@ export default function AwardsGrid({
     <div className="flex flex-wrap justify-center gap-5">
       <GoldGradientDefs />
       {items.map((a, i) => (
-        <Reveal key={a.id} delay={(i % 3) * 70} className={`${itemCls} h-full`}>
+        <Reveal key={a.id} delay={(i % 3) * 70} className={itemCls}>
           <article className={cardCls}>
             {/* poświata na hover */}
             <span className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-gold-500/15 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
@@ -200,7 +200,7 @@ export default function AwardsGrid({
               {a.desc}
             </p>
             {(a.organizer || a.note) && (
-              <div className="relative mt-4 border-t border-gold-500/10 pt-3">
+              <div className="relative mt-auto border-t border-gold-500/10 pt-3">
                 {a.organizer && (
                   <p className="text-xs text-cream/45">{a.organizer}</p>
                 )}
