@@ -48,6 +48,13 @@ const nextConfig: NextConfig = {
   // uciekającym poza projekt — Turbopack odmawia wtedy podążania za nim, więc
   // TYLKO w tym przypadku cofamy root do katalogu nadrzędnego.
   turbopack: { root: turbopackRoot() },
+  // Limit liczby workerów fazy „Generating static pages" (statyczny eksport).
+  // Domyślnie Next bierze (liczba rdzeni − 1) = 13 na tym hoście (14 rdzeni),
+  // a każdy worker ładuje pełne dane ofert → suma pamięci przekracza UKRYTY
+  // limit LVE konta → kernel ubija build (SIGKILL/OOM, faza ~48/65 stron).
+  // `taskset` ogranicza CPU, ale NIE liczbę procesów — dopiero ten klucz ją tnie.
+  // 2 workery = bezpieczny kompromis (równoległość + ~6,5× mniej pamięci szczytowej).
+  experimental: { cpus: 2 },
   // Pomijamy klucz basePath, gdy prefiks jest pusty (własna domena w root).
   ...(basePath ? { basePath } : {}),
 };
