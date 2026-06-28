@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 // basePath musi być spójny z next.config.ts / image-loader.ts.
 // Kalkulator notarialny to samodzielny plik statyczny w public/kalkulator-notarialny/
@@ -43,7 +44,14 @@ function NotaryMark() {
 export default function NotaryCalcCard() {
   const [open, setOpen] = useState(false);
   const [loaded, setLoaded] = useState(false); // lazy-load iframe przy 1. otwarciu
+  const [mounted, setMounted] = useState(false); // portal dostępny dopiero na kliencie
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+
+  // Portal renderuje modal do <body>, poza wrapper <Reveal>, który ma CSS
+  // `transform` (animacja). Element z transformem staje się blokiem zawierającym
+  // dla `position: fixed` — bez portalu modal byłby uwięziony w komórce siatki
+  // (≈468 px), zamiast pokryć cały ekran. Portal to omija.
+  useEffect(() => setMounted(true), []);
 
   const openModal = useCallback(() => {
     setLoaded(true);
@@ -95,9 +103,11 @@ export default function NotaryCalcCard() {
         </span>
       </button>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-forest-950/80 p-4 backdrop-blur-sm max-sm:p-0"
+      {open &&
+        mounted &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-forest-950/80 p-4 backdrop-blur-sm max-sm:p-0"
           onClick={(e) => {
             if (e.target === e.currentTarget) closeModal();
           }}
@@ -124,8 +134,9 @@ export default function NotaryCalcCard() {
               />
             )}
           </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   );
 }
