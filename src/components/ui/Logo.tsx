@@ -18,7 +18,7 @@ export default function Logo({
       className={className}
     >
       <Image
-        src="/brand/logo.png"
+        src="/brand/logo.webp"
         alt={site.fullName}
         width={width}
         height={height}

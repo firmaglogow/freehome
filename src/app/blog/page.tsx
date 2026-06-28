@@ -23,7 +23,7 @@ export default function BlogPage() {
         eyebrow="Blog"
         title="Wiedza o rynku nieruchomości"
         subtitle="Porady, trendy i praktyczne przewodniki — prosto z lokalnego rynku."
-        image="/hero/blog.jpg"
+        image="/hero/blog.webp"
       />
 
       <section className="py-16 sm:py-20">

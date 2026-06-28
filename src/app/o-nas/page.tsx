@@ -23,7 +23,7 @@ export default function ONasPage() {
         eyebrow="O nas"
         title="Lokalne biuro, które zna Twoją okolicę"
         subtitle="Jesteśmy z Głogowa i tu pracujemy. Znamy rynek, sąsiedztwa i ludzi."
-        image="/hero/o-nas.jpg"
+        image="/hero/o-nas.webp"
       />
 
       <section className="py-16 sm:py-20">

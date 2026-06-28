@@ -121,7 +121,7 @@ const tiles: Tile[] = [
       // (spójnie z linkami external na tej stronie); next/image tu zbędny.
       // eslint-disable-next-line @next/next/no-img-element
       <img
-        src={`${BASE_PATH}/brand/logo-glogow.jpg`}
+        src={`${BASE_PATH}/brand/logo-glogow.webp`}
         alt=""
         className="h-full w-full object-cover"
       />
@@ -166,7 +166,7 @@ export default function DlaKlientaPage() {
         eyebrow="Dla klienta"
         title="Narzędzia dla klientów"
         subtitle="Wszystko, co przyda Ci się przy decyzji o nieruchomości — w jednym miejscu."
-        image="/hero/klucze-dom.jpg"
+        image="/hero/klucze-dom.webp"
       />
       <section className="py-16 sm:py-20">
         <Container>

@@ -20,7 +20,7 @@ export default function OpiniePage() {
         eyebrow="Opinie"
         title="Co mówią nasi klienci"
         subtitle={`Ponad ${site.reviewsCount} opinii i średnia 5,0. Zaufanie, na które pracujemy każdego dnia.`}
-        image="/hero/opinie.jpg"
+        image="/hero/opinie.webp"
       />
 
       <section className="py-16 sm:py-20">

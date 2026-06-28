@@ -20,7 +20,7 @@ export default function OfertyPage() {
         eyebrow="Oferty"
         title="Znajdź swoją nieruchomość"
         subtitle="Domy, mieszkania i działki w Głogowie i okolicach. Filtruj po lokalizacji, cenie i metrażu."
-        image="/hero/oferty.jpg"
+        image="/hero/oferty.webp"
       />
       <section className="py-12 sm:py-16">
         <Container>

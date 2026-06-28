@@ -19,7 +19,7 @@ export default function LudziePage() {
         eyebrow="Poznaj nas"
         title="Zespół FREE HOME"
         subtitle="Bez hierarchii, bez infolinii. Ludzie, którzy poprowadzą Twoją sprawę — i zaufany partner kredytowy."
-        image="/hero/zespol.jpg"
+        image="/hero/zespol.webp"
       />
       <People withHeading={false} />
     </>

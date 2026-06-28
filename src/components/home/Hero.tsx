@@ -8,7 +8,7 @@ export default function Hero({ offersCount }: { offersCount: number }) {
     <section className="relative isolate overflow-hidden">
       {/* Tło hero — [DO UZUPEŁNIENIA: docelowe zdjęcie Głogowa / nieruchomości] */}
       <Image
-        src="/hero/hero-dom.jpg"
+        src="/hero/hero-dom.webp"
         alt=""
         fill
         priority

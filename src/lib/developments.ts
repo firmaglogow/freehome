@@ -70,7 +70,7 @@ export const developments: Development[] = [
     slug: "osiedle-nova",
     name: "Osiedle Nova",
     developer: "MDBS Sp. z o.o.",
-    logo: "/rynek-pierwotny/nova.png",
+    logo: "/rynek-pierwotny/nova.webp",
     location: "Radwanice, pow. polkowicki",
     mapQuery: "Radwanice, powiat polkowicki",
     investmentId: 53117,
@@ -115,7 +115,7 @@ export const developments: Development[] = [
     slug: "osiedle-trzy-perly",
     name: "Osiedle Trzy Perły",
     developer: "Energy House Invest",
-    logo: "/rynek-pierwotny/trzyperly.png",
+    logo: "/rynek-pierwotny/trzyperly.webp",
     location: "Bytnik k. Głogowa",
     mapQuery: "Bytnik, gmina Głogów",
     investmentId: 55307,
@@ -182,7 +182,7 @@ export const developments: Development[] = [
     developer: "Bliźniaczy Zakątek",
     // ?v=2 — wymusza świeże pobranie loga (stara wersja z białym tłem siedziała
     // w cache przeglądarek pod tym samym URL-em; zmiana adresu = czysty refresh).
-    logo: "/rynek-pierwotny/blizniaczy-zakatek.png?v=2",
+    logo: "/rynek-pierwotny/blizniaczy-zakatek.webp?v=2",
     location: "Głogów / Szczyglice",
     mapQuery: "Szczyglice, gmina Głogów",
     // Opiekun inwestycji ustawiony ręcznie (w Esti opiekunem ofert jest Daria).

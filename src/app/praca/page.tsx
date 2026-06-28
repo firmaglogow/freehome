@@ -68,7 +68,7 @@ export default function PracaPage() {
       <section className="relative isolate flex min-h-[85vh] items-center overflow-hidden border-b border-gold-500/10 pt-32 pb-24">
         {/* Tło — zdjęcie biurka z kluczami w klimacie marki */}
         <Image
-          src="/hero/kariera.jpg"
+          src="/hero/kariera.webp"
           alt=""
           fill
           priority
