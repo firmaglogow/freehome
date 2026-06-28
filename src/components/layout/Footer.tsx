@@ -132,6 +132,13 @@ export default function Footer() {
             >
               Darmowa wycena
             </Link>
+            {/* Link tylko w stopce — FAQ świadomie poza górnym menu (nav). */}
+            <Link
+              href="/faq"
+              className="text-sm text-cream/70 hover:text-gold-400"
+            >
+              FAQ — najczęstsze pytania
+            </Link>
           </nav>
 
           {/* Nagrody + powiązane */}
