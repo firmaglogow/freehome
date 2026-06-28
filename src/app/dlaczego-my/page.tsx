@@ -48,7 +48,7 @@ const spotlight: Spot[] = [
     title: "Osobowość Roku 2025",
     blurb:
       "Wybór mieszkańców powiatu głogowskiego w kategorii Biznes i Przedsiębiorczość. Nagroda odebrana na gali wojewódzkiej we Wrocławiu.",
-    icon: "sparkle",
+    logo: "/nagrody/osobowosc-roku.webp",
   },
   {
     id: "orly-gold",
