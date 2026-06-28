@@ -110,15 +110,6 @@ export const certificates: Award[] = [
     organizer: "Federacja Porozumienie Polskiego Rynku Nieruchomości (PPRN)",
   },
   {
-    id: "certyfikat-partnerstwa",
-    title: "Certyfikat Partnerstwa",
-    year: "2022",
-    kind: "certyfikat",
-    icon: "people",
-    desc: "Wyróżnienie portalu za skuteczną promocję ofert i profesjonalizm współpracy.",
-    organizer: "Portal nieruchomosci-online.pl",
-  },
-  {
     id: "certyfikat-doradcy",
     title: "Certyfikat Doradcy ds. Nieruchomości",
     year: "2016",
@@ -180,6 +171,29 @@ export const companyAwards: Award[] = [
     desc: "Wyróżnienie potwierdzające pozycję lidera. Z rodziny Plebiscytów Branżowych ORŁY.",
     organizer: "Plebiscyty Branżowe ORŁY",
   },
+  {
+    id: "lider-jakosci-otodom",
+    title: "Lider Jakości Otodom 2025 — 2. miejsce w Polsce",
+    year: "2025",
+    kind: "wyroznienie",
+    icon: "medal",
+    desc:
+      "2. miejsce w Polsce wśród biur butikowych (do 49 ogłoszeń). Ocena kwartalna przez AI Otodom.",
+    detail:
+      "Drugie miejsce w Polsce w kategorii biur butikowych (do 49 ogłoszeń) za wynik 80–89,9% jakości ogłoszeń. Ocena kwartalna prowadzona przez AI Otodom — w pełni obiektywna i oparta wyłącznie na danych.",
+    organizer: "Otodom (Grupa OLX)",
+  },
+  {
+    id: "certyfikat-partnerstwa",
+    title: "Certyfikat Partnerstwa",
+    year: "2022",
+    kind: "certyfikat",
+    icon: "people",
+    desc: "Wyróżnienie portalu za skuteczną promocję ofert i profesjonalizm współpracy.",
+    detail:
+      "Certyfikat Partnerstwa przyznany przez portal nieruchomosci-online.pl za skuteczną promocję ofert oraz profesjonalizm współpracy — potwierdzenie wysokiej jakości prezentacji nieruchomości.",
+    organizer: "Portal nieruchomosci-online.pl",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -204,18 +218,6 @@ export const rankings: Award[] = [
     desc: "Jakość ogłoszeń 100/100. Ranking oparty wyłącznie na danych.",
     detail:
       "Miejsce w TOP 25 biur nieruchomości w Polsce wg Otodom przy jakości ogłoszeń 100/100. Ranking oparty wyłącznie na twardych danych: kompletność ogłoszeń, jakość zdjęć, terminowość aktualizacji.",
-    organizer: "Otodom (Grupa OLX)",
-  },
-  {
-    id: "lider-jakosci-otodom",
-    title: "Lider Jakości Otodom 2025 — 2. miejsce w Polsce",
-    year: "2025",
-    kind: "ranking",
-    icon: "medal",
-    desc:
-      "2. miejsce w Polsce wśród biur butikowych (do 49 ogłoszeń). Ocena kwartalna przez AI Otodom.",
-    detail:
-      "Drugie miejsce w Polsce w kategorii biur butikowych (do 49 ogłoszeń) za wynik 80–89,9% jakości ogłoszeń. Ocena kwartalna prowadzona przez AI Otodom — w pełni obiektywna.",
     organizer: "Otodom (Grupa OLX)",
   },
 ];

@@ -158,17 +158,22 @@ export default function AwardsGrid({
     };
   }, [active, close]);
 
-  const gridCls =
-    columns === 2 ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3";
+  // Szerokość kafelka liczona calc-iem, bo używamy flexa (nie grida): dzięki temu
+  // `flex-wrap justify-center` wyśrodkowuje niepełny ostatni rząd (np. 2 z 3 albo
+  // pojedynczy kafelek), a pełne rzędy nadal wypełniają całą szerokość. gap-5 = 1.25rem.
+  const itemCls =
+    columns === 2
+      ? "w-full sm:w-[calc((100%_-_1.25rem)/2)]"
+      : "w-full sm:w-[calc((100%_-_1.25rem)/2)] lg:w-[calc((100%_-_2.5rem)/3)]";
 
   const cardCls =
     "group flex h-full w-full cursor-pointer flex-col rounded-2xl border border-gold-500/15 bg-forest-800 p-6 text-left transition hover:-translate-y-0.5 hover:border-gold-500/40 hover:bg-forest-800/80";
 
   return (
     <>
-      <div className={`grid grid-cols-1 gap-5 ${gridCls}`}>
+      <div className="flex flex-wrap justify-center gap-5">
         {items.map((a, i) => (
-          <Reveal key={a.id} delay={(i % 3) * 70} className="h-full">
+          <Reveal key={a.id} delay={(i % 3) * 70} className={`${itemCls} h-full`}>
             <button type="button" onClick={() => setActive(a)} className={cardCls}>
               <div className="flex items-start justify-between gap-3">
                 <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-forest-950/60 text-gold-400 ring-1 ring-gold-500/20">
