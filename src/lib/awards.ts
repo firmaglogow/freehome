@@ -89,6 +89,7 @@ export const trademark: Award = {
   title: "Zastrzeżony znak towarowy ®",
   kind: "status",
   icon: "trademark",
+  logo: "/nagrody/znak-towarowy.webp",
   desc:
     "Nazwa i logo FREE HOME objęte prawem ochronnym Urzędu Patentowego RP — wyłączność na posługiwanie się marką na rynku nieruchomości.",
   detail:
@@ -104,6 +105,7 @@ export const certificates: Award[] = [
     year: "2023",
     kind: "certyfikat",
     icon: "shield",
+    logo: "/nagrody/licencja-pprn.webp",
     desc: "Nr licencji 25356 — etyka i standardy zawodowe potwierdzone przez federację branżową.",
     detail:
       "Licencja Pośrednika nr 25356 nadana przez Federację Porozumienie Polskiego Rynku Nieruchomości (PPRN). To dobrowolne, branżowe potwierdzenie kwalifikacji i etyki zawodowej — wykraczające poza ustawowe minimum.",
