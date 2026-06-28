@@ -42,6 +42,12 @@ export const site = {
     href: "https://www.freehomedesign.pl/",
   },
   reviewsCount: 269,
+  // Link do wizytówki Google z opiniami (jedno źródło prawdy: /opinie + /dla-klienta).
+  // Domyślnie wyszukiwarka Map Google po nazwie firmy (zawsze działa, trafia na wizytówkę).
+  // TODO(właściciel): podmień na DOKŁADNY link wizytówki (np. udostępnianie z Map Google
+  // albo skrót g.page/…), jeśli chcesz, by otwierał od razu kartę z opiniami.
+  googleReviewsUrl:
+    "https://www.google.com/maps/search/?api=1&query=FREE+HOME+Nieruchomo%C5%9Bci+G%C5%82og%C3%B3w",
   // Obszar działania — jedno źródło prawdy dla SEO (keywords w layout.tsx)
   // oraz JSON-LD (areaServed w page.tsx). Oferty faktycznie obejmują te miasta.
   areaServed: ["Głogów", "Polkowice", "Radwanice", "Przemków", "Sława"],

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ReviewsCarousel from "@/components/opinie/ReviewsCarousel";
+import AwardSeal from "@/components/ui/AwardSeal";
 import { awards, reviews, site } from "@/lib/site";
 
 export default function SocialProof() {
@@ -33,7 +34,7 @@ export default function SocialProof() {
           <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-cream/70">
             {awards.map((a) => (
               <li key={a} className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rotate-45 bg-gold-500" />
+                <AwardSeal className="h-5 w-5 shrink-0 text-gold-500" />
                 {a}
               </li>
             ))}

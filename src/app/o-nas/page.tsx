@@ -3,6 +3,7 @@ import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import People from "@/components/home/People";
+import AwardSeal from "@/components/ui/AwardSeal";
 import { awards, site } from "@/lib/site";
 import JsonLd from "@/components/seo/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
@@ -76,8 +77,9 @@ export default function ONasPage() {
             {awards.map((a) => (
               <span
                 key={a}
-                className="rounded-full border border-gold-500/25 bg-gold-500/5 px-4 py-2 text-sm text-gold-300"
+                className="inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-gold-500/5 px-4 py-2 text-sm text-gold-300"
               >
+                <AwardSeal className="h-4 w-4 shrink-0 text-gold-400" />
                 {a}
               </span>
             ))}

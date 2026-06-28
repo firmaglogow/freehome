@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Logo from "@/components/ui/Logo";
 import Container from "@/components/ui/Container";
+import AwardSeal from "@/components/ui/AwardSeal";
 import { awards, nav, site } from "@/lib/site";
 
 export default function Footer() {
@@ -140,7 +141,10 @@ export default function Footer() {
             </h3>
             <ul className="space-y-1.5 text-sm text-cream/70">
               {awards.map((a) => (
-                <li key={a}>{a}</li>
+                <li key={a} className="flex items-center gap-2">
+                  <AwardSeal className="h-4 w-4 shrink-0 text-gold-500/80" />
+                  {a}
+                </li>
               ))}
             </ul>
             <h3 className="mb-3 mt-6 text-sm font-semibold uppercase tracking-widest text-gold-400">
