@@ -79,7 +79,7 @@ export default function DlaczegoMyPage() {
         eyebrow="Dlaczego my"
         title="Nie musisz wierzyć nam na słowo"
         subtitle={`${site.reviewsCount} osób oceniło nas na 5,0 w Google. Oto cały dorobek, który za tym stoi.`}
-        image="/hero/klucze-dom.webp"
+        image="/hero/panorama2.webp"
       />
 
       {/* SEKCJA 1+2 — wstęp + LICZBY (animowane liczniki) */}
@@ -162,10 +162,10 @@ export default function DlaczegoMyPage() {
                   <span className="relative mt-5 rounded-full border border-gold-500/30 bg-gold-500/5 px-3 py-1 text-xs font-medium text-gold-300">
                     {s.tag}
                   </span>
-                  <h3 className="relative mt-3 font-display text-2xl text-cream transition-colors duration-300 group-hover:text-gold-300">
+                  <h3 className="relative mt-3 text-balance font-display text-2xl text-cream transition-colors duration-300 group-hover:text-gold-300">
                     {s.title}
                   </h3>
-                  <p className="relative mt-3 text-sm leading-relaxed text-cream/70">
+                  <p className="relative mt-3 text-pretty text-sm leading-relaxed text-cream/70">
                     {s.blurb}
                   </p>
                 </div>

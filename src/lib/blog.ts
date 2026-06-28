@@ -32,7 +32,7 @@ export const posts: Post[] = [
       "Sprawdzone kroki, dzięki którym sprzedasz mieszkanie w Głogowie szybciej i drożej — bez wielkich nakładów. Od porządku i drobnych napraw, przez home staging, po profesjonalne zdjęcia i strategię ceny.",
     date: "2026-06-10",
     category: "Porady",
-    image: "/blog/jak-przygotowac-mieszkanie-do-sprzedazy.webp",
+    image: "/blog/glogow1.webp",
     body: [
       {
         text: "Pierwsze wrażenie robi się tylko raz. Kupujący decyduje w kilka sekund od wejścia — często jeszcze zanim przekroczy próg, bo ocenia już zdjęcia w ogłoszeniu. Dobre przygotowanie mieszkania do sprzedaży potrafi realnie podnieść cenę i skrócić czas oczekiwania na kupca. W Głogowie, gdzie rynek jest lokalny i kupujący dobrze się orientują w cenach, ma to jeszcze większe znaczenie.",
@@ -93,7 +93,7 @@ export const posts: Post[] = [
       "Przegląd lokalnego rynku nieruchomości w Głogowie w 2026 roku: co realnie wpływa na ceny mieszkań i domów, czym różnią się ceny ofertowe od transakcyjnych i jak sprawdzić, ile naprawdę warta jest Twoja nieruchomość.",
     date: "2026-05-22",
     category: "Rynek",
-    image: "/blog/ceny-nieruchomosci-glogow-2026.webp",
+    image: "/blog/glogow2.webp",
     body: [
       {
         text: "Rynek nieruchomości w Głogowie rządzi się swoimi prawami i potrafi sporo różnić się od tego, co pokazują ogólnopolskie statystyki. Lokalny rynek to lokalne ceny — a te zależą od dzielnicy, stanu nieruchomości, metrażu i tego, co aktualnie dzieje się z popytem oraz dostępnością kredytów. W tym wpisie tłumaczymy, na co patrzeć, jeśli planujesz w 2026 roku sprzedaż lub zakup mieszkania albo domu w Głogowie i powiecie głogowskim.",

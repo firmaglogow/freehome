@@ -193,17 +193,21 @@ export default function AwardsGrid({
               </span>
             </div>
 
-            <h3 className="relative mt-5 font-display text-xl text-cream transition-colors duration-300 group-hover:text-gold-300">
+            <h3 className="relative mt-5 min-h-[3.5rem] text-balance font-display text-xl leading-snug text-cream transition-colors duration-300 group-hover:text-gold-300">
               {a.title}
             </h3>
-            <p className="relative mt-2 flex-1 text-sm leading-relaxed text-cream/70">
+            <p className="relative mt-2 min-h-[4.5rem] text-pretty text-sm leading-relaxed text-cream/70">
               {a.desc}
             </p>
-            {a.organizer && (
-              <p className="relative mt-4 text-xs text-cream/45">{a.organizer}</p>
-            )}
-            {a.note && (
-              <p className="relative mt-1 text-xs italic text-gold-300/70">{a.note}</p>
+            {(a.organizer || a.note) && (
+              <div className="relative mt-4 border-t border-gold-500/10 pt-3">
+                {a.organizer && (
+                  <p className="text-xs text-cream/45">{a.organizer}</p>
+                )}
+                {a.note && (
+                  <p className="mt-1 text-xs italic text-gold-300/70">{a.note}</p>
+                )}
+              </div>
             )}
           </article>
         </Reveal>

@@ -26,8 +26,8 @@ export default function LocalAdvantage() {
           <Reveal>
             <div className="relative aspect-[5/4] overflow-hidden rounded-3xl border border-gold-500/15">
               <Image
-                src="/hero/klucze-dom.webp"
-                alt="Klucze do nowego domu na stole w przytulnym wnętrzu"
+                src="/hero/lokalnebiuro.webp"
+                alt="Zabytkowa kolegiata w Głogowie na tle dramatycznego nieba"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
