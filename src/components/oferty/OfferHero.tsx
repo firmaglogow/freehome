@@ -98,9 +98,12 @@ export default function OfferHero({
     const box = document.getElementById("zapytaj");
     box?.scrollIntoView({ behavior: "smooth", block: "center" });
     window.setTimeout(() => {
-      const field = box?.querySelector<HTMLElement>(
-        "input, textarea, select"
-      );
+      // Pomijamy ukryte pole-pułapkę (honeypot) i celujemy w pierwsze widoczne.
+      const field = box
+        ? Array.from(
+            box.querySelectorAll<HTMLInputElement>("input, textarea, select")
+          ).find((el) => el.type !== "hidden" && el.offsetParent !== null)
+        : null;
       field?.focus({ preventScroll: true });
     }, 500);
   };
