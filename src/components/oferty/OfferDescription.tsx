@@ -10,13 +10,13 @@ type OfferDescriptionProps = {
   text?: string | null;
 };
 
-// Wysokość przycięcia na telefonie (= Tailwind max-h-72 = 18rem = 288px).
-const COLLAPSED_PX = 288;
+// Wysokość przycięcia opisu (= Tailwind max-h-80 = 20rem = 320px).
+const COLLAPSED_PX = 320;
 
-// Opis nieruchomości zwijany na telefonach: domyślnie przycięty do kilku linijek
-// z delikatnym gradientem i przyciskiem „Rozwiń opis", żeby nie trzeba było
-// długo przewijać. Na desktopie (lg+) opis jest zawsze w całości — przycisk i
-// gradient są ukryte (lg:hidden), a wysokość odblokowana (lg:max-h-none).
+// Opis nieruchomości zwijany na WSZYSTKICH ekranach: domyślnie przycięty do kilku
+// linijek z delikatnym gradientem i przyciskiem „Rozwiń opis", żeby nie trzeba
+// było długo przewijać (opisy z Esti potrafią być bardzo długie). Po kliknięciu
+// rozwija się w całości, a przycisk zmienia się w „Zwiń opis".
 // Gdy opis jest krótki (nie przekracza przycięcia), chowamy przycisk i gradient.
 export default function OfferDescription({ html, text }: OfferDescriptionProps) {
   const [open, setOpen] = useState(false);
@@ -51,25 +51,24 @@ export default function OfferDescription({ html, text }: OfferDescriptionProps) 
     <div className="mt-4">
       <div
         ref={bodyRef}
-        className={`relative overflow-hidden lg:max-h-none lg:overflow-visible ${
-          clamp ? "max-h-72" : "max-h-none"
+        className={`relative overflow-hidden ${
+          clamp ? "max-h-80" : "max-h-none"
         }`}
       >
         {body}
-        {/* Gradient zanikania — tylko na telefonie i tylko gdy przycięte. */}
+        {/* Gradient zanikania — gdy opis jest przycięty (na każdym ekranie). */}
         {clamp ? (
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-forest-950 to-transparent lg:hidden" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-forest-950 to-transparent" />
         ) : null}
       </div>
 
-      {/* Przycisk zwijania — wyłącznie na telefonie i tylko gdy opis się nie
-          mieści. lg:hidden chowa go na desktopie niezależnie od stanu. */}
+      {/* Przycisk zwijania/rozwijania — pokazywany, gdy opis się nie mieści. */}
       {overflowing ? (
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-400 transition-colors hover:text-gold-300 lg:hidden"
+          className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-400 transition-colors hover:text-gold-300"
         >
           {open ? "Zwiń opis" : "Rozwiń opis"}
           <span
