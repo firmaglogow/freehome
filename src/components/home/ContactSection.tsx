@@ -20,6 +20,9 @@ export default function ContactSection() {
             />
 
             <div className="mt-7 space-y-3 text-sm">
+              <p className="font-display text-base text-cream">
+                {site.fullName}
+              </p>
               <p className="text-cream/85">
                 <span className="text-cream/55">Adres: </span>
                 {site.address.street}, {site.address.city}

@@ -2,6 +2,7 @@ import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import ValuationForm from "@/components/ValuationForm";
+import NapCard from "@/components/ui/NapCard";
 import JsonLd from "@/components/seo/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
@@ -59,6 +60,11 @@ export default function WycenaPage() {
                   </Reveal>
                 ))}
               </div>
+
+              {/* Spójny NAP — kontakt do biura przy formularzu wyceny (lokalne SEO). */}
+              <Reveal delay={benefits.length * 80}>
+                <NapCard className="mt-8" />
+              </Reveal>
             </div>
 
             <div className="rounded-3xl border border-gold-500/15 bg-forest-800 p-7 sm:p-8">
