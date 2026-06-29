@@ -11,6 +11,7 @@ import { site } from "@/lib/site";
 import type { Person } from "@/lib/site";
 import type { Offer } from "@/lib/offers";
 import { formatArea, formatPrice } from "@/lib/offers";
+import type { Post } from "@/lib/blog";
 
 /**
  * Domyka ścieżkę ukośnikiem — spójnie z next.config (trailingSlash: true), żeby
@@ -181,4 +182,46 @@ export function personJsonLd(person: Person) {
     data.telephone = `+48${person.phone.replace(/\s/g, "")}`;
   if (person.email && person.email.includes("@")) data.email = person.email;
   return data;
+}
+
+/**
+ * BlogPosting JSON-LD dla pojedynczego wpisu bloga (rich result „Article").
+ * `BlogPosting` to precyzyjniejszy podtyp `Article` dla treści blogowej. Autor i
+ * wydawca = FREE HOME; wydawca dostaje `logo` (ImageObject), dzięki czemu Search
+ * Console nie zgłasza brakującego pola `logo`. `wordCount` liczymy z treści wpisu,
+ * a `mainEntityOfPage` wskazuje kanoniczny URL wpisu (zgodny z trailingSlash).
+ */
+export function articleJsonLd(post: Post) {
+  const url = absoluteUrl(`/blog/${post.slug}/`);
+
+  const wordCount = post.body.reduce((sum, block) => {
+    const parts = [block.heading, block.lead, block.text, ...(block.list ?? [])];
+    const words = parts
+      .filter(Boolean)
+      .join(" ")
+      .split(/\s+/)
+      .filter(Boolean).length;
+    return sum + words;
+  }, 0);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    image: [absoluteUrl(post.image)],
+    datePublished: post.date,
+    dateModified: post.date,
+    articleSection: post.category,
+    inLanguage: "pl-PL",
+    wordCount,
+    author: { "@type": "Organization", name: site.fullName, url: site.url },
+    publisher: {
+      "@type": "Organization",
+      name: site.fullName,
+      url: site.url,
+      logo: { "@type": "ImageObject", url: absoluteUrl("/brand/logo.webp") },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  };
 }
