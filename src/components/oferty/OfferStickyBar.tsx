@@ -30,10 +30,15 @@ export default function OfferStickyBar({
     return () => io.disconnect();
   }, []);
 
-  const goContact = () =>
-    document
-      .getElementById("zapytaj")
-      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  const goContact = () => {
+    const box = document.getElementById("zapytaj");
+    box?.scrollIntoView({ behavior: "smooth", block: "center" });
+    window.setTimeout(() => {
+      box
+        ?.querySelector<HTMLElement>("input, textarea, select")
+        ?.focus({ preventScroll: true });
+    }, 500);
+  };
 
   return (
     <div

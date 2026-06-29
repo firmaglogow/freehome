@@ -16,7 +16,6 @@ import {
   formatArea,
   formatPrice,
   formatOfferHeading,
-  formatTransactionBadge,
   resolveAgentSlug,
 } from "@/lib/offers";
 import { sanitizeOfferHtml } from "@/lib/sanitizeHtml";
@@ -132,7 +131,6 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
                 images={galleryImages}
                 plans={plans}
                 title={offer.title}
-                badge={formatTransactionBadge(offer)}
               />
             </div>
 

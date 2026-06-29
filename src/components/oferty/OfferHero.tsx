@@ -8,8 +8,46 @@ import {
   formatPrice,
   formatOfferPlace,
   formatOfferHeading,
-  formatTransactionBadge,
 } from "@/lib/offers";
+
+// Ikony parametrów (te same co w OfferDetailsPanel) — spójny język wizualny.
+function StatIcon({ children }: { children: React.ReactNode }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-5 w-5"
+      aria-hidden="true"
+    >
+      {children}
+    </svg>
+  );
+}
+const AreaIcon = (
+  <StatIcon>
+    <path d="M8 4H4v4M16 4h4v4M8 20H4v-4M16 20h4v-4" />
+  </StatIcon>
+);
+const RoomsIcon = (
+  <StatIcon>
+    <path d="M3 11V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4M3 11h18M3 11v6m18-6v6M6 11V9m0 0h5v2" />
+  </StatIcon>
+);
+const FloorIcon = (
+  <StatIcon>
+    <path d="M3 20h3v-3h3v-3h3v-3h3v-3h3" />
+  </StatIcon>
+);
+const PriceIcon = (
+  <StatIcon>
+    <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-6.2-6.2a2 2 0 0 1-.6-1.4V5a1 1 0 0 1 1-1h7a2 2 0 0 1 1.4.6l6.4 6.4a2 2 0 0 1 0 2.8z" />
+    <circle cx="8.5" cy="8.5" r="1.3" />
+  </StatIcon>
+);
 
 // Kinowy hero oferty: zdjęcie wiodące na całą szerokość z powolnym zoomem
 // i parallaxem, ciemnozielone przyciemnienie pod tekst, złota poświata oraz
@@ -54,17 +92,36 @@ export default function OfferHero({
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const stats: { label: string; value: React.ReactNode }[] = [
-    { label: "Powierzchnia", value: formatArea(offer.areaTotal) },
-    { label: "Pokoje", value: offer.rooms ?? "—" },
-    { label: "Piętro", value: offer.floor ?? "—" },
-    {
-      label: "Cena za m²",
-      value: offer.pricePerMeter
-        ? `${formatPrice(offer.pricePerMeter)}/m²`
-        : "—",
-    },
-  ];
+  // „Zostaw numer" → zjedź do formularza kontaktowego i ustaw kursor w 1. polu.
+  // preventScroll, by nie psuć płynnego przewinięcia (focus po jego zakończeniu).
+  const goContact = () => {
+    const box = document.getElementById("zapytaj");
+    box?.scrollIntoView({ behavior: "smooth", block: "center" });
+    window.setTimeout(() => {
+      const field = box?.querySelector<HTMLElement>(
+        "input, textarea, select"
+      );
+      field?.focus({ preventScroll: true });
+    }, 500);
+  };
+
+  const stats: { label: string; value: React.ReactNode; icon: React.ReactNode }[] =
+    [
+      {
+        label: "Powierzchnia",
+        value: formatArea(offer.areaTotal),
+        icon: AreaIcon,
+      },
+      { label: "Pokoje", value: offer.rooms ?? "—", icon: RoomsIcon },
+      { label: "Piętro", value: offer.floor ?? "—", icon: FloorIcon },
+      {
+        label: "Cena za m²",
+        value: offer.pricePerMeter
+          ? `${formatPrice(offer.pricePerMeter)}/m²`
+          : "—",
+        icon: PriceIcon,
+      },
+    ];
 
   return (
     <section
@@ -108,11 +165,8 @@ export default function OfferHero({
 
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
         <div className="max-w-3xl">
-          {/* Pigułki: transakcja, numer oferty, liczba zdjęć */}
+          {/* Pigułki: numer oferty, liczba zdjęć (bez etykiety transakcji) */}
           <div className="fh-hero-rise fh-hero-rise-1 flex flex-wrap items-center gap-2.5">
-            <span className="rounded-full border border-gold-400/40 bg-forest-950/55 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gold-300 backdrop-blur">
-              {formatTransactionBadge(offer)}
-            </span>
             <span className="rounded-full border border-cream/20 bg-forest-950/45 px-3 py-1 text-xs text-cream/80 backdrop-blur">
               Oferta {offer.id}
             </span>
@@ -192,7 +246,7 @@ export default function OfferHero({
                 ) : null}
                 <button
                   type="button"
-                  onClick={() => scrollTo("zapytaj")}
+                  onClick={goContact}
                   className="rounded-full border border-gold-500/35 px-5 py-2.5 text-sm font-semibold text-cream/90 transition hover:border-gold-500/60 hover:text-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/70"
                 >
                   Zostaw numer
@@ -202,13 +256,18 @@ export default function OfferHero({
 
             <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-gold-500/15 pt-5 sm:grid-cols-4">
               {stats.map((s) => (
-                <div key={s.label} className="flex flex-col">
-                  <dt className="text-[0.7rem] uppercase tracking-wider text-cream/55">
-                    {s.label}
-                  </dt>
-                  <dd className="mt-0.5 font-display text-lg text-cream sm:text-xl">
-                    {s.value}
-                  </dd>
+                <div key={s.label} className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex-none text-gold-400">
+                    {s.icon}
+                  </span>
+                  <div className="flex flex-col">
+                    <dt className="text-[0.7rem] uppercase tracking-wider text-cream/55">
+                      {s.label}
+                    </dt>
+                    <dd className="mt-0.5 font-display text-lg text-cream sm:text-xl">
+                      {s.value}
+                    </dd>
+                  </div>
                 </div>
               ))}
             </dl>

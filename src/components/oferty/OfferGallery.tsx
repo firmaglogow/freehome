@@ -3,19 +3,18 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// Galeria oferty w układzie mozaiki: duże zdjęcie wiodące + kafelki, kliknięcie
-// otwiera lightbox (pełny ekran) z nawigacją strzałkami / klawiaturą / swipem.
-// Plany (Esti picture type=120) mają osobną zakładkę i prostszą siatkę.
+// Galeria oferty: jedno duże zdjęcie wiodące ze strzałkami (lewo/prawo) +
+// przesuwany pasek miniatur (4 w rzędzie, nawigacja chevronami aż do końca).
+// Kliknięcie otwiera lightbox (pełny ekran) z nawigacją strzałkami / klawiaturą
+// / swipem. Plany (Esti picture type=120) mają osobną zakładkę.
 export default function OfferGallery({
   images,
   plans = [],
   title,
-  badge,
 }: {
   images: string[];
   plans?: string[];
   title: string;
-  badge?: string;
 }) {
   const hasPlans = plans.length > 0;
   // Gdy oferta nie ma zwykłych zdjęć, a ma plan — startujemy od planu.
@@ -69,7 +68,25 @@ export default function OfferGallery({
     };
   }, [lightbox]);
 
-  // Swipe (mobile) — tylko w lightboxie.
+  // Pasek miniatur — automatyczne dosunięcie aktywnej miniatury do środka.
+  // Skroll liczony ręcznie (scrollTo na kontenerze), by nie ruszać całej strony.
+  const railRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = railRef.current;
+    const child = el?.children[index] as HTMLElement | undefined;
+    if (el && child) {
+      const target =
+        child.offsetLeft - el.clientWidth / 2 + child.clientWidth / 2;
+      el.scrollTo({ left: target, behavior: "smooth" });
+    }
+  }, [index, view]);
+
+  const scrollRail = (dir: number) => {
+    const el = railRef.current;
+    if (el) el.scrollBy({ left: dir * el.clientWidth * 0.85, behavior: "smooth" });
+  };
+
+  // Swipe (mobile) — w lightboxie oraz na dużym zdjęciu wiodącym.
   const touchX = useRef<number | null>(null);
   const onTouchStart = (e: React.TouchEvent) => {
     touchX.current = e.touches[0].clientX;
@@ -85,46 +102,7 @@ export default function OfferGallery({
 
   const current = active[index] ?? active[0];
 
-  // Pojedynczy kafelek mozaiki (zwykła funkcja-helper, nie komponent — żeby nie
-  // tworzyć komponentów w renderze). Otwiera lightbox na danym zdjęciu.
-  const tile = (
-    i: number,
-    src: string,
-    className?: string,
-    overlay?: React.ReactNode
-  ) => (
-    <button
-      key={src}
-      type="button"
-      onClick={() => openAt(i)}
-      aria-label={`Powiększ ${isPlan ? "plan" : "zdjęcie"} ${i + 1}`}
-      className={
-        "group relative overflow-hidden rounded-2xl border border-gold-500/15 bg-forest-800 " +
-        (className ?? "")
-      }
-    >
-      <Image
-        src={src}
-        alt={`${title} — ${isPlan ? "plan" : "zdjęcie"} ${i + 1}`}
-        fill
-        sizes="(max-width: 1024px) 50vw, 30vw"
-        className={
-          isPlan
-            ? "bg-ivory object-contain p-2"
-            : "object-cover transition-transform duration-700 group-hover:scale-105"
-        }
-      />
-      {overlay}
-    </button>
-  );
-
-  const badgeOverlay =
-    badge && !isPlan ? (
-      <span className="pointer-events-none absolute left-4 top-4 z-[1] rounded-full bg-forest-950/80 px-3 py-1 text-xs font-medium text-gold-300 backdrop-blur">
-        {badge}
-      </span>
-    ) : null;
-
+  // Strzałka nawigacji (lewo/prawo). Używana na dużym zdjęciu i w lightboxie.
   const arrow = (dir: number, label: string) => (
     <button
       key={label}
@@ -148,68 +126,6 @@ export default function OfferGallery({
       </svg>
     </button>
   );
-
-  // ---- Mozaika zdjęć (różne układy zależnie od liczby zdjęć) ----------------
-  const photoMosaic = () => {
-    if (count === 1) {
-      return tile(0, active[0], "aspect-[16/10]", badgeOverlay);
-    }
-    if (count === 2) {
-      return (
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
-          {tile(0, active[0], "aspect-[4/3]", badgeOverlay)}
-          {tile(1, active[1], "aspect-[4/3]")}
-        </div>
-      );
-    }
-    if (count === 3) {
-      return (
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
-          {tile(0, active[0], "col-span-2 aspect-[16/9]", badgeOverlay)}
-          {tile(1, active[1], "aspect-[4/3]")}
-          {tile(2, active[2], "aspect-[4/3]")}
-        </div>
-      );
-    }
-    if (count === 4) {
-      return (
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
-          {active
-            .slice(0, 4)
-            .map((src, i) =>
-              tile(i, src, "aspect-[4/3]", i === 0 ? badgeOverlay : undefined)
-            )}
-        </div>
-      );
-    }
-    // count >= 5 — układ „Airbnb": duże zdjęcie + 4 kafelki, „+N" na ostatnim.
-    const remaining = count - 5;
-    return (
-      <>
-        {/* Mobile: tylko duże zdjęcie (resztę odsłania przycisk pod spodem) */}
-        <div className="sm:hidden">
-          {tile(0, active[0], "aspect-[4/3]", badgeOverlay)}
-        </div>
-        {/* sm+ : pełna mozaika */}
-        <div className="hidden aspect-[2/1] grid-cols-4 grid-rows-2 gap-3 sm:grid">
-          {tile(0, active[0], "col-span-2 row-span-2", badgeOverlay)}
-          {tile(1, active[1])}
-          {tile(2, active[2])}
-          {tile(3, active[3])}
-          {tile(
-            4,
-            active[4],
-            undefined,
-            remaining > 0 ? (
-              <span className="absolute inset-0 grid place-items-center bg-forest-950/65 text-lg font-semibold text-cream backdrop-blur-[2px] transition group-hover:bg-forest-950/55">
-                +{remaining}
-              </span>
-            ) : undefined
-          )}
-        </div>
-      </>
-    );
-  };
 
   return (
     <div>
@@ -243,20 +159,133 @@ export default function OfferGallery({
         </div>
       ) : null}
 
-      {/* Podgląd: mozaika zdjęć lub prosta siatka planów */}
-      {isPlan ? (
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
-          {active.map((src, i) => tile(i, src, "aspect-[4/3]"))}
-        </div>
-      ) : (
-        photoMosaic()
-      )}
+      {/* Duże zdjęcie wiodące — klik otwiera lightbox; strzałki przerzucają. */}
+      <div
+        className="group relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-gold-500/15 bg-forest-800"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        <button
+          type="button"
+          onClick={() => openAt(index)}
+          aria-label={`Powiększ ${isPlan ? "plan" : "zdjęcie"} ${index + 1}`}
+          className="absolute inset-0"
+        >
+          <Image
+            key={current}
+            src={current}
+            alt={`${title} — ${isPlan ? "plan" : "zdjęcie"} ${index + 1}`}
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 60vw"
+            className={
+              isPlan
+                ? "bg-ivory object-contain p-2"
+                : "object-cover transition-transform duration-700 group-hover:scale-105"
+            }
+          />
+        </button>
 
-      {/* „Pokaż wszystkie" — pełny dostęp do galerii (też dla mobile) */}
+        {count > 1 ? (
+          <>
+            {arrow(-1, "Poprzednie")}
+            {arrow(1, "Następne")}
+            <span className="pointer-events-none absolute bottom-3 right-3 z-[1] rounded-full bg-forest-950/75 px-3 py-1 text-xs text-cream backdrop-blur">
+              {index + 1} / {count}
+            </span>
+          </>
+        ) : null}
+      </div>
+
+      {/* Pasek miniatur — 4 w rzędzie, przesuwany chevronami aż do końca. */}
+      {count > 1 ? (
+        <div className="relative mt-2.5 sm:mt-3">
+          <div
+            ref={railRef}
+            className="flex snap-x gap-2.5 overflow-x-auto scroll-smooth pb-1 sm:gap-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {active.map((src, i) => (
+              <button
+                key={src}
+                type="button"
+                onClick={() => setIndex(i)}
+                aria-label={`Pokaż ${isPlan ? "plan" : "zdjęcie"} ${i + 1}`}
+                aria-current={i === index}
+                className={
+                  "relative aspect-[4/3] w-[calc((100%-2*0.625rem)/3)] flex-none snap-start overflow-hidden rounded-xl border bg-forest-800 transition sm:w-[calc((100%-3*0.75rem)/4)] " +
+                  (i === index
+                    ? "border-gold-500 ring-2 ring-gold-500/60"
+                    : "border-gold-500/15 opacity-70 hover:opacity-100")
+                }
+              >
+                <Image
+                  src={src}
+                  alt={`${title} — ${isPlan ? "plan" : "miniatura"} ${i + 1}`}
+                  fill
+                  sizes="(max-width: 640px) 33vw, 18vw"
+                  className={
+                    isPlan ? "bg-ivory object-contain p-1" : "object-cover"
+                  }
+                />
+              </button>
+            ))}
+          </div>
+
+          {/* Chevrony przesuwania paska (gdy miniatur jest więcej niż widać) */}
+          {count > 4 ? (
+            <>
+              <button
+                type="button"
+                aria-label="Przewiń miniatury w lewo"
+                onClick={() => scrollRail(-1)}
+                className="absolute left-1 top-1/2 z-[1] hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-forest-950/80 text-cream backdrop-blur transition hover:bg-forest-950 hover:text-gold-300 sm:grid"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M15 6l-6 6 6 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                aria-label="Przewiń miniatury w prawo"
+                onClick={() => scrollRail(1)}
+                className="absolute right-1 top-1/2 z-[1] hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-forest-950/80 text-cream backdrop-blur transition hover:bg-forest-950 hover:text-gold-300 sm:grid"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M9 6l6 6-6 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </>
+          ) : null}
+        </div>
+      ) : null}
+
+      {/* „Pokaż wszystkie" — otwiera lightbox na bieżącym zdjęciu. */}
       {count > 1 ? (
         <button
           type="button"
-          onClick={() => openAt(0)}
+          onClick={() => openAt(index)}
           className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-forest-800 px-4 py-2 text-sm text-cream/85 transition hover:border-gold-500/50 hover:text-gold-300"
         >
           <svg
