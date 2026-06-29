@@ -8,7 +8,11 @@ const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "/freehome";
 
 export default function Hero({ offersCount }: { offersCount: number }) {
   return (
-    <section className="relative isolate overflow-hidden">
+    <section className="relative isolate overflow-hidden bg-[radial-gradient(120%_90%_at_85%_12%,rgba(197,164,78,0.14),transparent_55%),linear-gradient(160deg,#0e2b1a_0%,#0a2113_60%)]">
+      {/* Tło bazowe sekcji (markowy gradient zieleń + delikatne złoto w prawym
+          górnym rogu) widoczne tylko przez ułamek sekundy, zanim doczyta się
+          panorama LCP — żeby ten moment wyglądał celowo, a nie jak czarne pole.
+          Siedzi pod warstwami -z-10, więc po załadowaniu zdjęcie je przykrywa. */}
       {/* Tło hero — panorama Głogowa (ruiny kolegiaty). Art direction: pionowy
           kadr na mobile, szeroki 21:9 na desktopie. Pobiera się tylko jeden plik
           (decyzję podejmuje przeglądarka wg <source media>). LCP strony głównej. */}
