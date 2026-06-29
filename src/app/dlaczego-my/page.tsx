@@ -32,6 +32,11 @@ export const metadata = pageMetadata({
 const grzegorz = people.find((p) => p.slug === "grzegorz-lukasik");
 const daria = people.find((p) => p.slug === "daria-lukasik");
 
+// Przełącznik sekcji „Pisali o nas" (media/prasa). Na razie OFF — nie mamy jeszcze
+// realnych publikacji, a puste kafelki „Miejsce na publikację" osłabiały stronę.
+// Gdy pojawią się artykuły: wstaw treści w sekcji niżej i ustaw na `true` (jedna zmiana).
+const SHOW_PRESS = false;
+
 // Trzy najmocniejsze wyróżnienia — „spotlight" otwierający stronę zamiast statusu ®.
 type Spot = {
   id: string;
@@ -285,45 +290,48 @@ export default function DlaczegoMyPage() {
         </Container>
       </section>
 
-      {/* SEKCJA — MEDIA / PRASA (placeholder do uzupełnienia) */}
-      <section className="border-t border-gold-500/10 bg-forest-900 py-16 sm:py-24">
-        <Container>
-          <SectionHeading
-            align="center"
-            eyebrow="W mediach"
-            title="Pisali o nas"
-            subtitle="Materiały prasowe, wywiady i wzmianki o FREE HOME. Sekcja w przygotowaniu — wkrótce pojawią się tu konkretne publikacje."
-          />
-          {/*
-            DODAWANIE ARTYKUŁÓW PRASOWYCH (na przyszłość):
-            zamień poniższe placeholdery na kafelki z realnymi pozycjami, np.
-            tytuł publikacji + źródło + data + link/scan. Można wydzielić listę
-            do src/lib/press.ts i zmapować ją tutaj, analogicznie do AwardsGrid.
-          */}
-          <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            {[0, 1, 2].map((i) => (
-              <Reveal key={i} delay={i * 70}>
-                <div className="flex h-full min-h-[180px] flex-col items-center justify-center rounded-2xl border border-dashed border-gold-500/25 bg-forest-800/40 p-8 text-center">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={1.4}
-                    aria-hidden="true"
-                    className="h-9 w-9 text-gold-500/50"
-                  >
-                    <path d="M4 5h13a1 1 0 0 1 1 1v12a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2V5Z" />
-                    <path d="M8 9h6M8 13h6M8 17h4" />
-                  </svg>
-                  <p className="mt-3 text-sm text-cream/45">
-                    Miejsce na publikację
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </section>
+      {/* SEKCJA — MEDIA / PRASA. Ukryta do czasu realnych publikacji (SHOW_PRESS). */}
+      {SHOW_PRESS && (
+        <section className="border-t border-gold-500/10 bg-forest-900 py-16 sm:py-24">
+          <Container>
+            <SectionHeading
+              align="center"
+              eyebrow="W mediach"
+              title="Pisali o nas"
+              subtitle="Materiały prasowe, wywiady i wzmianki o FREE HOME."
+            />
+            {/*
+              DODAWANIE ARTYKUŁÓW PRASOWYCH:
+              zamień poniższe placeholdery na kafelki z realnymi pozycjami, np.
+              tytuł publikacji + źródło + data + link/scan. Można wydzielić listę
+              do src/lib/press.ts i zmapować ją tutaj, analogicznie do AwardsGrid.
+              Gdy treści będą gotowe — ustaw SHOW_PRESS = true (góra pliku).
+            */}
+            <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-3">
+              {[0, 1, 2].map((i) => (
+                <Reveal key={i} delay={i * 70}>
+                  <div className="flex h-full min-h-[180px] flex-col items-center justify-center rounded-2xl border border-dashed border-gold-500/25 bg-forest-800/40 p-8 text-center">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.4}
+                      aria-hidden="true"
+                      className="h-9 w-9 text-gold-500/50"
+                    >
+                      <path d="M4 5h13a1 1 0 0 1 1 1v12a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2V5Z" />
+                      <path d="M8 9h6M8 13h6M8 17h4" />
+                    </svg>
+                    <p className="mt-3 text-sm text-cream/45">
+                      Miejsce na publikację
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
 
       {/* SEKCJA — ZAMKNIĘCIE + CTA */}
       <section className="border-t border-gold-500/15 bg-gradient-to-b from-forest-900 to-forest-950 py-20 sm:py-24">
