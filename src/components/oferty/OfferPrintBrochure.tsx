@@ -90,6 +90,30 @@ function BrochureMap({ lat, lng }: { lat: number; lng: number }) {
   );
 }
 
+// Zamienia HTML z Esti (opis oferty) na czysty tekst do druku: tagi blokowe →
+// nowe linie, <li> → punktor, pozostałe tagi usunięte, podstawowe encje
+// rozkodowane. Nigdy nie wstrzykujemy HTML do broszury (brak XSS), bo na papier
+// i tak chcemy czysty, czytelny tekst — nie surowe <strong>/<br>.
+function htmlToText(input: string): string {
+  return input
+    .replace(/<\s*br\s*\/?\s*>/gi, "\n")
+    .replace(/<\s*\/\s*(p|div|h[1-6]|ul|ol|tr)\s*>/gi, "\n")
+    .replace(/<\s*li[^>]*>/gi, "\n• ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0?39;|&apos;/gi, "'")
+    .replace(/&hellip;/gi, "…")
+    .replace(/&ndash;/gi, "–")
+    .replace(/&mdash;/gi, "—")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 // Mały „kicker" — złota etykieta nad nagłówkami sekcji.
 function Kicker({ children }: { children: ReactNode }) {
   return (
@@ -142,8 +166,10 @@ export default function OfferPrintBrochure({
   const hero = photos[0] ?? null;
   const thumbs = photos.slice(1, 4);
 
-  // Opis: zwykły tekst, przycięty do ~750 znaków, żeby broszura trzymała 2 str.
-  const rawDesc = (offer.description ?? "").trim();
+  // Opis: preferujemy bogatszy descriptionHtml, w razie braku — description.
+  // Oba bywają z HTML (Esti), więc zawsze sprowadzamy do czystego tekstu i
+  // przycinamy do ~750 znaków, żeby broszura trzymała 2 strony.
+  const rawDesc = htmlToText((offer.descriptionHtml ?? offer.description ?? "").trim());
   const desc =
     rawDesc.length > 760 ? rawDesc.slice(0, 750).replace(/\s+\S*$/, "") + "…" : rawDesc;
   const descParas = desc.split(/\n+/).filter(Boolean);
