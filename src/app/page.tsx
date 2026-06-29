@@ -39,12 +39,12 @@ export default function Home() {
       addressRegion: "dolnośląskie",
       addressCountry: "PL",
     },
-    // Współrzędne PRZYBLIŻONE (Stare Miasto, ul. Grodzka, Głogów).
-    // TODO(właściciel): podmień na dokładne z wizytówki Google (Profil Firmy).
+    // Dokładne współrzędne budynku ul. Grodzka 18, Stare Miasto, Głogów
+    // (geokodowanie OpenStreetMap/Nominatim, trafienie na numer domu).
     geo: {
       "@type": "GeoCoordinates",
-      latitude: 51.6644,
-      longitude: 16.085,
+      latitude: 51.6638212,
+      longitude: 16.0903005,
     },
     // Profile społecznościowe i marka osobista — wiąże encję z resztą sieci.
     sameAs: [

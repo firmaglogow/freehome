@@ -49,13 +49,14 @@ export default function ContactSection() {
             </div>
 
             <div className="mt-7 overflow-hidden rounded-2xl border border-gold-500/15">
-              {/* Mapa OpenStreetMap (tymczasowo iframe; docelowo Leaflet z pinami ofert) */}
+              {/* Mapa OpenStreetMap (tymczasowo iframe; docelowo Leaflet z pinami ofert).
+                  Pinezka = dokładny budynek ul. Grodzka 18 (51.6638212, 16.0903005). */}
               <iframe
-                title="Mapa — biuro FREE HOME, Głogów"
+                title="Mapa — biuro FREE HOME, ul. Grodzka 18, Głogów"
                 className="h-64 w-full"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=16.06%2C51.65%2C16.12%2C51.68&layer=mapnik&marker=51.6635%2C16.0858"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=16.0803%2C51.6588%2C16.1003%2C51.6688&layer=mapnik&marker=51.6638212%2C16.0903005"
               />
             </div>
           </div>
