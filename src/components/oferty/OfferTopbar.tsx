@@ -80,9 +80,15 @@ export default function OfferTopbar({
     );
     setGalleryView(s.view);
     setActive(s.id);
-    document
-      .getElementById(s.id)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Przełączenie widoku zmienia wysokość galerii (re-render). Gdyby przewinąć
+    // od razu, smooth-scroll zostałby przerwany — odraczamy o dwie klatki, aż
+    // layout się ustabilizuje.
+    const el = document.getElementById(s.id);
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() =>
+        el?.scrollIntoView({ behavior: "smooth", block: "start" })
+      )
+    );
   };
 
   // Udostępnienie przez Facebooka — okno dialogowe sharera (nie cała karta).
