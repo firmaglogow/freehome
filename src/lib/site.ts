@@ -32,6 +32,7 @@ export const site = {
     facebook: "https://facebook.com/firmaglogow",
     instagram: "https://www.instagram.com/agent_2_0_freehome",
     tiktok: "https://www.tiktok.com/@efreehome",
+    youtube: "https://www.youtube.com/@freehomenieruchomosci",
   },
   related: [
     { label: "grzegorzlukasik.com — marka osobista", href: "https://grzegorzlukasik.com" },

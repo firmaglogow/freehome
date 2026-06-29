@@ -38,7 +38,7 @@ export default function LocalAdvantage() {
           <div>
             <p className="eyebrow">Nasz wyróżnik</p>
             <h2 className="mt-3 text-3xl leading-tight text-cream sm:text-4xl">
-              Lokalne biuro &gt; bezosobowa sieć
+              Lokalne biuro z prawdziwego zdarzenia
             </h2>
             <p className="mt-4 text-base leading-relaxed text-cream/75">
               Jesteśmy stąd. Daria i Grzegorz — dwie osoby, które znają Głogów i
