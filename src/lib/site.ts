@@ -16,7 +16,12 @@ export const site = {
   url: siteUrl,
   phone: "537 264 666",
   phoneHref: "tel:+48537264666",
-  email: "kontakt@freehome.com.pl", // ogólny adres biura (formularze + stopka)
+  // Ogólny adres biura — WYŚWIETLANY (stopka, kontakt, JSON-LD, strony prawne).
+  // UWAGA: to nie jest skrzynka odbiorcza formularzy. Wysyłka formularzy (formsubmit.co
+  // w *Form.tsx + kalkulator kredytowy) trafia na firmową skrzynkę firmaglogow@gmail.com,
+  // która istnieje i działa. Gdy powstanie poczta @freehome.pl, można przełączyć i wyświetlanie,
+  // i endpointy (po potwierdzeniu aktywacji formsubmit dla nowego adresu).
+  email: "kontakt@freehome.pl",
   address: {
     street: "ul. Grodzka 18",
     city: "Głogów",
@@ -118,7 +123,7 @@ export const people: Person[] = [
     role: "Ekspert ds. sprzedaży nieruchomości",
     bio: "Nieruchomości to moja codzienność od lat — i nadal podchodzę do każdej transakcji tak, jakby była pierwsza. Prowadzę FREE HOME razem z Darią. Znam Głogów i okolice na wylot: realne ceny, dzielnice, to, co naprawdę przesądza o dobrej sprzedaży. U mnie nie ma sztampy i nacisku. Jest konkret, uczciwa rozmowa i pełne zaangażowanie — od pierwszego telefonu po klucze w dłoni.",
     phone: "537 264 666",
-    email: "grzegorz.lukasik@freehome.com.pl",
+    email: "grzegorz.lukasik@freehome.pl",
     photo: "/zespol/grzegorz.webp",
   },
   {
@@ -127,7 +132,7 @@ export const people: Person[] = [
     role: "Ekspert ds. sprzedaży nieruchomości",
     bio: "Najbardziej empatyczna pośredniczka w Głogowie — tak mówią o mnie klienci, i biorę to sobie do serca. Za sobą mam setki transakcji i jedną zasadę: człowiek przed nieruchomością. Słucham, tłumaczę spokojnie, jestem obok na każdym etapie. Sprzedaż czy zakup domu to jedna z największych decyzji w życiu — zasługuje na kogoś, komu naprawdę zależy.",
     phone: "518 092 404",
-    email: "daria.lukasik@freehome.com.pl",
+    email: "daria.lukasik@freehome.pl",
     photo: "/zespol/daria.webp",
   },
   {
@@ -136,7 +141,7 @@ export const people: Person[] = [
     role: "Ekspert ds. sprzedaży nieruchomości",
     bio: "Do nieruchomości weszłam z bagażem, którego nie da się nauczyć w tej branży — z lat pracy z ludźmi w zupełnie innym świecie. I właśnie to okazało się największym atutem. Wiem, jak słuchać, jak budować relację i jak prowadzić klienta spokojnie przez decyzję, która potrafi onieśmielać. Świeże spojrzenie, mnóstwo energii i pełne zaangażowanie w każdą sprawę — tak zaczynam swój rozdział w FREE HOME.",
     phone: "733 687 666",
-    email: "angelika.skorupinska@freehome.com.pl",
+    email: "angelika.skorupinska@freehome.pl",
     photo: "/zespol/angelika.webp",
   },
   {
