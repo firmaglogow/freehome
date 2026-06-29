@@ -4,6 +4,8 @@ import "./globals.css";
 import { site } from "@/lib/site";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Analytics from "@/components/analytics/Analytics";
+import CookieConsent from "@/components/cookies/CookieConsent";
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
@@ -72,6 +74,7 @@ export default function RootLayout({
       className={`${cinzel.variable} ${cormorant.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-forest-950 text-cream">
+        <Analytics />
         <a href="#main" className="skip-link">
           Przejdź do treści
         </a>
@@ -80,6 +83,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <CookieConsent />
       </body>
     </html>
   );
