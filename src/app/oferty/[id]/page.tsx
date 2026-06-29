@@ -122,12 +122,16 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
         ]}
       />
       <Container>
-        <OfferTopbar sections={sections} shareUrl={shareUrl} />
+        {/* Wrapper sticky: pasek nawigacji przykleja się pod menu i „jedzie"
+            z użytkownikiem przez całą treść oferty, a zwalnia się dopiero przed
+            sekcją „Podobne oferty" (granica = dół tego wrappera). */}
+        <div>
+          <OfferTopbar sections={sections} shareUrl={shareUrl} />
 
-        <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
+          <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
           {/* Galeria + opis */}
           <div>
-            <div id="galeria" className="scroll-mt-24">
+            <div id="galeria" className="scroll-mt-24 lg:scroll-mt-40">
               <OfferGallery
                 images={galleryImages}
                 plans={plans}
@@ -148,7 +152,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
 
             <h2
               id="opis"
-              className="mt-10 scroll-mt-28 font-display text-2xl text-cream"
+              className="mt-10 scroll-mt-28 font-display text-2xl text-cream lg:scroll-mt-40"
             >
               Opis nieruchomości
             </h2>
@@ -164,7 +168,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
 
             {/* Mapa lokalizacji (Google Maps embed, bez klucza API) */}
             {mapSrc ? (
-              <div id="lokalizacja" className="mt-10 scroll-mt-28">
+              <div id="lokalizacja" className="mt-10 scroll-mt-28 lg:scroll-mt-40">
                 <div className="flex items-end justify-between gap-4">
                   <h2 className="font-display text-2xl text-cream">
                     Lokalizacja
@@ -200,7 +204,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
             {/* Film o nieruchomości (YouTube z Esti <videoLink>) — na końcu strony.
                 Odtwarzacz ładuje się dopiero po kliknięciu okładki (OfferVideo). */}
             {videoId ? (
-              <div id="film" className="mt-10 scroll-mt-28">
+              <div id="film" className="mt-10 scroll-mt-28 lg:scroll-mt-40">
                 <h2 className="font-display text-2xl text-cream">
                   Film o nieruchomości
                 </h2>
@@ -227,7 +231,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
 
             <div
               id="zapytaj"
-              className="scroll-mt-24 rounded-3xl border border-gold-500/15 bg-forest-800 p-6 lg:mt-5"
+              className="scroll-mt-24 rounded-3xl border border-gold-500/15 bg-forest-800 p-6 lg:mt-5 lg:scroll-mt-40"
             >
               <h3 className="text-lg text-cream">Zapytaj o tę ofertę</h3>
               <p className="mt-1 mb-4 text-sm text-cream/60">
@@ -236,6 +240,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
               <ContactForm compact context={offer.id} />
             </div>
           </aside>
+          </div>
         </div>
 
         {/* Podobne oferty */}

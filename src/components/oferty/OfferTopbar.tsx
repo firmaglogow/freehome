@@ -12,6 +12,10 @@ export type OfferSection = { id: string; label: string };
 //  • po prawej: akcje „Udostępnij" (Facebook) i „Drukuj".
 // Przyciski to ciche linki tekstowe, które rozjaśniają się dopiero pod kursorem —
 // dzięki temu belka jest lekka i elegancka, a nie „dwa zielone paski".
+// Na desktopie (lg+) belka jest PRZYKLEJANA pod głównym menu (sticky top-20):
+// „jedzie" z użytkownikiem przez całą treść oferty, więc nawigacja po sekcjach
+// jest dostępna cały czas (efekt premium). Granicę przyklejenia wyznacza wrapper
+// w page.tsx — belka zwalnia się tuż przed sekcją „Podobne oferty".
 export default function OfferTopbar({
   sections,
   shareUrl,
@@ -50,7 +54,7 @@ export default function OfferTopbar({
   };
 
   return (
-    <div className="mb-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-2xl border border-gold-500/15 bg-forest-900/55 px-2.5 py-2 backdrop-blur sm:px-3">
+    <div className="mb-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-2xl border border-gold-500/15 bg-forest-900/55 px-2.5 py-2 backdrop-blur sm:px-3 lg:sticky lg:top-20 lg:z-30 lg:bg-forest-900/80">
       {/* Lewa strona: powrót + skróty do sekcji */}
       <div className="flex flex-wrap items-center gap-y-1">
         <Link
