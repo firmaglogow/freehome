@@ -5,7 +5,6 @@ import {
   formatOfferHeading,
   formatOfferPlace,
   formatPrice,
-  formatTransactionBadge,
   type Offer,
 } from "@/lib/offers";
 
@@ -23,9 +22,6 @@ export default function OfferCard({ offer }: { offer: Offer }) {
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <span className="absolute left-3 top-3 rounded-full bg-forest-950/80 px-3 py-1 text-xs font-medium text-gold-300 backdrop-blur">
-          {formatTransactionBadge(offer)}
-        </span>
         {offer.promoted && (
           <span className="absolute right-3 top-3 rounded-full bg-gold-500 px-3 py-1 text-xs font-semibold text-forest-950">
             Wyróżniona
