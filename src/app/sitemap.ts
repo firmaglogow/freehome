@@ -33,6 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/dla-klienta", priority: 0.6, changeFrequency: "monthly" },
     { path: "/opinie", priority: 0.6, changeFrequency: "weekly" },
     { path: "/blog", priority: 0.6, changeFrequency: "weekly" },
+    { path: "/faq", priority: 0.6, changeFrequency: "monthly" },
     { path: "/wycena", priority: 0.7, changeFrequency: "monthly" },
     { path: "/praca", priority: 0.5, changeFrequency: "monthly" },
     { path: "/kontakt", priority: 0.7, changeFrequency: "monthly" },

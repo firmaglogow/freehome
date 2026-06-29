@@ -6,7 +6,7 @@ import OfferCard from "@/components/ui/OfferCard";
 import { people } from "@/lib/site";
 import { offers, resolveAgentSlug } from "@/lib/offers";
 import JsonLd from "@/components/seo/JsonLd";
-import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { pageMetadata, breadcrumbJsonLd, personJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return people.map((p) => ({ slug: p.slug }));
@@ -41,10 +41,13 @@ export default async function PersonPage(props: PageProps<"/ludzie/[slug]">) {
   return (
     <article className="pt-28 pb-20">
       <JsonLd
-        data={breadcrumbJsonLd([
-          { name: "Zespół", path: "/ludzie" },
-          { name: person.name, path: `/ludzie/${person.slug}/` },
-        ])}
+        data={[
+          breadcrumbJsonLd([
+            { name: "Zespół", path: "/ludzie" },
+            { name: person.name, path: `/ludzie/${person.slug}/` },
+          ]),
+          personJsonLd(person),
+        ]}
       />
       <Container>
         <nav aria-label="Okruszki" className="mb-6 text-sm text-cream/55">

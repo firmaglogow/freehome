@@ -8,6 +8,7 @@
 // podstrona nie „zgubiła” siteName/locale/type dziedziczonych z layoutu.
 import type { Metadata } from "next";
 import { site } from "@/lib/site";
+import type { Person } from "@/lib/site";
 import type { Offer } from "@/lib/offers";
 import { formatArea, formatPrice } from "@/lib/offers";
 
@@ -155,5 +156,29 @@ export function offerJsonLd(offer: Offer) {
     };
   }
 
+  return data;
+}
+
+/**
+ * Person JSON-LD dla podstrony profilu (/ludzie/[slug]). Agenci FREE HOME
+ * dostają `worksFor` = biuro; partner kredytowy (Lendi) — własną organizację,
+ * żeby nie sugerować zatrudnienia w FREE HOME. Telefon/e-mail dokładamy tylko
+ * gdy realne (spójnie z warunkami w widoku profilu).
+ */
+export function personJsonLd(person: Person) {
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: person.name,
+    jobTitle: person.role,
+    url: absoluteUrl(`/ludzie/${person.slug}/`),
+    image: absoluteUrl(person.photo),
+    worksFor: person.partner
+      ? { "@type": "Organization", name: "Lendi" }
+      : { "@type": "RealEstateAgent", name: site.fullName, url: site.url },
+  };
+  if (person.phone && /\d/.test(person.phone))
+    data.telephone = `+48${person.phone.replace(/\s/g, "")}`;
+  if (person.email && person.email.includes("@")) data.email = person.email;
   return data;
 }

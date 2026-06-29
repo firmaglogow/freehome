@@ -9,6 +9,7 @@ import BlogPreview from "@/components/home/BlogPreview";
 import ContactSection from "@/components/home/ContactSection";
 import { offers } from "@/lib/offers";
 import { site } from "@/lib/site";
+import { absoluteUrl } from "@/lib/seo";
 
 // Tylko canonical — tytuł/opis/Open Graph dziedziczymy z layoutu (gdybyśmy
 // ustawili tu openGraph, zastąpiłby cały obiekt z layoutu, a nie scalił).
@@ -22,14 +23,33 @@ export default function Home() {
     "@type": "RealEstateAgent",
     name: site.fullName,
     url: site.url,
+    logo: absoluteUrl("/brand/logo.webp"),
+    image: absoluteUrl("/og.jpg"),
     telephone: `+48${site.phone.replace(/\s/g, "")}`,
     email: site.email,
+    priceRange: "$$",
     address: {
       "@type": "PostalAddress",
       streetAddress: site.address.street,
       addressLocality: site.address.city,
+      // Głogów — kod pocztowy 67-200 (pewny dla miasta).
+      postalCode: "67-200",
+      // Region bez prefiksu „woj." — zgodnie z konwencją schema.org.
+      addressRegion: "dolnośląskie",
       addressCountry: "PL",
     },
+    // Współrzędne PRZYBLIŻONE (Stare Miasto, ul. Grodzka, Głogów).
+    // TODO(właściciel): podmień na dokładne z wizytówki Google (Profil Firmy).
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 51.6644,
+      longitude: 16.085,
+    },
+    // Profile społecznościowe i marka osobista — wiąże encję z resztą sieci.
+    sameAs: [
+      ...Object.values(site.social),
+      ...site.related.map((r) => r.href),
+    ],
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "5",

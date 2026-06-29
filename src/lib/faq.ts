@@ -43,6 +43,6 @@ export const faq: FaqItem[] = [
   },
   {
     q: "Dlaczego warto wybrać lokalne biuro, a nie tylko portal ogłoszeniowy?",
-    a: "Portal pokaże ogłoszenie, ale nie sprawdzi dokumentów, nie wynegocjuje ceny i nie przeprowadzi Cię przez transakcję. My znamy głogowski rynek od podszewki, mamy ponad 269 opinii z oceną 5,0 i jesteśmy przy Tobie na każdym etapie — od wyceny po akt notarialny.",
+    a: "Portal pokaże ogłoszenie, ale nie sprawdzi dokumentów, nie wynegocjuje ceny i nie przeprowadzi Cię przez transakcję. My znamy głogowski rynek od podszewki, mamy ponad 270 opinii z oceną 5,0 i jesteśmy przy Tobie na każdym etapie — od wyceny po akt notarialny.",
   },
 ];
