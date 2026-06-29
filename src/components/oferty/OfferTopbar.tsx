@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export type OfferSection = { id: string; label: string };
+export type OfferSection = {
+  id: string;
+  label: string;
+  // Gdy ustawione, klik przełącza widok galerii (Zdjęcia/Plan) zamiast zwykłego
+  // skoku do kotwicy — oba prowadzą do tej samej sekcji #galeria.
+  view?: "photos" | "plans";
+};
 
 // Górny pasek oferty — JEDEN spójny „command bar" (szklana belka) zamiast dwóch
 // oddzielnych rzędów. Płynnie domyka przejście z kinowego hero do treści:
@@ -24,12 +30,18 @@ export default function OfferTopbar({
   shareUrl: string;
 }) {
   const [active, setActive] = useState<string>(sections[0]?.id ?? "");
+  // Aktualny widok galerii (Zdjęcia/Plan) — żeby podświetlić właściwą pigułkę,
+  // gdy sekcja #galeria jest na ekranie. Galeria nadaje zmiany przez event.
+  const [galleryView, setGalleryView] = useState<"photos" | "plans">("photos");
 
   // Scrollspy: podświetlamy sekcję, która jest najbliżej górnej krawędzi ekranu.
   useEffect(() => {
     if (sections.length === 0) return;
-    const els = sections
-      .map((s) => document.getElementById(s.id))
+    // Zdjęcia i Plan mieszkania dzielą tę samą kotwicę (#galeria) — obserwujemy
+    // każdy element tylko raz.
+    const ids = Array.from(new Set(sections.map((s) => s.id)));
+    const els = ids
+      .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
     if (els.length === 0) return;
 
@@ -46,6 +58,32 @@ export default function OfferTopbar({
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [sections]);
+
+  // Galeria nadaje swój aktualny widok (po kliknięciu zakładek w środku lub po
+  // starcie) — synchronizujemy podświetlenie pigułek Zdjęcia/Plan na pasku.
+  useEffect(() => {
+    const onChanged = (e: Event) => {
+      const v = (e as CustomEvent<"photos" | "plans">).detail;
+      if (v === "photos" || v === "plans") setGalleryView(v);
+    };
+    window.addEventListener("offer-gallery-view-changed", onChanged);
+    return () => window.removeEventListener("offer-gallery-view-changed", onChanged);
+  }, []);
+
+  // Klik w „Zdjęcia"/„Plan mieszkania": przełącz widok galerii (event do
+  // OfferGallery) i płynnie przewiń do sekcji #galeria.
+  const goToView = (e: React.MouseEvent, s: OfferSection) => {
+    if (!s.view) return; // zwykłe kotwice obsługuje natywny <a href>
+    e.preventDefault();
+    window.dispatchEvent(
+      new CustomEvent("offer-gallery-view", { detail: s.view })
+    );
+    setGalleryView(s.view);
+    setActive(s.id);
+    document
+      .getElementById(s.id)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   // Udostępnienie przez Facebooka — okno dialogowe sharera (nie cała karta).
   const share = () => {
@@ -82,14 +120,19 @@ export default function OfferTopbar({
             />
             <nav
               aria-label="Sekcje oferty"
-              className="flex items-center gap-0.5"
+              className="flex flex-wrap items-center gap-0.5"
             >
               {sections.map((s) => {
-                const isActive = active === s.id;
+                // Pigułki galerii (Zdjęcia/Plan) dzielą id #galeria — aktywność
+                // rozróżniamy po aktualnym widoku galerii.
+                const isActive = s.view
+                  ? active === s.id && galleryView === s.view
+                  : active === s.id;
                 return (
                   <a
-                    key={s.id}
+                    key={s.view ?? s.id}
                     href={`#${s.id}`}
+                    onClick={(e) => goToView(e, s)}
                     aria-current={isActive ? "true" : undefined}
                     className={
                       "rounded-full px-3 py-1.5 text-sm transition " +

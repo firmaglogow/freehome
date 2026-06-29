@@ -45,6 +45,29 @@ export default function OfferGallery({
     setIndex(0);
   };
 
+  // Zdalne przełączanie widoku z paska nawigacji oferty (OfferTopbar) —
+  // „Zdjęcia" / „Plan mieszkania" są też dostępne z przyklejonej belki.
+  useEffect(() => {
+    const onSet = (e: Event) => {
+      const v = (e as CustomEvent<"photos" | "plans">).detail;
+      if (v === "plans" && !hasPlans) return;
+      if (v === "photos" || v === "plans") {
+        setView(v);
+        setIndex(0);
+      }
+    };
+    window.addEventListener("offer-gallery-view", onSet);
+    return () => window.removeEventListener("offer-gallery-view", onSet);
+  }, [hasPlans]);
+
+  // Nadajemy aktualny widok, by pasek mógł podświetlić właściwą pigułkę
+  // (działa też, gdy użytkownik kliknie zakładki w samej galerii).
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("offer-gallery-view-changed", { detail: view })
+    );
+  }, [view]);
+
   // Klawiatura: strzałki nawigują, Esc zamyka lightbox.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

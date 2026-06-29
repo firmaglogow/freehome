@@ -90,9 +90,14 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
   // Film z prezentacji (YouTube) — wyłuskane ID z surowego linku Esti.
   const videoId = youtubeId(offer.videoUrl);
 
-  // Skróty w górnym pasku: Opis zawsze; Lokalizacja i Film tylko gdy są dane.
-  // Kolejność = kolejność sekcji na stronie (Opis → Lokalizacja → Film).
+  // Skróty w górnym pasku — zawsze szybki powrót do kluczowych miejsc oferty:
+  // Zdjęcia i (gdy są) Plan mieszkania przełączają widok galerii, dalej Opis,
+  // a Lokalizacja i Film tylko gdy są dane. Kolejność = kolejność na stronie.
   const sections: OfferSection[] = [
+    { id: "galeria", label: "Zdjęcia", view: "photos" },
+    ...(plans.length > 0
+      ? [{ id: "galeria", label: "Plan mieszkania", view: "plans" as const }]
+      : []),
     { id: "opis", label: "Opis" },
     ...(mapSrc ? [{ id: "lokalizacja", label: "Lokalizacja" }] : []),
     ...(videoId ? [{ id: "film", label: "Film" }] : []),
@@ -165,54 +170,6 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
                 </Placeholder>
               </div>
             )}
-
-            {/* Mapa lokalizacji (Google Maps embed, bez klucza API) */}
-            {mapSrc ? (
-              <div id="lokalizacja" className="mt-10 scroll-mt-28 lg:scroll-mt-40">
-                <div className="flex items-end justify-between gap-4">
-                  <h2 className="font-display text-2xl text-cream">
-                    Lokalizacja
-                  </h2>
-                  {mapLink ? (
-                    <a
-                      href={mapLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-gold-400 hover:underline"
-                    >
-                      Otwórz w Google Maps →
-                    </a>
-                  ) : null}
-                </div>
-                <div className="relative mt-4 aspect-[16/9] overflow-hidden rounded-3xl border border-gold-500/15">
-                  <iframe
-                    src={mapSrc}
-                    title={`Mapa — ${offer.location ?? offer.title}`}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="absolute inset-0 h-full w-full"
-                    style={{ border: 0 }}
-                  />
-                </div>
-                <p className="mt-2 text-xs text-cream/60">
-                  Lokalizacja przybliżona — dokładny adres podajemy przy
-                  kontakcie.
-                </p>
-              </div>
-            ) : null}
-
-            {/* Film o nieruchomości (YouTube z Esti <videoLink>) — na końcu strony.
-                Odtwarzacz ładuje się dopiero po kliknięciu okładki (OfferVideo). */}
-            {videoId ? (
-              <div id="film" className="mt-10 scroll-mt-28 lg:scroll-mt-40">
-                <h2 className="font-display text-2xl text-cream">
-                  Film o nieruchomości
-                </h2>
-                <div className="mt-4">
-                  <OfferVideo id={videoId} title={offer.title} />
-                </div>
-              </div>
-            ) : null}
           </div>
 
           {/* Panel boczny */}
@@ -241,6 +198,52 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
             </div>
           </aside>
           </div>
+
+          {/* Lokalizacja — na PEŁNĄ szerokość pod siatką, żeby nie zostawiać
+              pustej przestrzeni obok krótszego panelu bocznego (symetria). */}
+          {mapSrc ? (
+            <div id="lokalizacja" className="mt-12 scroll-mt-28 lg:scroll-mt-40">
+              <div className="flex items-end justify-between gap-4">
+                <h2 className="font-display text-2xl text-cream">Lokalizacja</h2>
+                {mapLink ? (
+                  <a
+                    href={mapLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-gold-400 hover:underline"
+                  >
+                    Otwórz w Google Maps →
+                  </a>
+                ) : null}
+              </div>
+              <div className="relative mt-4 aspect-[16/10] overflow-hidden rounded-3xl border border-gold-500/15 sm:aspect-[16/9] lg:aspect-[21/9]">
+                <iframe
+                  src={mapSrc}
+                  title={`Mapa — ${offer.location ?? offer.title}`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0 h-full w-full"
+                  style={{ border: 0 }}
+                />
+              </div>
+              <p className="mt-2 text-xs text-cream/60">
+                Lokalizacja przybliżona — dokładny adres podajemy przy kontakcie.
+              </p>
+            </div>
+          ) : null}
+
+          {/* Film o nieruchomości — również na pełną szerokość. Odtwarzacz ładuje
+              się dopiero po kliknięciu okładki (OfferVideo). */}
+          {videoId ? (
+            <div id="film" className="mt-12 scroll-mt-28 lg:scroll-mt-40">
+              <h2 className="font-display text-2xl text-cream">
+                Film o nieruchomości
+              </h2>
+              <div className="mt-4">
+                <OfferVideo id={videoId} title={offer.title} />
+              </div>
+            </div>
+          ) : null}
         </div>
 
         {/* Podobne oferty */}
