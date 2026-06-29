@@ -56,10 +56,12 @@ export default function OfferHero({
   offer,
   leadImage,
   photoCount,
+  phoneHref,
 }: {
   offer: Offer;
   leadImage: string;
   photoCount: number;
+  phoneHref: string;
 }) {
   const imgRef = useRef<HTMLDivElement | null>(null);
 
@@ -90,22 +92,6 @@ export default function OfferHero({
     document
       .getElementById(id)
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  // „Zostaw numer" → zjedź do formularza kontaktowego i ustaw kursor w 1. polu.
-  // preventScroll, by nie psuć płynnego przewinięcia (focus po jego zakończeniu).
-  const goContact = () => {
-    const box = document.getElementById("zapytaj");
-    box?.scrollIntoView({ behavior: "smooth", block: "center" });
-    window.setTimeout(() => {
-      // Pomijamy ukryte pole-pułapkę (honeypot) i celujemy w pierwsze widoczne.
-      const field = box
-        ? Array.from(
-            box.querySelectorAll<HTMLInputElement>("input, textarea, select")
-          ).find((el) => el.type !== "hidden" && el.offsetParent !== null)
-        : null;
-      field?.focus({ preventScroll: true });
-    }, 500);
   };
 
   const stats: { label: string; value: React.ReactNode; icon: React.ReactNode }[] =
@@ -247,13 +233,25 @@ export default function OfferHero({
                     Zobacz zdjęcia
                   </button>
                 ) : null}
-                <button
-                  type="button"
-                  onClick={goContact}
-                  className="rounded-full border border-gold-500/35 px-5 py-2.5 text-sm font-semibold text-cream/90 transition hover:border-gold-500/60 hover:text-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/70"
+                <a
+                  href={phoneHref}
+                  className="inline-flex items-center gap-2 rounded-full border border-gold-500/35 px-5 py-2.5 text-sm font-semibold text-cream/90 transition hover:border-gold-500/60 hover:text-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/70"
                 >
-                  Zostaw numer
-                </button>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11 11 0 0 0 3.5.56 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .56 3.5 1 1 0 0 1-.24 1z"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Zadzwoń
+                </a>
               </div>
             </div>
 

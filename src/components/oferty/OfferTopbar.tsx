@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 
 export type OfferSection = { id: string; label: string };
 
-// Górny pasek oferty (inspirowany starą stroną, ale czytelniejszy):
-//  • narożniki: po lewej „Udostępnij" (Facebook), po prawej „Drukuj ofertę",
-//  • niżej, na jednym poziomie dla symetrii: po lewej „← Wróć do ofert",
-//    po prawej skróty do sekcji (Opis · Lokalizacja · Film) ze złotą kreseczką
-//    pod aktywną pozycją. Kliknięcie płynnie przewija do sekcji (smooth-scroll
-//    mamy globalnie w globals.css), a aktywną pozycję śledzi IntersectionObserver.
+// Górny pasek oferty — JEDEN spójny „command bar" (szklana belka) zamiast dwóch
+// oddzielnych rzędów. Płynnie domyka przejście z kinowego hero do treści:
+//  • po lewej: „Wróć do ofert" + skróty do sekcji (Opis · Lokalizacja · Film),
+//    aktywna pozycja podświetlona złotą pigułką (scrollspy = IntersectionObserver),
+//  • po prawej: akcje „Udostępnij" (Facebook) i „Drukuj".
+// Przyciski to ciche linki tekstowe, które rozjaśniają się dopiero pod kursorem —
+// dzięki temu belka jest lekka i elegancka, a nie „dwa zielone paski".
 export default function OfferTopbar({
   sections,
   shareUrl,
@@ -49,26 +50,88 @@ export default function OfferTopbar({
   };
 
   return (
-    <div className="mb-6">
-      {/* Narożniki: Udostępnij ↔ Drukuj */}
-      <div className="flex items-center justify-between gap-4">
+    <div className="mb-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-2xl border border-gold-500/15 bg-forest-900/55 px-2.5 py-2 backdrop-blur sm:px-3">
+      {/* Lewa strona: powrót + skróty do sekcji */}
+      <div className="flex flex-wrap items-center gap-y-1">
+        <Link
+          href="/oferty"
+          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-cream/70 transition hover:bg-forest-800 hover:text-gold-300"
+        >
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+            <path
+              d="M15 6l-6 6 6 6"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="hidden sm:inline">Wróć do ofert</span>
+          <span className="sm:hidden">Oferty</span>
+        </Link>
+
+        {sections.length > 0 ? (
+          <>
+            <span
+              className="mx-1.5 hidden h-5 w-px bg-gold-500/15 sm:block"
+              aria-hidden
+            />
+            <nav
+              aria-label="Sekcje oferty"
+              className="flex items-center gap-0.5"
+            >
+              {sections.map((s) => {
+                const isActive = active === s.id;
+                return (
+                  <a
+                    key={s.id}
+                    href={`#${s.id}`}
+                    aria-current={isActive ? "true" : undefined}
+                    className={
+                      "rounded-full px-3 py-1.5 text-sm transition " +
+                      (isActive
+                        ? "bg-gold-500/15 text-gold-300"
+                        : "text-cream/65 hover:bg-forest-800 hover:text-gold-300")
+                    }
+                  >
+                    {s.label}
+                  </a>
+                );
+              })}
+            </nav>
+          </>
+        ) : null}
+      </div>
+
+      {/* Prawa strona: akcje (Udostępnij ↔ Drukuj) */}
+      <div className="flex items-center gap-0.5">
         <button
           type="button"
           onClick={share}
-          className="inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-forest-800 px-4 py-2 text-sm text-cream/85 transition hover:border-gold-500/50 hover:text-gold-300"
+          className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-cream/75 transition hover:bg-forest-800 hover:text-gold-300"
         >
-          <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
             <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z" />
           </svg>
-          Udostępnij
+          <span className="hidden sm:inline">Udostępnij</span>
         </button>
 
         <button
           type="button"
           onClick={() => window.print()}
-          className="inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-forest-800 px-4 py-2 text-sm text-cream/85 transition hover:border-gold-500/50 hover:text-gold-300"
+          className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-cream/75 transition hover:bg-forest-800 hover:text-gold-300"
         >
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
             <path
               d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M6 14h12v7H6z"
               stroke="currentColor"
@@ -77,48 +140,8 @@ export default function OfferTopbar({
               strokeLinejoin="round"
             />
           </svg>
-          Drukuj ofertę
+          <span className="hidden sm:inline">Drukuj</span>
         </button>
-      </div>
-
-      {/* Poziom symetrii: Wróć do ofert ↔ skróty do sekcji */}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-t border-gold-500/10 pt-4">
-        <Link
-          href="/oferty"
-          className="text-sm text-cream/60 transition hover:text-gold-300"
-        >
-          ← Wróć do ofert
-        </Link>
-
-        {sections.length > 0 ? (
-          <nav aria-label="Sekcje oferty" className="flex items-center gap-1">
-            {sections.map((s) => {
-              const isActive = active === s.id;
-              return (
-                <a
-                  key={s.id}
-                  href={`#${s.id}`}
-                  aria-current={isActive ? "true" : undefined}
-                  className={
-                    "relative px-3 py-1.5 text-sm transition " +
-                    (isActive
-                      ? "text-gold-300"
-                      : "text-cream/65 hover:text-gold-300")
-                  }
-                >
-                  {s.label}
-                  {/* Złota kreseczka pod aktywną pozycją */}
-                  <span
-                    className={
-                      "absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-gold-400 transition-opacity " +
-                      (isActive ? "opacity-100" : "opacity-0")
-                    }
-                  />
-                </a>
-              );
-            })}
-          </nav>
-        ) : null}
       </div>
     </div>
   );

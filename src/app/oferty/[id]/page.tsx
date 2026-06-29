@@ -108,6 +108,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
       offer={offer}
       leadImage={leadImage}
       photoCount={galleryImages.length}
+      phoneHref={agentPhoneHref}
     />
 
     <article className="pb-20 pt-8 print:hidden">
@@ -211,7 +212,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
           </div>
 
           {/* Panel boczny */}
-          <aside className="h-fit lg:sticky lg:top-24">
+          <aside className="h-fit">
             {/* Desktop: ten sam moduł z ceną w przyklejonym panelu bocznym.
                 Na telefonie ukryty — pokazujemy jego kopię pod galerią. */}
             <div className="hidden lg:block">
