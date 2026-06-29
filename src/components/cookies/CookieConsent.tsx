@@ -79,7 +79,7 @@ export default function CookieConsent() {
       role="dialog"
       aria-modal="false"
       aria-label="Zgoda na pliki cookies"
-      className="fixed inset-x-0 bottom-0 z-[60] border-t border-gold-500/20 bg-forest-900/95 backdrop-blur supports-[backdrop-filter]:bg-forest-900/85"
+      className="fixed inset-x-0 bottom-0 z-[60] border-t border-gold-500/20 bg-forest-900/95 backdrop-blur supports-[backdrop-filter]:bg-forest-900/85 print:hidden"
     >
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
         <p className="text-sm leading-relaxed text-cream/80">

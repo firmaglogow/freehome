@@ -204,3 +204,35 @@ h1, h2, h3, h4 {
   cursor: pointer;
   border: 3px solid var(--color-forest-950);
 }
+
+/* ------------------------------------------------------------------ */
+/*  Druk — broszura oferty (przycisk „Drukuj ofertę" → Zapisz jako PDF)*/
+/*  Na ekranie .offer-brochure jest ukryta (hidden); przy druku        */
+/*  pokazuje się (print:block), a my chowamy całe chrome strony i samą  */
+/*  ofertę (print:hidden na <article>), zostawiając białą broszurę.     */
+/* ------------------------------------------------------------------ */
+@page {
+  size: A4;
+  margin: 12mm 12mm 14mm;
+}
+
+@media print {
+  /* Płynne przewijanie wyłączamy do druku; białe tło, ciemny tekst. */
+  html {
+    scroll-behavior: auto;
+  }
+  body {
+    background: #ffffff !important;
+    color: var(--color-forest-950) !important;
+  }
+  /* Link „Przejdź do treści" nie należy do wydruku. */
+  .skip-link {
+    display: none !important;
+  }
+}
+
+/* Wymuszamy druk kolorów tła (zielony pasek biura, złote akcenty, mapa). */
+.offer-brochure {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}

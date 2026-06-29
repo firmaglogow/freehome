@@ -31,7 +31,7 @@ export default function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 transition-all duration-300",
+        "sticky top-0 z-50 transition-all duration-300 print:hidden",
         scrolled
           ? "bg-forest-950/95 backdrop-blur border-b border-gold-500/20 shadow-lg shadow-black/20"
           : "bg-transparent"

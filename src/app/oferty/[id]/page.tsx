@@ -6,6 +6,7 @@ import OfferDetailsPanel from "@/components/oferty/OfferDetailsPanel";
 import OfferDescription from "@/components/oferty/OfferDescription";
 import OfferTopbar, { type OfferSection } from "@/components/oferty/OfferTopbar";
 import OfferVideo from "@/components/oferty/OfferVideo";
+import OfferPrintBrochure from "@/components/oferty/OfferPrintBrochure";
 import ContactForm from "@/components/ContactForm";
 import Placeholder from "@/components/ui/Placeholder";
 import {
@@ -96,7 +97,8 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
   const shareUrl = `${site.url}/oferty/${offer.id}/`;
 
   return (
-    <article className="pt-28 pb-20">
+    <>
+    <article className="pt-28 pb-20 print:hidden">
       <JsonLd
         data={[
           offerJsonLd(offer),
@@ -236,5 +238,17 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
         </div>
       </Container>
     </article>
+
+    {/* Broszura do druku — ukryta na ekranie, widoczna tylko przy „Drukuj
+        ofertę" (window.print → Zapisz jako PDF). Render poza <article>, bo
+        article ma print:hidden. */}
+    <OfferPrintBrochure
+      offer={offer}
+      agentName={agent.name}
+      agentPhoto={agent.photo}
+      agentPhone={agentPhone}
+      agentEmail={agent.email}
+    />
+    </>
   );
 }
