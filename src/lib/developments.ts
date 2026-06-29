@@ -30,7 +30,7 @@ export type Development = {
   name: string;
   /** Deweloper — wpisywany ręcznie (Esti nie przysyła osobnego pola dewelopera). */
   developer: string;
-  /** Ścieżka do logo w /public (np. "/rynek-pierwotny/nova.png"). */
+  /** Ścieżka do logo w /public (np. "/rynek-pierwotny/nova.webp"). */
   logo: string;
   /** Lokalizacja pod nazwą (np. „Radwanice", „Bytnik k. Głogowa"). */
   location?: string;
