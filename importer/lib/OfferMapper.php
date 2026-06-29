@@ -73,6 +73,10 @@ final class OfferMapper
             'description_html' => $this->str($o, 'descriptionWebsite'),
             'tags'             => $this->str($o, 'tagList'),
 
+            // Film z prezentacji (YouTube) — pole <videoLink> w XML Esti
+            // (w panelu: Galeria → Film i prezentacja → „Link do filmu").
+            'video_url'        => $this->str($o, 'videoLink'),
+
             'contact_id'      => $this->int($o, 'contactId'),
             'contact_name'    => $this->fullName($o),
             'contact_phone'   => $this->str($o, 'contactPhone'),

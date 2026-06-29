@@ -43,6 +43,10 @@ export type Offer = {
   geo?: { lat: number; lng: number } | null;
   description?: string | null;
   descriptionHtml?: string | null;
+  // Link do filmu z prezentacji (YouTube). Pole <videoLink> z Esti
+  // (panel: Galeria → Film i prezentacja → „Link do filmu"). Surowy URL —
+  // front wyłuskuje z niego ID i osadza odtwarzacz w sekcji „Film".
+  videoUrl?: string | null;
   market?: string | null;
   buildingYear?: number | null;
   agentName?: string | null;

@@ -79,6 +79,8 @@ final class JsonExporter
                 'image'           => $gallery[0] ?? $plans[0] ?? null,
                 'gallery'         => $gallery,
                 'plans'           => $plans,
+                // Film z prezentacji (YouTube) — surowy link z Esti (<videoLink>).
+                'videoUrl'        => !empty($o['video_url']) ? $o['video_url'] : null,
                 'geo'             => ($o['lat'] !== null && $o['lng'] !== null)
                                         ? ['lat' => (float) $o['lat'], 'lng' => (float) $o['lng']]
                                         : null,

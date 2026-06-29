@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS offers (
   description       MEDIUMTEXT       NULL,               -- <description> (czysty tekst)
   description_html  MEDIUMTEXT       NULL,               -- <descriptionWebsite> (z <br />)
   tags              TEXT             NULL,               -- <tagList>
+  video_url         VARCHAR(255)     NULL,               -- <videoLink> (YouTube — film z prezentacji)
 
   contact_id        INT              NULL,               -- <contactId>
   contact_name      VARCHAR(190)     NULL,               -- imię + nazwisko opiekuna z Esti

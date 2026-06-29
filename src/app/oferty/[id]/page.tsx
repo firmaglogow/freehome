@@ -1,10 +1,11 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import OfferCard from "@/components/ui/OfferCard";
 import OfferGallery from "@/components/oferty/OfferGallery";
 import OfferDetailsPanel from "@/components/oferty/OfferDetailsPanel";
 import OfferDescription from "@/components/oferty/OfferDescription";
+import OfferTopbar, { type OfferSection } from "@/components/oferty/OfferTopbar";
+import OfferVideo from "@/components/oferty/OfferVideo";
 import ContactForm from "@/components/ContactForm";
 import Placeholder from "@/components/ui/Placeholder";
 import {
@@ -15,6 +16,7 @@ import {
   resolveAgentSlug,
 } from "@/lib/offers";
 import { sanitizeOfferHtml } from "@/lib/sanitizeHtml";
+import { youtubeId } from "@/lib/youtube";
 import { people, site } from "@/lib/site";
 import JsonLd from "@/components/seo/JsonLd";
 import { pageMetadata, breadcrumbJsonLd, offerJsonLd } from "@/lib/seo";
@@ -79,6 +81,20 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
     ? `https://www.google.com/maps/search/?api=1&query=${offer.geo.lat},${offer.geo.lng}`
     : null;
 
+  // Film z prezentacji (YouTube) — wyłuskane ID z surowego linku Esti.
+  const videoId = youtubeId(offer.videoUrl);
+
+  // Skróty w górnym pasku: Opis zawsze; Lokalizacja i Film tylko gdy są dane.
+  // Kolejność = kolejność sekcji na stronie (Opis → Lokalizacja → Film).
+  const sections: OfferSection[] = [
+    { id: "opis", label: "Opis" },
+    ...(mapSrc ? [{ id: "lokalizacja", label: "Lokalizacja" }] : []),
+    ...(videoId ? [{ id: "film", label: "Film" }] : []),
+  ];
+
+  // Adres oferty do udostępnienia na Facebooku (kanoniczny URL produkcyjny).
+  const shareUrl = `${site.url}/oferty/${offer.id}/`;
+
   return (
     <article className="pt-28 pb-20">
       <JsonLd
@@ -91,11 +107,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
         ]}
       />
       <Container>
-        <nav aria-label="Okruszki" className="mb-6 text-sm text-cream/55">
-          <Link href="/oferty" className="hover:text-gold-300">
-            ← Wróć do ofert
-          </Link>
-        </nav>
+        <OfferTopbar sections={sections} shareUrl={shareUrl} />
 
         {/* Jedyny h1 strony. Tytuł oferty wizualnie pojawia się w panelu z ceną
             (renderowanym dwukrotnie: mobile + desktop), więc tam jest tylko <p>.
@@ -124,7 +136,10 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
               />
             </div>
 
-            <h2 className="mt-10 font-display text-2xl text-cream">
+            <h2
+              id="opis"
+              className="mt-10 scroll-mt-28 font-display text-2xl text-cream"
+            >
               Opis nieruchomości
             </h2>
             {descHtml || offer.description ? (
@@ -139,7 +154,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
 
             {/* Mapa lokalizacji (Google Maps embed, bez klucza API) */}
             {mapSrc ? (
-              <div className="mt-10">
+              <div id="lokalizacja" className="mt-10 scroll-mt-28">
                 <div className="flex items-end justify-between gap-4">
                   <h2 className="font-display text-2xl text-cream">
                     Lokalizacja
@@ -169,6 +184,19 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
                   Lokalizacja przybliżona — dokładny adres podajemy przy
                   kontakcie.
                 </p>
+              </div>
+            ) : null}
+
+            {/* Film o nieruchomości (YouTube z Esti <videoLink>) — na końcu strony.
+                Odtwarzacz ładuje się dopiero po kliknięciu okładki (OfferVideo). */}
+            {videoId ? (
+              <div id="film" className="mt-10 scroll-mt-28">
+                <h2 className="font-display text-2xl text-cream">
+                  Film o nieruchomości
+                </h2>
+                <div className="mt-4">
+                  <OfferVideo id={videoId} title={offer.title} />
+                </div>
               </div>
             ) : null}
           </div>
