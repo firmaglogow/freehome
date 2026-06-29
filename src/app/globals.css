@@ -169,6 +169,71 @@ h1, h2, h3, h4 {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Hero oferty — kinowe wejście (powolny zoom tła + rise treści)      */
+/* ------------------------------------------------------------------ */
+@keyframes fh-hero-zoom {
+  from {
+    transform: scale(1.14);
+  }
+  to {
+    transform: scale(1.03);
+  }
+}
+@keyframes fh-hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fh-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(7px);
+  }
+}
+.fh-hero-img {
+  animation: fh-hero-zoom 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform;
+}
+.fh-hero-rise {
+  opacity: 0;
+  animation: fh-hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.fh-hero-rise-1 {
+  animation-delay: 0.05s;
+}
+.fh-hero-rise-2 {
+  animation-delay: 0.16s;
+}
+.fh-hero-rise-3 {
+  animation-delay: 0.3s;
+}
+.fh-bob {
+  animation: fh-bob 1.9s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fh-hero-img {
+    animation: none;
+    transform: none;
+  }
+  .fh-hero-rise {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .fh-bob {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Suwak kalkulatora (Kariera) — złote wypełnienie + uchwyt          */
 /* ------------------------------------------------------------------ */
 .fh-range {

@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import OfferCard from "@/components/ui/OfferCard";
+import OfferHero from "@/components/oferty/OfferHero";
 import OfferGallery from "@/components/oferty/OfferGallery";
 import OfferDetailsPanel from "@/components/oferty/OfferDetailsPanel";
 import OfferDescription from "@/components/oferty/OfferDescription";
 import OfferTopbar, { type OfferSection } from "@/components/oferty/OfferTopbar";
+import OfferStickyBar from "@/components/oferty/OfferStickyBar";
 import OfferVideo from "@/components/oferty/OfferVideo";
 import OfferPrintBrochure from "@/components/oferty/OfferPrintBrochure";
 import ContactForm from "@/components/ContactForm";
@@ -13,6 +15,7 @@ import {
   offers,
   formatArea,
   formatPrice,
+  formatOfferHeading,
   formatTransactionBadge,
   resolveAgentSlug,
 } from "@/lib/offers";
@@ -70,6 +73,9 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
         : [];
   const plans = offer.plans ?? [];
 
+  // Zdjęcie wiodące hero (pierwsze z galerii → główne → markowy fallback ofert).
+  const leadImage = galleryImages[0] || offer.image || "/hero/oferty.webp";
+
   // Opis: preferujemy bezpieczny HTML z Esti (descriptionHtml) — z <strong>/<br>.
   const descHtml = sanitizeOfferHtml(offer.descriptionHtml);
 
@@ -98,7 +104,14 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
 
   return (
     <>
-    <article className="pt-28 pb-20 print:hidden">
+    {/* Kinowy hero na całą szerokość — zawiera jedyny <h1> strony. */}
+    <OfferHero
+      offer={offer}
+      leadImage={leadImage}
+      photoCount={galleryImages.length}
+    />
+
+    <article className="pb-20 pt-8 print:hidden">
       <JsonLd
         data={[
           offerJsonLd(offer),
@@ -111,21 +124,17 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
       <Container>
         <OfferTopbar sections={sections} shareUrl={shareUrl} />
 
-        {/* Jedyny h1 strony. Tytuł oferty wizualnie pojawia się w panelu z ceną
-            (renderowanym dwukrotnie: mobile + desktop), więc tam jest tylko <p>.
-            Ten sr-only h1 gwarantuje poprawną hierarchię (h1 → h2) w obu
-            układach, niezależnie od kolejności kolumn w siatce. */}
-        <h1 className="sr-only">{offer.title}</h1>
-
         <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
           {/* Galeria + opis */}
           <div>
-            <OfferGallery
-              images={galleryImages}
-              plans={plans}
-              title={offer.title}
-              badge={formatTransactionBadge(offer)}
-            />
+            <div id="galeria" className="scroll-mt-24">
+              <OfferGallery
+                images={galleryImages}
+                plans={plans}
+                title={offer.title}
+                badge={formatTransactionBadge(offer)}
+              />
+            </div>
 
             {/* Telefon: moduł z ceną i szczegółami zaraz po zdjęciach. */}
             <div className="mt-6 lg:hidden">
@@ -217,7 +226,10 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
               />
             </div>
 
-            <div className="rounded-3xl border border-gold-500/15 bg-forest-800 p-6 lg:mt-5">
+            <div
+              id="zapytaj"
+              className="scroll-mt-24 rounded-3xl border border-gold-500/15 bg-forest-800 p-6 lg:mt-5"
+            >
               <h3 className="text-lg text-cream">Zapytaj o tę ofertę</h3>
               <p className="mt-1 mb-4 text-sm text-cream/60">
                 Podaj numer — oddzwonimy z szczegółami oferty {offer.id}.
@@ -238,6 +250,14 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
         </div>
       </Container>
     </article>
+
+    {/* Przyklejona dolna mini-belka z ceną i CTA — pojawia się po hero. */}
+    <OfferStickyBar
+      title={formatOfferHeading(offer)}
+      price={formatPrice(offer.price)}
+      image={leadImage}
+      phoneHref={agentPhoneHref}
+    />
 
     {/* Broszura do druku — ukryta na ekranie, widoczna tylko przy „Drukuj
         ofertę" (window.print → Zapisz jako PDF). Render poza <article>, bo

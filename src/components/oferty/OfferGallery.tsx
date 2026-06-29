@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// Galeria oferty: duże zdjęcie + miniatury, nawigacja strzałkami/klawiaturą/swipe,
-// licznik, lightbox (pełny ekran) oraz osobna zakładka „Plan mieszkania" dla
-// rzutów (Esti picture type=120, oddzielone w imporcie do pola `plans`).
+// Galeria oferty w układzie mozaiki: duże zdjęcie wiodące + kafelki, kliknięcie
+// otwiera lightbox (pełny ekran) z nawigacją strzałkami / klawiaturą / swipem.
+// Plany (Esti picture type=120) mają osobną zakładkę i prostszą siatkę.
 export default function OfferGallery({
   images,
   plans = [],
@@ -36,12 +36,17 @@ export default function OfferGallery({
     [count]
   );
 
+  const openAt = (i: number) => {
+    setIndex(i);
+    setLightbox(true);
+  };
+
   const switchView = (next: "photos" | "plans") => {
     setView(next);
     setIndex(0);
   };
 
-  // Klawiatura: działa zawsze dla strzałek, a Esc zamyka lightbox.
+  // Klawiatura: strzałki nawigują, Esc zamyka lightbox.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setLightbox(false);
@@ -64,7 +69,7 @@ export default function OfferGallery({
     };
   }, [lightbox]);
 
-  // Swipe (mobile).
+  // Swipe (mobile) — tylko w lightboxie.
   const touchX = useRef<number | null>(null);
   const onTouchStart = (e: React.TouchEvent) => {
     touchX.current = e.touches[0].clientX;
@@ -80,8 +85,49 @@ export default function OfferGallery({
 
   const current = active[index] ?? active[0];
 
-  const Arrow = ({ dir, label }: { dir: number; label: string }) => (
+  // Pojedynczy kafelek mozaiki (zwykła funkcja-helper, nie komponent — żeby nie
+  // tworzyć komponentów w renderze). Otwiera lightbox na danym zdjęciu.
+  const tile = (
+    i: number,
+    src: string,
+    className?: string,
+    overlay?: React.ReactNode
+  ) => (
     <button
+      key={src}
+      type="button"
+      onClick={() => openAt(i)}
+      aria-label={`Powiększ ${isPlan ? "plan" : "zdjęcie"} ${i + 1}`}
+      className={
+        "group relative overflow-hidden rounded-2xl border border-gold-500/15 bg-forest-800 " +
+        (className ?? "")
+      }
+    >
+      <Image
+        src={src}
+        alt={`${title} — ${isPlan ? "plan" : "zdjęcie"} ${i + 1}`}
+        fill
+        sizes="(max-width: 1024px) 50vw, 30vw"
+        className={
+          isPlan
+            ? "bg-ivory object-contain p-2"
+            : "object-cover transition-transform duration-700 group-hover:scale-105"
+        }
+      />
+      {overlay}
+    </button>
+  );
+
+  const badgeOverlay =
+    badge && !isPlan ? (
+      <span className="pointer-events-none absolute left-4 top-4 z-[1] rounded-full bg-forest-950/80 px-3 py-1 text-xs font-medium text-gold-300 backdrop-blur">
+        {badge}
+      </span>
+    ) : null;
+
+  const arrow = (dir: number, label: string) => (
+    <button
+      key={label}
       type="button"
       aria-label={label}
       onClick={(e) => {
@@ -102,6 +148,68 @@ export default function OfferGallery({
       </svg>
     </button>
   );
+
+  // ---- Mozaika zdjęć (różne układy zależnie od liczby zdjęć) ----------------
+  const photoMosaic = () => {
+    if (count === 1) {
+      return tile(0, active[0], "aspect-[16/10]", badgeOverlay);
+    }
+    if (count === 2) {
+      return (
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+          {tile(0, active[0], "aspect-[4/3]", badgeOverlay)}
+          {tile(1, active[1], "aspect-[4/3]")}
+        </div>
+      );
+    }
+    if (count === 3) {
+      return (
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+          {tile(0, active[0], "col-span-2 aspect-[16/9]", badgeOverlay)}
+          {tile(1, active[1], "aspect-[4/3]")}
+          {tile(2, active[2], "aspect-[4/3]")}
+        </div>
+      );
+    }
+    if (count === 4) {
+      return (
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+          {active
+            .slice(0, 4)
+            .map((src, i) =>
+              tile(i, src, "aspect-[4/3]", i === 0 ? badgeOverlay : undefined)
+            )}
+        </div>
+      );
+    }
+    // count >= 5 — układ „Airbnb": duże zdjęcie + 4 kafelki, „+N" na ostatnim.
+    const remaining = count - 5;
+    return (
+      <>
+        {/* Mobile: tylko duże zdjęcie (resztę odsłania przycisk pod spodem) */}
+        <div className="sm:hidden">
+          {tile(0, active[0], "aspect-[4/3]", badgeOverlay)}
+        </div>
+        {/* sm+ : pełna mozaika */}
+        <div className="hidden aspect-[2/1] grid-cols-4 grid-rows-2 gap-3 sm:grid">
+          {tile(0, active[0], "col-span-2 row-span-2", badgeOverlay)}
+          {tile(1, active[1])}
+          {tile(2, active[2])}
+          {tile(3, active[3])}
+          {tile(
+            4,
+            active[4],
+            undefined,
+            remaining > 0 ? (
+              <span className="absolute inset-0 grid place-items-center bg-forest-950/65 text-lg font-semibold text-cream backdrop-blur-[2px] transition group-hover:bg-forest-950/55">
+                +{remaining}
+              </span>
+            ) : undefined
+          )}
+        </div>
+      </>
+    );
+  };
 
   return (
     <div>
@@ -135,82 +243,37 @@ export default function OfferGallery({
         </div>
       ) : null}
 
-      {/* Główne zdjęcie */}
-      <div
-        className="group relative aspect-[16/10] overflow-hidden rounded-3xl border border-gold-500/15"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-      >
-        <Image
-          key={current}
-          src={current}
-          alt={`${title} — ${isPlan ? "plan" : "zdjęcie"} ${index + 1}`}
-          fill
-          sizes="(max-width: 1024px) 100vw, 60vw"
-          priority
-          className={
-            isPlan
-              ? "bg-ivory object-contain p-2"
-              : "object-cover transition-transform duration-700 group-hover:scale-105"
-          }
-        />
+      {/* Podgląd: mozaika zdjęć lub prosta siatka planów */}
+      {isPlan ? (
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
+          {active.map((src, i) => tile(i, src, "aspect-[4/3]"))}
+        </div>
+      ) : (
+        photoMosaic()
+      )}
 
-        {/* Przezroczysty przycisk na całym zdjęciu — otwiera lightbox.
-            Dostępny z klawiatury (Tab → Enter/Spacja). Strzałki mają wyższy
-            z-index (z-20), więc pozostają osobnymi, klikalnymi przyciskami. */}
+      {/* „Pokaż wszystkie" — pełny dostęp do galerii (też dla mobile) */}
+      {count > 1 ? (
         <button
           type="button"
-          onClick={() => setLightbox(true)}
-          aria-label={`Powiększ ${isPlan ? "plan" : "zdjęcie"} ${index + 1}`}
-          className="absolute inset-0 z-10 cursor-zoom-in"
-        />
-
-        {badge && !isPlan ? (
-          <span className="absolute left-4 top-4 rounded-full bg-forest-950/80 px-3 py-1 text-xs font-medium text-gold-300 backdrop-blur">
-            {badge}
-          </span>
-        ) : null}
-
-        {count > 1 ? (
-          <span className="absolute right-4 top-4 rounded-full bg-forest-950/80 px-3 py-1 text-xs font-medium text-cream backdrop-blur">
-            {index + 1} / {count}
-          </span>
-        ) : null}
-
-        {count > 1 ? (
-          <>
-            <Arrow dir={-1} label="Poprzednie" />
-            <Arrow dir={1} label="Następne" />
-          </>
-        ) : null}
-      </div>
-
-      {/* Miniatury */}
-      {count > 1 ? (
-        <div className="mt-4 grid grid-cols-5 gap-3 sm:grid-cols-6 lg:grid-cols-8">
-          {active.map((src, i) => (
-            <button
-              key={src}
-              type="button"
-              onClick={() => setIndex(i)}
-              aria-label={`Pokaż ${isPlan ? "plan" : "zdjęcie"} ${i + 1}`}
-              className={
-                "relative aspect-[4/3] overflow-hidden rounded-xl border transition " +
-                (i === index
-                  ? "border-gold-400 ring-1 ring-gold-400"
-                  : "border-gold-500/15 hover:border-gold-500/40")
-              }
-            >
-              <Image
-                src={src}
-                alt=""
-                fill
-                sizes="(max-width: 1024px) 20vw, 10vw"
-                className={isPlan ? "bg-ivory object-contain p-1" : "object-cover"}
-              />
-            </button>
-          ))}
-        </div>
+          onClick={() => openAt(0)}
+          className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-forest-800 px-4 py-2 text-sm text-cream/85 transition hover:border-gold-500/50 hover:text-gold-300"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 5h7v6H3zM14 5h7v6h-7zM3 13h7v6H3zM14 13h7v6h-7z"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Pokaż wszystkie {isPlan ? "plany" : "zdjęcia"} ({count})
+        </button>
       ) : null}
 
       {/* Lightbox */}
@@ -230,7 +293,12 @@ export default function OfferGallery({
             onClick={() => setLightbox(false)}
             className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-cream transition hover:bg-white/20 hover:text-gold-300"
           >
-            <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="h-6 w-6"
+              aria-hidden="true"
+            >
               <path
                 d="M6 6l12 12M18 6L6 18"
                 stroke="currentColor"
@@ -262,8 +330,8 @@ export default function OfferGallery({
 
           {count > 1 ? (
             <>
-              <Arrow dir={-1} label="Poprzednie" />
-              <Arrow dir={1} label="Następne" />
+              {arrow(-1, "Poprzednie")}
+              {arrow(1, "Następne")}
             </>
           ) : null}
         </div>
