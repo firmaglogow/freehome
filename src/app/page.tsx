@@ -9,7 +9,7 @@ import BlogPreview from "@/components/home/BlogPreview";
 import ContactSection from "@/components/home/ContactSection";
 import { offers } from "@/lib/offers";
 import { site } from "@/lib/site";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, ORG_ID } from "@/lib/seo";
 
 // Tylko canonical — tytuł/opis/Open Graph dziedziczymy z layoutu (gdybyśmy
 // ustawili tu openGraph, zastąpiłby cały obiekt z layoutu, a nie scalił).
@@ -21,6 +21,7 @@ export default function Home() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
+    "@id": ORG_ID,
     name: site.fullName,
     url: site.url,
     logo: absoluteUrl("/brand/logo.webp"),

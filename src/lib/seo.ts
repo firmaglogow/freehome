@@ -8,10 +8,18 @@
 // podstrona nie „zgubiła” siteName/locale/type dziedziczonych z layoutu.
 import type { Metadata } from "next";
 import { site } from "@/lib/site";
-import type { Person } from "@/lib/site";
+import type { Person, Service } from "@/lib/site";
 import type { Offer } from "@/lib/offers";
 import { formatArea, formatPrice } from "@/lib/offers";
 import type { Post } from "@/lib/blog";
+
+/**
+ * Stabilny identyfikator encji biura (RealEstateAgent). Ten sam `@id` nosi
+ * blok LocalBusiness na stronie głównej oraz `provider` w danych usług —
+ * dzięki temu Google traktuje to jako JEDNĄ encję (konsolidacja grafu wiedzy),
+ * a nie kilka osobnych firm o tej samej nazwie.
+ */
+export const ORG_ID = absoluteUrl("/#organization");
 
 /**
  * Domyka ścieżkę ukośnikiem — spójnie z next.config (trailingSlash: true), żeby
@@ -223,5 +231,34 @@ export function articleJsonLd(post: Post) {
       logo: { "@type": "ImageObject", url: absoluteUrl("/brand/logo.webp") },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  };
+}
+
+/**
+ * Service JSON-LD dla pojedynczej usługi (/uslugi/[slug]). `provider` to biuro
+ * FREE HOME (RealEstateAgent) spięte stabilnym `@id` z encją ze strony głównej.
+ * Pierwszy akapit `intro` daje bogatszy opis niż krótki `desc`; `areaServed`
+ * = obszar działania biura (spójnie ze stroną główną).
+ */
+export function serviceJsonLd(service: Service) {
+  const url = absoluteUrl(`/uslugi/${service.slug}/`);
+  const description = service.intro[0]?.trim() || service.desc;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    serviceType: service.title,
+    description,
+    url,
+    inLanguage: "pl-PL",
+    areaServed: site.areaServed.map((name) => ({ "@type": "City", name })),
+    provider: {
+      "@type": "RealEstateAgent",
+      "@id": ORG_ID,
+      name: site.fullName,
+      url: site.url,
+      telephone: `+48${site.phone.replace(/\s/g, "")}`,
+    },
   };
 }
