@@ -113,7 +113,7 @@ export type Person = {
   partnerLabel?: string;
 };
 
-// Biuro prowadzą Grzegorz i Daria Łukasik; w zespole także Angelika.
+// Biuro prowadzą Grzegorz i Daria Łukasik.
 // Sara Grzegorska to zaufany partner zewnętrzny (ekspert kredytowy, Lendi).
 // Bez hierarchii — każda osoba ma własną podstronę z opisem i ofertami.
 export const people: Person[] = [
@@ -134,15 +134,6 @@ export const people: Person[] = [
     phone: "518 092 404",
     email: "daria.lukasik@freehome.pl",
     photo: "/zespol/daria.webp",
-  },
-  {
-    slug: "angelika-skorupinska",
-    name: "Angelika Skorupińska",
-    role: "Ekspert ds. sprzedaży nieruchomości",
-    bio: "Do nieruchomości weszłam z bagażem, którego nie da się nauczyć w tej branży — z lat pracy z ludźmi w zupełnie innym świecie. I właśnie to okazało się największym atutem. Wiem, jak słuchać, jak budować relację i jak prowadzić klienta spokojnie przez decyzję, która potrafi onieśmielać. Świeże spojrzenie, mnóstwo energii i pełne zaangażowanie w każdą sprawę — tak zaczynam swój rozdział w FREE HOME.",
-    phone: "733 687 666",
-    email: "angelika.skorupinska@freehome.pl",
-    photo: "/zespol/angelika.webp",
   },
   {
     slug: "sara-grzegorska",
