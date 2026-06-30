@@ -22,13 +22,14 @@ ACTIVATE="source /home/dm82980/nodevenv/freehome/20/bin/activate"
 REPO="/home/dm82980/freehome"
 
 # 3) Katalog publiczny domeny — gdzie ma wylądować gotowa strona.
-#    cPanel → „Domeny" pokazuje „Katalog główny" dla freehome.com.pl.
-#    Potwierdzone przy dodawaniu domeny w cPanel (Domenomania):
-DOCROOT="/home/dm82980/freehome.com.pl"
+#    PRODUKCJA freehome.pl: Domenomania ustawiła freehome.pl jako domenę GŁÓWNĄ
+#    konta dm82980 → jej document root to public_html. Tu publikujemy stronę.
+#    (com.pl zostaje jak jest; kiedyś zrobi 301 → freehome.pl.)
+DOCROOT="/home/dm82980/public_html"
 
-# 4) Adres kanoniczny strony (canonical/OG/JSON-LD). Staging na com.pl;
-#    po przepięciu na produkcję zmień na: https://www.freehome.pl
-SITE_URL="https://www.freehome.com.pl"
+# 4) Adres kanoniczny strony (canonical/OG/JSON-LD). Produkcja = freehome.pl
+#    BEZ www (www.freehome.pl → 301 → freehome.pl robi .htaccess Domenomanii).
+SITE_URL="https://freehome.pl"
 # ──────────────────────────────────────────────────────────────────────────
 
 STAMP="$REPO/importer/.last-build.md5"
@@ -86,7 +87,19 @@ NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" $TASKSET ./node_module
 # 4. Publikacja: zsynchronizuj kompletny out/ do katalogu domeny.
 #    --delete sprząta stare pliki (out/ zawiera całą stronę, też zdjęcia ofert,
 #    bo Next kopiuje public/ do out/ podczas eksportu).
-rsync -a --delete out/ "$DOCROOT/"
+#    WYKLUCZENIA (KLUCZOWE dla public_html jako root freehome.pl): nie kasujemy
+#    plików, których Next NIE generuje, a które są krytyczne dla domeny:
+#      .htaccess   → przekierowanie 301 www→bez-www + dyrektywy PHP cPanela,
+#      .well-known → wyzwania SSL (Let's Encrypt) — kasacja zrywa certyfikat,
+#      php.ini / .user.ini → konfiguracja PHP konta (cPanel).
+#    Eksport statyczny Next nie tworzy żadnego z nich, więc wykluczenie jest
+#    bezpieczne i chroni je przed --delete.
+rsync -a --delete \
+  --exclude='.well-known' \
+  --exclude='.htaccess' \
+  --exclude='php.ini' \
+  --exclude='.user.ini' \
+  out/ "$DOCROOT/"
 
 echo "$NEW" > "$STAMP"
 echo "[$(date '+%F %T')] KONIEC (opublikowano)"
