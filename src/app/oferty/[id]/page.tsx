@@ -131,7 +131,11 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
             z użytkownikiem przez całą treść oferty, a zwalnia się dopiero przed
             sekcją „Podobne oferty" (granica = dół tego wrappera). */}
         <div>
-          <OfferTopbar sections={sections} shareUrl={shareUrl} />
+          <OfferTopbar
+            sections={sections}
+            shareUrl={shareUrl}
+            shareTitle={`${formatOfferHeading(offer)} — ${formatPrice(offer.price)}`}
+          />
 
           <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
           {/* Galeria + opis */}
