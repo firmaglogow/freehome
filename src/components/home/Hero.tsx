@@ -45,16 +45,16 @@ export default function Hero({ offersCount }: { offersCount: number }) {
           <p className="mt-5 max-w-xl text-lg text-cream/80">{site.subtitle}</p>
         </div>
 
-        {/* Wyszukiwarka — serce hero. Przesunięta niżej, węższa o ~20%
-            (max-w-4xl 56rem → 45rem). Wysokość i układ mobilny: w SearchBar. */}
-        <div className="mt-16 max-w-[45rem] sm:mt-24">
+        {/* Wyszukiwarka — serce hero. Węższa o ~20% (max-w-4xl 56rem → 45rem),
+            podniesiona delikatnie bliżej nagłówka. Wysokość i układ mobilny: w SearchBar. */}
+        <div className="mt-10 max-w-[45rem] sm:mt-16">
           <SearchBar offersCount={offersCount} />
         </div>
 
         {/* Pasek dowodów pod wyszukiwarką — twarde liczby już na pierwszym ekranie
             (opinie, lata na rynku, transakcje). Wg audytu copy: najmocniejsza
             pojedyncza dźwignia — przenosi atuty „nad linię zgięcia". */}
-        <dl className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 sm:mt-12 sm:gap-x-8">
+        <dl className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 sm:mt-8 sm:gap-x-8">
           <div className="flex items-baseline gap-1.5">
             <dt className="font-display text-2xl font-semibold text-gold-400 sm:text-3xl">
               {site.reviewsCount}+
