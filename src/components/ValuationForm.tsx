@@ -46,6 +46,8 @@ export default function ValuationForm() {
           _subject: `Wycena: ${data.typ || "nieruchomość"} — ${data.lokalizacja || ""}`,
           _template: "table",
           _captcha: "false",
+          // Kopia zapasowa zgłoszenia na firmowego Gmaila (nic nie ginie).
+          _cc: "firmaglogow@gmail.com",
         }),
       });
       const body = await res.json().catch(() => ({}));

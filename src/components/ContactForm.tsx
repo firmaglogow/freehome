@@ -47,6 +47,8 @@ export default function ContactForm({
               }`,
           _template: "table",
           _captcha: "false",
+          // Kopia zapasowa zgłoszenia na firmowego Gmaila (nic nie ginie).
+          _cc: "firmaglogow@gmail.com",
         }),
       });
       const body = await res.json().catch(() => ({}));

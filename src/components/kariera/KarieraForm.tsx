@@ -36,6 +36,8 @@ export default function KarieraForm() {
     fd.append("_subject", "Nowe zgłoszenie rekrutacyjne — Kariera FREE HOME");
     fd.append("_template", "table");
     fd.append("_captcha", "false");
+    // Kopia zapasowa zgłoszenia na firmowego Gmaila (nic nie ginie).
+    fd.append("_cc", "firmaglogow@gmail.com");
 
     // Jeśli plik CV nie został wybrany, nie wysyłamy pustego pola.
     const cv = fd.get("cv");
