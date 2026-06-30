@@ -23,10 +23,11 @@ import { site } from "@/lib/site";
 //  wczytał. Zwykły <img> bez loading="lazy" wczytuje się od razu (Chrome pobiera
 //  obrazy także w display:none), więc są gotowe zanim użytkownik kliknie druk.
 //
-//  Strona 1 (okładka): logo + nr oferty, tytuł, duże zdjęcie + 3 mniejsze,
-//                       cena i siatka parametrów.
-//  Strona 2: opis, mapka lokalizacji (kafelki OpenStreetMap + złoty pin),
-//            karta opiekuna i pasek z danymi biura.
+//  Strona 1 (okładka): logo + nr oferty, DUŻE zdjęcie z nałożonym tytułem i
+//                       lokalizacją (folder premium), pasek cena + parametry
+//                       (czysta typografia, bez boksów), 4 mniejsze zdjęcia.
+//  Strona 2: krótki opis (teaser), mapka lokalizacji (kafelki OpenStreetMap +
+//            złoty pin), karta opiekuna i pasek z danymi biura.
 // ──────────────────────────────────────────────────────────────────────────
 
 // Mapka z kafelków OpenStreetMap (keyless, CDN — pewnie wczytuje się do druku).
@@ -156,7 +157,7 @@ export default function OfferPrintBrochure({
   agentPhone: string;
   agentEmail?: string;
 }) {
-  // Zdjęcia: pierwsze 4 z galerii (duże główne + 3 mniejsze). Fallback: image.
+  // Zdjęcia: pierwsze 5 z galerii (duże na okładkę + 4 mniejsze). Fallback: image.
   const photos =
     offer.gallery && offer.gallery.length > 0
       ? offer.gallery
@@ -164,14 +165,19 @@ export default function OfferPrintBrochure({
         ? [offer.image]
         : [];
   const hero = photos[0] ?? null;
-  const thumbs = photos.slice(1, 4);
+  const thumbs = photos.slice(1, 5); // 4 małe zdjęcia pod okładką
 
   // Opis: preferujemy bogatszy descriptionHtml, w razie braku — description.
-  // Oba bywają z HTML (Esti), więc zawsze sprowadzamy do czystego tekstu i
-  // przycinamy do ~750 znaków, żeby broszura trzymała 2 strony.
+  // Oba bywają z HTML (Esti) → sprowadzamy do czystego tekstu. Na wydruku
+  // pokazujemy TYLKO krótki teaser (~300 znaków, ucięty na granicy słowa), żeby
+  // broszura zawsze mieściła się w 2 stronach — po pełny opis klient i tak
+  // wchodzi na stronę oferty albo dzwoni do opiekuna.
   const rawDesc = htmlToText((offer.descriptionHtml ?? offer.description ?? "").trim());
+  const TEASER_LEN = 300;
   const desc =
-    rawDesc.length > 760 ? rawDesc.slice(0, 750).replace(/\s+\S*$/, "") + "…" : rawDesc;
+    rawDesc.length > TEASER_LEN
+      ? rawDesc.slice(0, TEASER_LEN).replace(/\s+\S*$/, "") + "…"
+      : rawDesc;
   const descParas = desc.split(/\n+/).filter(Boolean);
 
   // Siatka parametrów — pokazujemy tylko te, które mają wartość.
@@ -199,29 +205,69 @@ export default function OfferPrintBrochure({
       <section className="brochure-page">
         <Brandbar offerId={offer.id} />
 
-        <div className="mt-5">
-          <Kicker>{formatTransactionBadge(offer)}</Kicker>
-          <h2 className="mt-1 font-display text-3xl leading-tight text-forest-950">
-            {formatOfferHeading(offer)}
-          </h2>
-          <p className="mt-1 text-sm text-forest-950/70">{formatOfferPlace(offer)}</p>
-        </div>
-
-        {/* Duże zdjęcie główne */}
+        {/* Okładka: duże zdjęcie z nałożonym tytułem i lokalizacją (efekt
+            folderu premium). Gradient od dołu zapewnia czytelność napisu. */}
         {hero ? (
-          <div className="mt-4 aspect-[16/10] w-full overflow-hidden rounded-2xl border border-forest-950/10">
+          <div className="relative mt-4 aspect-[16/10] w-full overflow-hidden rounded-2xl border border-forest-950/10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset(hero)}
               alt={offer.title}
-              className="h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-forest-950/90 via-forest-950/25 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-300">
+                {formatTransactionBadge(offer)}
+              </p>
+              <h2 className="mt-1 font-display text-3xl leading-tight text-cream">
+                {formatOfferHeading(offer)}
+              </h2>
+              <p className="mt-1 text-sm text-cream/85">
+                {formatOfferPlace(offer)}
+              </p>
+            </div>
           </div>
-        ) : null}
+        ) : (
+          // Brak zdjęcia — sam elegancki nagłówek tekstowy.
+          <div className="mt-5">
+            <Kicker>{formatTransactionBadge(offer)}</Kicker>
+            <h2 className="mt-1 font-display text-3xl leading-tight text-forest-950">
+              {formatOfferHeading(offer)}
+            </h2>
+            <p className="mt-1 text-sm text-forest-950/70">
+              {formatOfferPlace(offer)}
+            </p>
+          </div>
+        )}
 
-        {/* 3 mniejsze zdjęcia */}
+        {/* Pasek cena + parametry — czysta typografia bez „boksów",
+            złota linia jako akcent. */}
+        <div className="mt-5 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-gold-500/40 pb-4">
+          <div>
+            <Kicker>Cena</Kicker>
+            <p className="font-display text-4xl font-semibold leading-none text-forest-950">
+              {formatPrice(offer.price)}
+            </p>
+          </div>
+          <dl className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+            {stats.map((s) => (
+              <div key={s.label} className="flex items-baseline gap-1.5">
+                <dt className="sr-only">{s.label}</dt>
+                <dd className="text-base font-semibold text-forest-950">
+                  {s.value}
+                </dd>
+                <span className="text-[11px] text-forest-950/55">
+                  {s.label.toLowerCase()}
+                </span>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        {/* 4 mniejsze zdjęcia */}
         {thumbs.length > 0 ? (
-          <div className="mt-3 grid grid-cols-3 gap-3">
+          <div className="mt-4 grid grid-cols-4 gap-2.5">
             {thumbs.map((src, i) => (
               <div
                 key={i}
@@ -237,31 +283,6 @@ export default function OfferPrintBrochure({
             ))}
           </div>
         ) : null}
-
-        {/* Cena */}
-        <div className="mt-6 break-inside-avoid">
-          <Kicker>Cena</Kicker>
-          <p className="font-display text-4xl font-semibold text-forest-950">
-            {formatPrice(offer.price)}
-          </p>
-        </div>
-
-        {/* Parametry */}
-        <dl className="mt-4 grid grid-cols-3 gap-2 break-inside-avoid">
-          {stats.map((s) => (
-            <div
-              key={s.label}
-              className="rounded-lg border border-forest-950/10 bg-forest-950/[0.03] p-3"
-            >
-              <dt className="text-[10px] uppercase tracking-wide text-forest-950/50">
-                {s.label}
-              </dt>
-              <dd className="mt-0.5 text-base font-semibold text-forest-950">
-                {s.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
       </section>
 
       {/* ───────────── STRONA 2 — opis, mapa, kontakt ───────────── */}
