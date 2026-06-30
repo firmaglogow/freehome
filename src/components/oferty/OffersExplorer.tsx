@@ -219,12 +219,6 @@ export default function OffersExplorer() {
             ))}
           </div>
         )}
-
-        {/* Widok mapy — Leaflet w Etapie 2 */}
-        <div className="mt-8 rounded-xl border border-dashed border-gold-500/30 bg-gold-500/5 p-4 text-center text-xs text-gold-300">
-          Widok mapy (Leaflet + OpenStreetMap z pinami ofert) zostanie dodany w
-          Etapie 2 — oferty z Esti mają współrzędne geo.
-        </div>
       </div>
     </div>
   );

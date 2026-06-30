@@ -50,6 +50,32 @@ export default function Hero({ offersCount }: { offersCount: number }) {
         <div className="mt-16 max-w-[45rem] sm:mt-24">
           <SearchBar offersCount={offersCount} />
         </div>
+
+        {/* Pasek dowodów pod wyszukiwarką — twarde liczby już na pierwszym ekranie
+            (opinie, lata na rynku, transakcje). Wg audytu copy: najmocniejsza
+            pojedyncza dźwignia — przenosi atuty „nad linię zgięcia". */}
+        <dl className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 sm:mt-12 sm:gap-x-8">
+          <div className="flex items-baseline gap-1.5">
+            <dt className="font-display text-2xl font-semibold text-gold-400 sm:text-3xl">
+              {site.reviewsCount}+
+            </dt>
+            <dd className="text-sm text-cream/75">opinii 5,0★ w Google</dd>
+          </div>
+          <span aria-hidden className="hidden h-4 w-px bg-cream/25 sm:block" />
+          <div className="flex items-baseline gap-1.5">
+            <dt className="font-display text-2xl font-semibold text-gold-400 sm:text-3xl">
+              10 lat
+            </dt>
+            <dd className="text-sm text-cream/75">na rynku</dd>
+          </div>
+          <span aria-hidden className="hidden h-4 w-px bg-cream/25 sm:block" />
+          <div className="flex items-baseline gap-1.5">
+            <dt className="font-display text-2xl font-semibold text-gold-400 sm:text-3xl">
+              300+
+            </dt>
+            <dd className="text-sm text-cream/75">transakcji</dd>
+          </div>
+        </dl>
       </Container>
     </section>
   );
