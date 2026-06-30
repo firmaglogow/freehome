@@ -88,17 +88,22 @@ NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" $TASKSET ./node_module
 #    --delete sprząta stare pliki (out/ zawiera całą stronę, też zdjęcia ofert,
 #    bo Next kopiuje public/ do out/ podczas eksportu).
 #    WYKLUCZENIA (KLUCZOWE dla public_html jako root freehome.pl): nie kasujemy
-#    plików, których Next NIE generuje, a które są krytyczne dla domeny:
-#      .htaccess   → przekierowanie 301 www→bez-www + dyrektywy PHP cPanela,
-#      .well-known → wyzwania SSL (Let's Encrypt) — kasacja zrywa certyfikat,
-#      php.ini / .user.ini → konfiguracja PHP konta (cPanel).
+#    plików/katalogów, których Next NIE generuje, a które są infrastrukturą konta:
+#      .htaccess     → przekierowanie 301 www→bez-www + dyrektywy PHP cPanela,
+#      .well-known   → wyzwania SSL (Let's Encrypt) — kasacja zrywa certyfikat,
+#      php.ini / .user.ini → konfiguracja PHP konta (cPanel),
+#      cgi-bin       → standardowy katalog cPanela,
+#      freehome-node → mount aplikacji Node.js (Passenger) z własnym .htaccess.
 #    Eksport statyczny Next nie tworzy żadnego z nich, więc wykluczenie jest
-#    bezpieczne i chroni je przed --delete.
+#    bezpieczne i chroni je przed --delete. (Stary index.html parkingu Domenomanii
+#    NIE jest wykluczony — celowo nadpisujemy go naszą stroną.)
 rsync -a --delete \
   --exclude='.well-known' \
   --exclude='.htaccess' \
   --exclude='php.ini' \
   --exclude='.user.ini' \
+  --exclude='cgi-bin' \
+  --exclude='freehome-node' \
   out/ "$DOCROOT/"
 
 echo "$NEW" > "$STAMP"
