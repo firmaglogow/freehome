@@ -124,24 +124,30 @@ function Kicker({ children }: { children: ReactNode }) {
   );
 }
 
-// Pasek z logo + numerem oferty (powtarzany na obu stronach broszury).
-// Logo w repo jest w jasnej (kremowo-złotej) wersji na ciemne tło — na białej
-// broszurze „FREE HOME" byłoby niewidoczne. `brightness-0` zamienia je na czystą
-// czerń: czytelne na papierze i oszczędne w tuszu (klasyczny monochrom).
+// Pasek nagłówkowy z logo + numerem oferty (powtarzany na obu stronach).
+// Markowy „pasek" w butelkowej zieleni (forest-950): logo w repo jest w jasnej,
+// kremowo-złotej wersji, więc na zielonym tle wygląda dokładnie tak, jak zostało
+// zaprojektowane — czytelnie i elegancko (na białym tle ginęło). Zielone tło
+// drukuje się dzięki print-color-adjust: exact ustawionemu na .offer-brochure.
 function Brandbar({ offerId, compact = false }: { offerId: string; compact?: boolean }) {
   return (
-    <div className="flex items-center justify-between border-b border-gold-500/40 pb-3">
+    <div
+      className={
+        "flex items-center justify-between break-inside-avoid rounded-xl bg-forest-950 px-5 " +
+        (compact ? "py-2.5" : "py-3.5")
+      }
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={asset("/brand/logo.webp")}
         alt={site.fullName}
-        className={(compact ? "h-8" : "h-10") + " w-auto brightness-0"}
+        className={(compact ? "h-7" : "h-9") + " w-auto"}
       />
       <div className="text-right">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-500">
+        <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold-400">
           Oferta
         </p>
-        <p className="font-mono text-sm font-semibold text-forest-950">{offerId}</p>
+        <p className="font-mono text-sm font-semibold text-cream">{offerId}</p>
       </div>
     </div>
   );
@@ -211,7 +217,7 @@ export default function OfferPrintBrochure({
         {/* Okładka: duże zdjęcie z nałożonym tytułem i lokalizacją (efekt
             folderu premium). Gradient od dołu zapewnia czytelność napisu. */}
         {hero ? (
-          <div className="relative mt-4 aspect-[16/10] w-full overflow-hidden rounded-2xl border border-forest-950/10">
+          <div className="relative mt-4 aspect-[16/10] w-full break-inside-avoid overflow-hidden rounded-2xl border border-forest-950/10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset(hero)}
@@ -244,25 +250,27 @@ export default function OfferPrintBrochure({
           </div>
         )}
 
-        {/* Pasek cena + parametry — czysta typografia bez „boksów",
-            złota linia jako akcent. */}
-        <div className="mt-5 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-gold-500/40 pb-4">
+        {/* Panel cena + parametry — delikatnie złoty „boks", cena dominuje,
+            parametry w równym rzędzie (etykieta NAD wartością → czyste wyrównanie
+            i ładne zawijanie, zamiast rozjeżdżania się w jednej linii). */}
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 break-inside-avoid rounded-xl border border-gold-500/40 bg-gold-500/[0.07] px-5 py-4">
           <div>
-            <Kicker>Cena</Kicker>
+            <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold-500">
+              Cena
+            </p>
             <p className="font-display text-4xl font-semibold leading-none text-forest-950">
               {formatPrice(offer.price)}
             </p>
           </div>
-          <dl className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+          <dl className="flex flex-wrap items-end gap-x-6 gap-y-2">
             {stats.map((s) => (
-              <div key={s.label} className="flex items-baseline gap-1.5">
-                <dt className="sr-only">{s.label}</dt>
+              <div key={s.label} className="leading-tight">
+                <dt className="text-[9px] uppercase tracking-[0.12em] text-forest-950/50">
+                  {s.label}
+                </dt>
                 <dd className="text-base font-semibold text-forest-950">
                   {s.value}
                 </dd>
-                <span className="text-[11px] text-forest-950/55">
-                  {s.label.toLowerCase()}
-                </span>
               </div>
             ))}
           </dl>
@@ -270,7 +278,7 @@ export default function OfferPrintBrochure({
 
         {/* 4 mniejsze zdjęcia */}
         {thumbs.length > 0 ? (
-          <div className="mt-4 grid grid-cols-4 gap-2.5">
+          <div className="mt-4 grid grid-cols-4 gap-2.5 break-inside-avoid">
             {thumbs.map((src, i) => (
               <div
                 key={i}
