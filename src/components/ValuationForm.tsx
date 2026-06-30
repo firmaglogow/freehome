@@ -18,8 +18,8 @@ const conditions = [
 const goals = ["Sprzedaż", "Tylko orientacyjnie"];
 
 // Wysyłka przez FormSubmit.co — działa bez własnego backendu (także na GitHub Pages).
-// Zgłoszenia trafiają na firmową skrzynkę Gmail (istnieje i działa):
-const FORM_ENDPOINT = "https://formsubmit.co/ajax/firmaglogow@gmail.com";
+// Zgłoszenia trafiają na firmową skrzynkę kontakt@freehome.pl:
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/kontakt@freehome.pl";
 
 export default function ValuationForm() {
   const [sent, setSent] = useState(false);

@@ -7,9 +7,9 @@ const fieldCls =
   "w-full rounded-lg border border-forest-600/60 bg-forest-950/50 px-3.5 py-3 text-sm text-cream placeholder:text-cream/55 outline-none transition focus:border-gold-500/70 focus:ring-1 focus:ring-gold-500/40";
 
 // Wysyłka przez FormSubmit.co — bez własnego backendu (działa na GitHub Pages).
-// Ten sam adres, co formularz wyceny i rekrutacji. Skrzynka firmowa Gmail (istnieje
-// i działa); przy pierwszym zgłoszeniu FormSubmit wyśle tam mail aktywacyjny do kliknięcia.
-const FORM_ENDPOINT = "https://formsubmit.co/ajax/firmaglogow@gmail.com";
+// Ten sam adres, co formularz wyceny i rekrutacji. Firmowa skrzynka kontakt@freehome.pl;
+// przy pierwszym zgłoszeniu z danej domeny FormSubmit wyśle tam mail aktywacyjny do kliknięcia.
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/kontakt@freehome.pl";
 
 export default function ContactForm({
   compact = false,

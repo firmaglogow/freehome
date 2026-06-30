@@ -16,11 +16,11 @@ export const site = {
   url: siteUrl,
   phone: "537 264 666",
   phoneHref: "tel:+48537264666",
-  // Ogólny adres biura — WYŚWIETLANY (stopka, kontakt, JSON-LD, strony prawne).
-  // UWAGA: to nie jest skrzynka odbiorcza formularzy. Wysyłka formularzy (formsubmit.co
-  // w *Form.tsx + kalkulator kredytowy) trafia na firmową skrzynkę firmaglogow@gmail.com,
-  // która istnieje i działa. Gdy powstanie poczta @freehome.pl, można przełączyć i wyświetlanie,
-  // i endpointy (po potwierdzeniu aktywacji formsubmit dla nowego adresu).
+  // Ogólny adres biura — WYŚWIETLANY (stopka, kontakt, JSON-LD, strony prawne)
+  // ORAZ odbiorca formularzy. Wysyłka formularzy (formsubmit.co w *Form.tsx +
+  // kalkulator kredytowy) trafia na tę firmową skrzynkę kontakt@freehome.pl.
+  // FormSubmit wymaga jednorazowej aktywacji nowego adresu dla danej domeny
+  // (przy pierwszym zgłoszeniu z freehome.pl przyjdzie tam mail "Activate Form").
   email: "kontakt@freehome.pl",
   address: {
     street: "ul. Grodzka 18",

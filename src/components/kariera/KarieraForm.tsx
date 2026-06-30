@@ -8,10 +8,10 @@ const fieldCls =
 const labelCls = "mb-1.5 block text-xs font-medium text-cream/60";
 
 // Wysyłka przez FormSubmit.co — bez własnego backendu (działa na GitHub Pages).
-// Zgłoszenia rekrutacyjne trafiają na firmową skrzynkę Gmail (istnieje i działa).
+// Zgłoszenia rekrutacyjne trafiają na firmową skrzynkę kontakt@freehome.pl.
 // Uwaga: załącznik CV wysyłamy jako multipart/form-data. FormSubmit przyjmuje
 // pliki przy wysyłce formularzem — wymaga to wcześniejszej aktywacji adresu.
-const FORM_ENDPOINT = "https://formsubmit.co/ajax/firmaglogow@gmail.com";
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/kontakt@freehome.pl";
 
 const experienceOptions = [
   "Brak — chcę się nauczyć",
