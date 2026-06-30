@@ -125,6 +125,9 @@ function Kicker({ children }: { children: ReactNode }) {
 }
 
 // Pasek z logo + numerem oferty (powtarzany na obu stronach broszury).
+// Logo w repo jest w jasnej (kremowo-złotej) wersji na ciemne tło — na białej
+// broszurze „FREE HOME" byłoby niewidoczne. `brightness-0` zamienia je na czystą
+// czerń: czytelne na papierze i oszczędne w tuszu (klasyczny monochrom).
 function Brandbar({ offerId, compact = false }: { offerId: string; compact?: boolean }) {
   return (
     <div className="flex items-center justify-between border-b border-gold-500/40 pb-3">
@@ -132,7 +135,7 @@ function Brandbar({ offerId, compact = false }: { offerId: string; compact?: boo
       <img
         src={asset("/brand/logo.webp")}
         alt={site.fullName}
-        className={compact ? "h-8 w-auto" : "h-10 w-auto"}
+        className={(compact ? "h-8" : "h-10") + " w-auto brightness-0"}
       />
       <div className="text-right">
         <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-500">
