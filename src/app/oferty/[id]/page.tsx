@@ -96,7 +96,7 @@ export default async function OfferPage(props: PageProps<"/oferty/[id]">) {
   const sections: OfferSection[] = [
     { id: "galeria", label: "Zdjęcia", view: "photos" },
     ...(plans.length > 0
-      ? [{ id: "galeria", label: "Plan mieszkania", view: "plans" as const }]
+      ? [{ id: "galeria", label: "Plan", view: "plans" as const }]
       : []),
     { id: "opis", label: "Opis" },
     ...(mapSrc ? [{ id: "lokalizacja", label: "Lokalizacja" }] : []),
