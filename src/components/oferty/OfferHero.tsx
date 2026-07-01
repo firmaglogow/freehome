@@ -115,7 +115,7 @@ export default function OfferHero({
   return (
     <section
       id="oferta-hero"
-      className="relative isolate flex min-h-[78vh] items-end overflow-hidden border-b border-gold-500/10 pt-36 pb-12 sm:min-h-[84vh] sm:pb-16"
+      className="relative isolate flex min-h-[78vh] items-end overflow-hidden border-b border-gold-500/10 pt-36 pb-12 sm:min-h-[84vh] sm:pb-16 print:hidden"
     >
       {/* Tło: zdjęcie wiodące z parallaxem + kinowym zoomem (osobne warstwy,
           żeby transformy się nie nakładały). Wyższy kontener daje zapas na
