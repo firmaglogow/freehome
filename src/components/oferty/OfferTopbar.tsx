@@ -231,7 +231,7 @@ export default function OfferTopbar({
 
       {/* ===== MOBILE (< lg) — belka 1: akcje (przewija się z treścią) ===== */}
       <div className="mb-3 flex items-center justify-between gap-2 rounded-2xl border border-gold-500/15 bg-forest-900/55 px-1.5 py-1.5 backdrop-blur lg:hidden">
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-1">
           <Link
             href="/oferty"
             className="inline-flex items-center gap-1 rounded-full px-2.5 py-1.5 text-sm text-cream/80 transition hover:bg-forest-800 hover:text-gold-300"
@@ -239,11 +239,15 @@ export default function OfferTopbar({
             {BackIcon("h-4 w-4")}
             <span>Oferty</span>
           </Link>
+          {/* „Udostępnij" jako podpis przed ikonami — czytelniej niż same ikony;
+              WhatsApp otwiera się z gotowym linkiem do oferty (do wysłania komuś). */}
+          <span className="mx-0.5 h-5 w-px flex-none bg-gold-500/15" aria-hidden />
+          <span className="text-sm text-cream/60">Udostępnij</span>
           <button
             type="button"
             onClick={share}
             aria-label="Udostępnij ofertę na Facebooku"
-            className="inline-flex items-center rounded-full p-2 text-cream/80 transition hover:bg-forest-800 hover:text-gold-300"
+            className="inline-flex items-center rounded-full p-1.5 text-cream/80 transition hover:bg-forest-800 hover:text-gold-300"
           >
             {FbIcon("h-5 w-5")}
           </button>
@@ -251,7 +255,7 @@ export default function OfferTopbar({
             type="button"
             onClick={shareWhatsApp}
             aria-label="Udostępnij ofertę przez WhatsApp"
-            className="inline-flex items-center rounded-full p-2 text-cream/80 transition hover:bg-forest-800 hover:text-[#25D366]"
+            className="inline-flex items-center rounded-full p-1.5 text-cream/80 transition hover:bg-forest-800 hover:text-[#25D366]"
           >
             {WaIcon("h-5 w-5")}
           </button>
