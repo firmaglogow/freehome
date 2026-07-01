@@ -214,41 +214,31 @@ export default function OfferPrintBrochure({
       <section className="brochure-page">
         <Brandbar offerId={offer.id} />
 
-        {/* Okładka: duże zdjęcie z nałożonym tytułem i lokalizacją (efekt
-            folderu premium). Gradient od dołu zapewnia czytelność napisu. */}
+        {/* Okładka: DUŻE zdjęcie bez żadnego przyciemnienia/filtra — czysta
+            fotografia w pełnych kolorach (prośba właściciela). Tytuł i
+            lokalizacja są POD zdjęciem, na białym tle, więc nic nie przyciemnia
+            samego zdjęcia. */}
         {hero ? (
-          <div className="relative mt-4 aspect-[16/10] w-full break-inside-avoid overflow-hidden rounded-2xl border border-forest-950/10">
+          <div className="mt-4 aspect-[16/10] w-full break-inside-avoid overflow-hidden rounded-2xl border border-forest-950/10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset(hero)}
               alt={offer.title}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-forest-950/90 via-forest-950/25 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-5">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-300">
-                {formatTransactionBadge(offer)}
-              </p>
-              <h2 className="mt-1 font-display text-3xl leading-tight text-cream">
-                {formatOfferHeading(offer)}
-              </h2>
-              <p className="mt-1 text-sm text-cream/85">
-                {formatOfferPlace(offer)}
-              </p>
-            </div>
           </div>
-        ) : (
-          // Brak zdjęcia — sam elegancki nagłówek tekstowy.
-          <div className="mt-5">
-            <Kicker>{formatTransactionBadge(offer)}</Kicker>
-            <h2 className="mt-1 font-display text-3xl leading-tight text-forest-950">
-              {formatOfferHeading(offer)}
-            </h2>
-            <p className="mt-1 text-sm text-forest-950/70">
-              {formatOfferPlace(offer)}
-            </p>
-          </div>
-        )}
+        ) : null}
+
+        {/* Tytuł + lokalizacja — zawsze na białym tle pod zdjęciem. */}
+        <div className="mt-4 break-inside-avoid">
+          <Kicker>{formatTransactionBadge(offer)}</Kicker>
+          <h2 className="mt-1 font-display text-3xl leading-tight text-forest-950">
+            {formatOfferHeading(offer)}
+          </h2>
+          <p className="mt-1 text-sm text-forest-950/70">
+            {formatOfferPlace(offer)}
+          </p>
+        </div>
 
         {/* Panel cena + parametry — delikatnie złoty „boks", cena dominuje,
             parametry w równym rzędzie (etykieta NAD wartością → czyste wyrównanie
