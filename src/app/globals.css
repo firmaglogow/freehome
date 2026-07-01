@@ -301,3 +301,28 @@ h1, h2, h3, h4 {
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
+
+/* TWARDA GWARANCJA 2 STRON — broszura nigdy nie „przelewa się" na 3. kartkę.
+   Obszar druku A4 przy marginesach @page (12/14 mm) = 271 mm wysokości.
+   • Strona 1 dostaje ustaloną wysokość (270 mm, 1 mm luzu na zaokrąglenia),
+     więc wypełnia dokładnie jedną kartkę; podział na stronę 2 robi
+     `break-before-page` (Tailwind) na drugiej sekcji.
+   • `overflow: hidden` to siatka bezpieczeństwa: gdyby treść kiedyś urosła
+     ponad kartkę (długa lokalizacja, dużo parametrów, większa czcionka),
+     nadmiar zostaje przycięty zamiast tworzyć kolejną stronę.
+   • Strona 2 (ostatnia) jest elastyczna z `max-height`, żeby nie wymusić
+     pustej kartki na końcu, a jednocześnie nie wyjść poza jedną stronę. */
+@media print {
+  .brochure-page {
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Trzymaj każdą stronę na JEDNEJ kartce (nie dziel jej między arkusze). */
+    break-inside: avoid;
+  }
+  .brochure-page:first-of-type {
+    height: 270mm;
+  }
+  .brochure-page:last-of-type {
+    max-height: 271mm;
+  }
+}
