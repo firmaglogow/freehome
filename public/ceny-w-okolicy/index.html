@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sprawdź ceny w swojej okolicy — Głogów | FREE HOME</title>
-<meta name="description" content="Realne ceny transakcyjne mieszkań w Głogowie z aktów notarialnych (RCN/GUGiK). Wpisz adres, wybierz okres i promień, zobacz na mapie, za ile naprawdę sprzedawały się mieszkania w okolicy.">
+<meta name="description" content="Realne ceny transakcyjne mieszkań w Głogowie z aktów notarialnych (RCN/GUGiK). Wpisz adres, ustaw metraż, wybierz okres i promień, zobacz na mapie, za ile naprawdę sprzedawały się mieszkania w okolicy.">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   :root{
@@ -54,17 +54,32 @@
   .legend i{width:13px;height:13px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.4)}
   .foot{color:var(--cream-dim);font-size:12px;text-align:center;margin-top:14px;line-height:1.5}
   .leaflet-tooltip{font-weight:700}
-  .leaflet-popup-content{font-size:13px;line-height:1.5}
+  .leaflet-popup-content{font-size:14px;line-height:1.55}
 
   /* --- narzędzie cen transakcyjnych --- */
   .vlead{color:var(--cream-dim);font-size:14px;margin:0 0 16px;max-width:820px;line-height:1.55}
   .vlead b{color:var(--cream)}
   .vrow1{display:flex;gap:8px;margin-bottom:16px}
-  .vrow1 input{flex:1;width:auto}
+  .vac{position:relative;flex:1}
+  .vac input{width:100%}
+  /* Lista podpowiedzi ulic (autouzupełnianie z rejestru adresowego GUGiK) */
+  .vaclist{
+    position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:1200;
+    background:var(--forest-900);border:1px solid var(--forest-600);
+    border-radius:10px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.5);display:none
+  }
+  .vaclist.show{display:block}
+  .vaclist button{
+    display:block;width:100%;text-align:left;border:0;background:transparent;
+    color:var(--cream);padding:11px 14px;font-size:15px;cursor:pointer;
+    border-bottom:1px solid rgba(255,255,255,.06)
+  }
+  .vaclist button:last-child{border-bottom:0}
+  .vaclist button:hover,.vaclist button.hi{background:var(--forest-600)}
   .vgo{white-space:nowrap;border:0;border-radius:10px;cursor:pointer;
     background:var(--gold-500);color:var(--forest-950);font-weight:700;padding:0 22px;font-size:15px}
   .vgo:hover{background:var(--gold-400)}
-  .vtoggles{display:flex;flex-wrap:wrap;gap:16px 28px}
+  .vtoggles{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-start}
   .vtog>span{display:block;font-size:12px;color:var(--cream-dim);margin:0 0 6px}
   .seg{display:inline-flex;border:1px solid var(--forest-600);border-radius:10px;overflow:hidden}
   .seg button{border:0;background:var(--forest-950);color:var(--cream);
@@ -72,17 +87,46 @@
   .seg button:last-child{border-right:0}
   .seg button.active{background:var(--gold-500);color:var(--forest-950);font-weight:700}
   .seg button:hover:not(.active){background:var(--forest-800)}
+  /* Metraż — suwak */
+  .vmet-head{display:flex;align-items:center;gap:10px;margin:0 0 8px}
+  .vmet-head span{font-size:12px;color:var(--cream-dim)}
+  .vswitch{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--cream-dim);cursor:pointer;user-select:none}
+  .vswitch input{width:auto;margin:0}
+  .vmetrow{display:flex;align-items:center;gap:12px;min-width:230px}
+  .vmetrow input[type=range]{flex:1;width:auto;padding:0;accent-color:var(--gold-500);cursor:pointer}
+  .vmetrow input[type=range]:disabled{opacity:.4;cursor:not-allowed}
+  .vmetval{font-weight:800;color:var(--gold-400);font-size:16px;white-space:nowrap;min-width:64px;text-align:right}
+  .vmetval.off{color:var(--cream-dim);font-weight:600}
   .vresult{margin-top:18px;display:none}
   .vresult.show{display:block}
-  .vbig{font-size:52px;font-weight:800;line-height:1;color:var(--gold-400);letter-spacing:.5px}
-  .vbig small{font-size:21px;font-weight:600;color:var(--cream-dim);margin-left:8px}
-  .vsub{color:var(--cream);font-size:16px;margin-top:12px}
+  .vbig{font-size:46px;font-weight:800;line-height:1.05;color:var(--gold-400);letter-spacing:.5px}
+  .vbig small{font-size:18px;font-weight:600;color:var(--cream-dim);margin-left:8px}
+  .vsub{color:var(--cream);font-size:17px;margin-top:12px}
   .vsub b{color:var(--gold-400)}
-  .vmeta{color:var(--cream-dim);font-size:13px;margin-top:5px}
+  .vest{margin-top:14px;padding:13px 15px;border-radius:12px;background:var(--forest-950);
+    border:1px solid rgba(201,162,39,.35);color:var(--cream);font-size:15px}
+  .vest b{color:var(--gold-400);font-size:20px}
+  .vmeta{color:var(--cream-dim);font-size:13px;margin-top:8px;line-height:1.5}
+  .vmeta b{color:var(--cream)}
   .vmsg{color:var(--cream-dim);font-size:15px}
   .vdisc{color:var(--cream-dim);font-size:11px;margin-top:16px;line-height:1.55;
     border-top:1px solid rgba(255,255,255,.08);padding-top:12px;max-width:820px}
   .vdisc b{color:var(--cream-dim)}
+
+  /* --- telefon: układ pionowy, duże pola dotykowe --- */
+  @media(max-width:640px){
+    body{padding:12px}
+    h1{font-size:21px}
+    .vbig{font-size:38px}
+    .vbig small{font-size:15px}
+    .vrow1{flex-direction:column;gap:10px}
+    .vgo{width:100%;padding:14px 22px;font-size:16px}
+    .vtoggles{gap:18px;flex-direction:column}
+    .vtog{width:100%}
+    .seg{display:flex;width:100%}
+    .seg button{flex:1;padding:13px 6px;font-size:13px}
+    .vmetrow{width:100%}
+  }
 </style>
 </head>
 <body>
@@ -92,17 +136,21 @@
   <p class="sub">Realne ceny transakcyjne mieszkań w Głogowie — dokładnie takie, za jakie naprawdę zostały sprzedane. Dane pochodzą z aktów notarialnych (Rejestr Cen Nieruchomości, GUGiK).</p>
 
   <div class="card">
-    <p class="vlead">Wpisz adres swojego mieszkania, wybierz okres i zasięg, a pokażemy <b>medianę realnych cen transakcyjnych</b> w pobliżu — oraz wszystkie transakcje na mapie. To nie wycena Twojego lokalu (program nie zna jego stanu ani standardu), lecz faktyczny poziom cen w okolicy.</p>
+    <p class="vlead">Wpisz adres swojego mieszkania (podpowiemy ulicę), opcjonalnie ustaw <b>metraż</b>, wybierz okres i zasięg — pokażemy <b>średnią realną cenę transakcyjną</b> w pobliżu oraz wszystkie transakcje na mapie. To nie wycena Twojego lokalu (program nie zna jego stanu ani standardu), lecz faktyczny poziom cen w okolicy.</p>
     <div class="vrow1">
-      <input id="vaddr" placeholder="ulica i numer, np. Perseusza 5" autocomplete="off">
+      <div class="vac">
+        <input id="vaddr" placeholder="ulica i numer, np. Perseusza 5" autocomplete="off" autocapitalize="words" spellcheck="false">
+        <div class="vaclist" id="vaclist"></div>
+      </div>
       <button id="vbtn" class="vgo">Sprawdź ceny</button>
     </div>
     <div class="vtoggles">
       <div class="vtog">
         <span>Okres transakcji</span>
         <div class="seg" id="vokres">
-          <button data-v="6" class="active">ostatnie 6 mies.</button>
-          <button data-v="12">ostatnie 12 mies.</button>
+          <button data-v="6" class="active">6 mies.</button>
+          <button data-v="12">12 mies.</button>
+          <button data-v="24">24 mies.</button>
         </div>
       </div>
       <div class="vtog">
@@ -113,6 +161,16 @@
           <button data-v="0">cały Głogów</button>
         </div>
       </div>
+      <div class="vtog">
+        <div class="vmet-head">
+          <span>Metraż mieszkania</span>
+          <label class="vswitch"><input type="checkbox" id="vmetOn"> uwzględnij</label>
+        </div>
+        <div class="vmetrow">
+          <input type="range" id="vmet" min="20" max="150" step="5" value="50" disabled>
+          <span class="vmetval off" id="vmetval">dowolny</span>
+        </div>
+      </div>
     </div>
     <div class="vresult" id="vresult"></div>
   </div>
@@ -121,11 +179,12 @@
     <h2>Mapa transakcji</h2>
     <div id="map"></div>
     <div class="legend">
-      <span><i style="background:#2e7d32"></i> taniej niż mediana</span>
-      <span><i style="background:#c9a227"></i> ok. mediany</span>
-      <span><i style="background:#c0392b"></i> drożej niż mediana</span>
+      <span><i style="background:#2e7d32"></i> taniej niż średnia</span>
+      <span><i style="background:#c9a227"></i> ok. średniej</span>
+      <span><i style="background:#c0392b"></i> drożej niż średnia</span>
       <span><i style="background:#d8b94b;border-radius:3px"></i> Twój adres</span>
     </div>
+    <p class="foot">Dotknij kropki na mapie, aby zobaczyć cenę, metraż i datę danej transakcji.</p>
   </div>
 
   <p class="foot">Dane: Rejestr Cen Nieruchomości (akty notarialne, GUGiK) • adresy: rejestr adresowy GUGiK • mapa: OpenStreetMap</p>
@@ -139,10 +198,11 @@
 // ===================================================================
 let map=null, txLayer=null, radiusLayer=null, addrLayer=null;
 let TX=null, txLoading=null, txSeq=0;
-let vOkres=6, vZasieg=500;
+let vOkres=6, vZasieg=500, vMetraz=null;   // vMetraz=null → dowolny metraż
 
 const GUGIK_EP="https://services.gugik.gov.pl/uug/";
 const geocodeCache={};
+const MIASTO="Głogów";
 
 function norm(s){ return (s||"").toString().trim().toLowerCase().replace(/\s+/g," "); }
 
@@ -154,12 +214,14 @@ function vMediana(a){
 }
 function vSrednia(a){ return a.length ? Math.round(a.reduce((s,x)=>s+x,0)/a.length) : null; }
 function vFmt(n){ return n==null ? "—" : String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g," "); }
+// "2025-07-04" → "04.07.2025"
+function vData(iso){ if(!iso) return "—"; const p=iso.slice(0,10).split("-"); return p.length===3 ? (p[2]+"."+p[1]+"."+p[0]) : iso; }
 function vKolor(zlm2, med){
   if(!med) return '#c9a227';
   const d=(zlm2-med)/med;
   if(d<-0.07) return '#2e7d32';   // wyraźnie taniej → zielony
   if(d> 0.07) return '#c0392b';   // wyraźnie drożej → czerwony
-  return '#c9a227';               // ~mediana → złoty
+  return '#c9a227';               // ~średnia → złoty
 }
 // Odległość w metrach (Haversine na lat/lon).
 function vHav(lat1,lon1,lat2,lon2){
@@ -198,7 +260,7 @@ function loadTx(){
 async function geocodeAddr(adres){
   const key=norm(adres);
   if(key in geocodeCache) return geocodeCache[key];
-  const url=GUGIK_EP+"?request=GetAddress&srid=4326&address="+encodeURIComponent("Głogów, "+adres);
+  const url=GUGIK_EP+"?request=GetAddress&srid=4326&address="+encodeURIComponent(MIASTO+", "+adres);
   try{
     const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),10000);
     const r=await fetch(url,{signal:ctrl.signal}); clearTimeout(t);
@@ -212,6 +274,60 @@ async function geocodeAddr(adres){
     return (geocodeCache[key]={lat,lon,opis});
   }catch(e){ return null; }
 }
+
+// -------------------------------------------------------------------
+//  Podpowiedzi ulic (autouzupełnianie) — rejestr adresowy GUGiK.
+//  Po wpisaniu 2+ liter pytamy GetAddress "Głogów, <fragment>" i
+//  wyciągamy unikalne nazwy ulic z miasta Głogów. Debounce, żeby nie
+//  słać zapytania przy każdym znaku.
+// -------------------------------------------------------------------
+let acTimer=null, acSeq=0, acItems=[], acHi=-1;
+async function fetchStreets(q){
+  const url=GUGIK_EP+"?request=GetAddress&address="+encodeURIComponent(MIASTO+", "+q);
+  try{
+    const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),7000);
+    const r=await fetch(url,{signal:ctrl.signal}); clearTimeout(t);
+    if(!r.ok) return [];
+    const j=await r.json();
+    const res=(j&&j.results)||{};
+    const out=[], seen={};
+    Object.keys(res).sort((a,b)=>(parseInt(a,10)||0)-(parseInt(b,10)||0)).forEach(k=>{
+      const rr=res[k]||{};
+      if(norm(rr.city)!==norm(MIASTO)) return;
+      const st=(rr.street||"").trim();
+      if(st && !seen[st.toLowerCase()]){ seen[st.toLowerCase()]=1; out.push(st); }
+    });
+    return out.slice(0,8);
+  }catch(e){ return []; }
+}
+function acClose(){ const b=document.getElementById('vaclist'); b.classList.remove('show'); b.innerHTML=''; acItems=[]; acHi=-1; }
+function acRender(list){
+  const box=document.getElementById('vaclist');
+  if(!list.length){ acClose(); return; }
+  acItems=list; acHi=-1;
+  box.innerHTML=list.map((s,i)=>'<button type="button" data-i="'+i+'">'+s+'</button>').join('');
+  box.classList.add('show');
+}
+function acPick(i){
+  if(i<0||i>=acItems.length) return;
+  const inp=document.getElementById('vaddr');
+  inp.value=acItems[i]+' ';            // zostaw spację → klient dopisze numer
+  acClose(); inp.focus();
+}
+function acOnInput(){
+  const inp=document.getElementById('vaddr');
+  const q=(inp.value||'').trim();
+  if(acTimer){ clearTimeout(acTimer); }
+  // jeśli w polu jest już numer domu, nie podpowiadamy (adres kompletny)
+  if(q.length<2 || /\d/.test(q)){ acClose(); return; }
+  const seq=++acSeq;
+  acTimer=setTimeout(async ()=>{
+    const list=await fetchStreets(q);
+    if(seq!==acSeq) return;
+    acRender(list);
+  }, 260);
+}
+
 function vDiscHtml(){
   return '<div class="vdisc">Ceny pochodzą z Rejestru Cen Nieruchomości (akty notarialne, GUGiK) '+
     'i mają charakter <b>poglądowy</b> — nie stanowią operatu szacunkowego rzeczoznawcy majątkowego. '+
@@ -229,11 +345,12 @@ function drawTx(punkty, med, center, prom){
   txLayer=L.featureGroup();
   punkty.forEach(r=>{
     const col=vKolor(r.zlm2, med);
-    const mk=L.circleMarker([r.lat,r.lon],{radius:6,color:'#0c1f15',weight:1,fillColor:col,fillOpacity:0.9});
+    // Większa kropka + wyraźna obwódka = łatwiej trafić palcem na telefonie.
+    const mk=L.circleMarker([r.lat,r.lon],{radius:8,color:'#0c1f15',weight:1.5,fillColor:col,fillOpacity:0.92});
     const wiersze=[
       '<b>'+vFmt(r.cena)+' zł</b> &nbsp;•&nbsp; <b>'+vFmt(r.zlm2)+' zł/m²</b>',
       vFmt(r.m2)+' m²'+(r.izby?(' • '+r.izby+' pok.'):'')+(r.pietro!=null?(' • piętro '+r.pietro):''),
-      'Data aktu: '+r.data,
+      'Data aktu: '+vData(r.data),
       (r._odl!=null?('Odległość: '+vFmt(r._odl)+' m'):'')
     ].filter(Boolean);
     mk.bindPopup(wiersze.join('<br>'));
@@ -256,6 +373,7 @@ function drawTx(punkty, med, center, prom){
 }
 // Główna akcja: geokoduj adres, policz okolicę, pokaż wynik + mapę.
 async function runWycena(){
+  acClose();
   const box=document.getElementById('vresult');
   const adres=(document.getElementById('vaddr').value||'').trim();
   if(!adres){ vMsg('Wpisz ulicę i numer swojego mieszkania, np. <b>Perseusza 5</b>.'); return; }
@@ -267,39 +385,55 @@ async function runWycena(){
   catch(e){ if(seq!==txSeq) return; vMsg('Nie udało się wczytać danych. Sprawdź połączenie i spróbuj ponownie.'); return; }
   if(seq!==txSeq) return;
   if(!geo){ vMsg('Nie znaleziono adresu „'+adres+'" w Głogowie. Sprawdź pisownię i numer domu.'); return; }
-  const dni = vOkres===6 ? 182 : 365;
+  const dni = vOkres===6 ? 182 : (vOkres===12 ? 365 : 730);
   const cutoff = new Date(Date.now()-dni*86400000).toISOString().slice(0,10);
   const prom = vZasieg>0 ? vZasieg : null;
+  // Pasmo metrażu ±20% (min. ±8 m²), gdy klient ustawił suwak.
+  let mLo=null, mHi=null;
+  if(vMetraz!=null){ const tol=Math.max(8, Math.round(vMetraz*0.2)); mLo=vMetraz-tol; mHi=vMetraz+tol; }
   const punkty=[];
   for(const r of data){
     if(r.data < cutoff) continue;
+    if(mLo!=null && (r.m2<mLo || r.m2>mHi)) continue;
     const d=vHav(geo.lat,geo.lon,r.lat,r.lon);
     if(prom!=null && d>prom) continue;
     punkty.push(Object.assign({_odl:Math.round(d)}, r));
   }
   const zlm2=punkty.map(r=>r.zlm2);
-  const med=vMediana(zlm2), sr=vSrednia(zlm2);
+  const cenyTot=punkty.map(r=>r.cena);
+  const srZlm2=vSrednia(zlm2), medZlm2=vMediana(zlm2);
+  const srCena=vSrednia(cenyTot);
   const minV=zlm2.length?Math.min(...zlm2):null;
   const maxV=zlm2.length?Math.max(...zlm2):null;
-  const medCena=vMediana(punkty.map(r=>r.cena));
-  const okresTxt = vOkres===6 ? 'ostatnich 6 miesięcy' : 'ostatnich 12 miesięcy';
+  const okresTxt = vOkres===6 ? 'ostatnich 6 miesięcy' : (vOkres===12 ? 'ostatnich 12 miesięcy' : 'ostatnich 24 miesięcy');
   const zasiegTxt = prom!=null ? ('w promieniu '+prom+' m') : 'w całym Głogowie';
+  const metrazTxt = vMetraz!=null ? (' • metraż '+mLo+'–'+mHi+' m²') : '';
   if(!punkty.length){
-    vShow('<div class="vmsg">Brak transakcji '+zasiegTxt+' w okresie '+okresTxt+'. '+
-      'Spróbuj większego zasięgu albo dłuższego okresu.</div>'+vDiscHtml());
+    vShow('<div class="vmsg">Brak transakcji '+zasiegTxt+metrazTxt+' w okresie '+okresTxt+'. '+
+      'Spróbuj większego zasięgu, dłuższego okresu'+(vMetraz!=null?' lub wyłącz filtr metrażu':'')+'.</div>'+vDiscHtml());
     drawTx([], null, geo, prom);
     scrollToEl(box);
     return;
   }
+  // Rzeczywisty zakres dat transakcji użytych do wyniku (od–do).
+  const daty=punkty.map(r=>r.data).filter(Boolean).sort();
+  const odData=vData(daty[0]), doData=vData(daty[daty.length-1]);
+  // Szacunkowa wartość mieszkania klienta (tylko gdy ustawił metraż).
+  const estHtml = vMetraz!=null
+    ? '<div class="vest">Szacunkowa wartość mieszkania ok. <b>'+vMetraz+' m²</b> w tej okolicy: '+
+      '≈ <b>'+vFmt(srZlm2*vMetraz)+' zł</b> <span style="color:var(--cream-dim)">(średnia zł/m² × metraż)</span></div>'
+    : '';
   vShow(
-    '<div class="vbig">'+vFmt(medCena)+' <small>zł (mediana ceny mieszkania)</small></div>'+
-    '<div class="vsub">Mediana ceny za m²: <b>'+vFmt(med)+' zł/m²</b></div>'+
-    '<div class="vmeta">Na podstawie <b>'+punkty.length+'</b> transakcji '+zasiegTxt+' • '+okresTxt+
+    '<div class="vbig">'+vFmt(srCena)+' <small>zł — średnia cena mieszkania</small></div>'+
+    '<div class="vsub">Średnia cena za m²: <b>'+vFmt(srZlm2)+' zł/m²</b></div>'+
+    estHtml+
+    '<div class="vmeta">Ceny z <b>'+punkty.length+'</b> transakcji '+zasiegTxt+metrazTxt+' • '+okresTxt+
       (geo.opis?(' • '+geo.opis):'')+'</div>'+
-    '<div class="vmeta">Średnia: '+vFmt(sr)+' zł/m² • widełki: '+vFmt(minV)+'–'+vFmt(maxV)+' zł/m²</div>'+
+    '<div class="vmeta">Dane z transakcji od <b>'+odData+'</b> do <b>'+doData+'</b>.</div>'+
+    '<div class="vmeta">Dla porównania — mediana: '+vFmt(medZlm2)+' zł/m² • widełki: '+vFmt(minV)+'–'+vFmt(maxV)+' zł/m²</div>'+
     vDiscHtml()
   );
-  drawTx(punkty, med, geo, prom);
+  drawTx(punkty, srZlm2, geo, prom);
   scrollToEl(box);
 }
 function wireSeg(id, onPick){
@@ -312,18 +446,56 @@ function wireSeg(id, onPick){
   });
 }
 function vHasAddr(){ return !!(document.getElementById('vaddr').value||'').trim(); }
+function vRerunIfReady(){ if(vHasAddr() && document.getElementById('vresult').classList.contains('show')) runWycena(); }
 function initMap(){
   const el=document.getElementById('map');
   if(typeof L==='undefined'){ el.innerHTML='<div class="mapfail">Mapa wymaga połączenia z internetem.</div>'; return; }
-  map=L.map('map',{scrollWheelZoom:true}).setView([51.662,16.086],13);
+  map=L.map('map',{scrollWheelZoom:true,tap:true}).setView([51.662,16.086],13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {maxZoom:19, attribution:'© OpenStreetMap'}).addTo(map);
 }
 
-wireSeg('vokres',  v=>{ vOkres=v;  if(vHasAddr()) runWycena(); });
-wireSeg('vzasieg', v=>{ vZasieg=v; if(vHasAddr()) runWycena(); });
+// --- Okres / zasięg: zmiana od razu przelicza (jeśli mamy już wynik) ---
+wireSeg('vokres',  v=>{ vOkres=v;  vRerunIfReady(); });
+wireSeg('vzasieg', v=>{ vZasieg=v; vRerunIfReady(); });
+
+// --- Metraż: przełącznik + suwak ---
+(function(){
+  const chk=document.getElementById('vmetOn');
+  const rng=document.getElementById('vmet');
+  const val=document.getElementById('vmetval');
+  function paint(){
+    if(chk.checked){ vMetraz=parseInt(rng.value,10); val.textContent=vMetraz+' m²'; val.classList.remove('off'); rng.disabled=false; }
+    else { vMetraz=null; val.textContent='dowolny'; val.classList.add('off'); rng.disabled=true; }
+  }
+  chk.addEventListener('change', ()=>{ paint(); vRerunIfReady(); });
+  // suwak: na bieżąco odświeżamy liczbę, przeliczenie po puszczeniu (płynniej na telefonie)
+  rng.addEventListener('input', ()=>{ if(chk.checked){ vMetraz=parseInt(rng.value,10); val.textContent=vMetraz+' m²'; } });
+  rng.addEventListener('change', ()=>{ paint(); vRerunIfReady(); });
+  paint();
+})();
+
+// --- Autouzupełnianie ulic ---
+(function(){
+  const inp=document.getElementById('vaddr');
+  const box=document.getElementById('vaclist');
+  inp.addEventListener('input', acOnInput);
+  inp.addEventListener('keydown', e=>{
+    const open=box.classList.contains('show');
+    if(e.key==='ArrowDown' && open){ e.preventDefault(); acHi=Math.min(acItems.length-1,acHi+1); hi(); }
+    else if(e.key==='ArrowUp' && open){ e.preventDefault(); acHi=Math.max(0,acHi-1); hi(); }
+    else if(e.key==='Enter'){
+      if(open && acHi>=0){ e.preventDefault(); acPick(acHi); }
+      else { e.preventDefault(); runWycena(); }
+    }
+    else if(e.key==='Escape'){ acClose(); }
+  });
+  function hi(){ [].forEach.call(box.querySelectorAll('button'),(b,i)=>b.classList.toggle('hi',i===acHi)); }
+  box.addEventListener('mousedown', e=>{ const b=e.target.closest('button'); if(!b) return; e.preventDefault(); acPick(parseInt(b.getAttribute('data-i'),10)); });
+  document.addEventListener('click', e=>{ if(!e.target.closest('.vac')) acClose(); });
+})();
+
 document.getElementById('vbtn').addEventListener('click', runWycena);
-document.getElementById('vaddr').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); runWycena(); } });
 
 initMap();
 </script>
