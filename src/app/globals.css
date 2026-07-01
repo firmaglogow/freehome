@@ -135,6 +135,16 @@ h1, h2, h3, h4 {
   font-weight: 600;
 }
 
+/* Poziomy przewijak bez widocznego paska (mobilna belka sekcji oferty —
+   zakładki zawsze w JEDNEJ linii, w razie potrzeby przesuwane palcem). */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Reveal on scroll (subtelny fade-in, bez efekciarstwa)            */
 /* ------------------------------------------------------------------ */

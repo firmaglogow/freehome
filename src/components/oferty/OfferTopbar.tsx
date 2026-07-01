@@ -11,17 +11,51 @@ export type OfferSection = {
   view?: "photos" | "plans";
 };
 
-// Górny pasek oferty — JEDEN spójny „command bar" (szklana belka) zamiast dwóch
-// oddzielnych rzędów. Płynnie domyka przejście z kinowego hero do treści:
-//  • po lewej: „Wróć do ofert" + skróty do sekcji (Opis · Lokalizacja · Film),
-//    aktywna pozycja podświetlona złotą pigułką (scrollspy = IntersectionObserver),
-//  • po prawej: akcje „Udostępnij" (Facebook) i „Drukuj".
-// Przyciski to ciche linki tekstowe, które rozjaśniają się dopiero pod kursorem —
-// dzięki temu belka jest lekka i elegancka, a nie „dwa zielone paski".
-// Na desktopie (lg+) belka jest PRZYKLEJANA pod głównym menu (sticky top-20):
-// „jedzie" z użytkownikiem przez całą treść oferty, więc nawigacja po sekcjach
-// jest dostępna cały czas (efekt premium). Granicę przyklejenia wyznacza wrapper
-// w page.tsx — belka zwalnia się tuż przed sekcją „Podobne oferty".
+// Ikony współdzielone przez wariant desktop i mobile (jedno źródło prawdy);
+// rozmiar podajemy przez argument (desktop: h-4, mobile ikonowy: h-5).
+const BackIcon = (cls: string) => (
+  <svg viewBox="0 0 24 24" fill="none" className={cls} aria-hidden="true">
+    <path
+      d="M15 6l-6 6 6 6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+const FbIcon = (cls: string) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={cls} aria-hidden="true">
+    <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z" />
+  </svg>
+);
+const WaIcon = (cls: string) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={cls} aria-hidden="true">
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.82 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.24-8.25 8.24-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.37c0-4.54 3.7-8.24 8.24-8.24zm-3.6 4.43c-.17 0-.45.06-.69.31-.24.25-.9.88-.9 2.15 0 1.27.92 2.5 1.05 2.67.13.17 1.8 2.86 4.42 3.91.62.25 1.1.4 1.48.51.62.2 1.19.17 1.64.1.5-.07 1.54-.63 1.76-1.24.22-.61.22-1.13.16-1.24-.07-.11-.24-.17-.5-.31-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.25-.67.85-.83 1.02-.15.17-.3.19-.56.06-.26-.13-1.1-.4-2.09-1.29-.77-.69-1.29-1.54-1.44-1.8-.15-.25-.02-.39.11-.52.12-.12.26-.31.4-.46.13-.16.17-.27.26-.45.09-.18.04-.34-.02-.47-.06-.13-.58-1.4-.8-1.92-.2-.5-.4-.43-.56-.44-.14-.01-.3-.01-.47-.01z" />
+  </svg>
+);
+const PrintIcon = (cls: string) => (
+  <svg viewBox="0 0 24 24" fill="none" className={cls} aria-hidden="true">
+    <path
+      d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M6 14h12v7H6z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+// Pasek nawigacji oferty. Dwa układy z jednym stanem/logiką (scrollspy, share):
+//  • DESKTOP (lg+): jeden spójny „command bar" — po lewej „Wróć do ofert" +
+//    skróty do sekcji, po prawej Udostępnij/WhatsApp/Drukuj. Przyklejony pod menu
+//    (sticky top-20), „jedzie" z użytkownikiem przez całą treść oferty.
+//  • MOBILE (< lg): DWIE belki zamiast trzech zawijanych linii —
+//    1) akcje: „Oferty" + Facebook + WhatsApp (lewo), Drukuj (prawo) — przewija
+//       się z treścią;
+//    2) belka sekcji (Zdjęcia · Plan · Opis · Lokalizacja · Film) ZAWSZE w jednej
+//       linii (poziomy przewijak palcem), przyklejona pod nagłówkiem — dokładnie
+//       jak na laptopie, żeby zawsze dało się wejść w daną sekcję.
 export default function OfferTopbar({
   sections,
   shareUrl,
@@ -110,122 +144,138 @@ export default function OfferTopbar({
     window.open(u, "_blank", "noopener,noreferrer");
   };
 
-  return (
-    <div className="mb-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-2xl border border-gold-500/15 bg-forest-900/55 px-2.5 py-2 backdrop-blur sm:px-3 lg:sticky lg:top-20 lg:z-30 lg:bg-forest-900/80">
-      {/* Lewa strona: powrót + skróty do sekcji */}
-      <div className="flex flex-wrap items-center gap-y-1">
-        <Link
-          href="/oferty"
-          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-cream/70 transition hover:bg-forest-800 hover:text-gold-300"
-        >
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
-            <path
-              d="M15 6l-6 6 6 6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="hidden sm:inline">Wróć do ofert</span>
-          <span className="sm:hidden">Oferty</span>
-        </Link>
+  // Pojedyncza pigułka sekcji — współdzielona przez oba układy (jedno źródło
+  // logiki podświetlenia). `shrink-0`, żeby w poziomym przewijaku na mobile
+  // pigułki nie ściskały się w kolumnę.
+  const renderPill = (s: OfferSection) => {
+    const isActive = s.view
+      ? active === s.id && galleryView === s.view
+      : active === s.id;
+    return (
+      <a
+        key={s.view ?? s.id}
+        href={`#${s.id}`}
+        onClick={(e) => goToView(e, s)}
+        aria-current={isActive ? "true" : undefined}
+        className={
+          "shrink-0 rounded-full px-3 py-1.5 text-sm transition " +
+          (isActive
+            ? "bg-gold-500/15 text-gold-300"
+            : "text-cream/65 hover:bg-forest-800 hover:text-gold-300")
+        }
+      >
+        {s.label}
+      </a>
+    );
+  };
 
-        {sections.length > 0 ? (
-          <>
-            <span
-              className="mx-1.5 hidden h-5 w-px bg-gold-500/15 sm:block"
-              aria-hidden
-            />
-            <nav
-              aria-label="Sekcje oferty"
-              className="flex flex-wrap items-center gap-0.5"
-            >
-              {sections.map((s) => {
-                // Pigułki galerii (Zdjęcia/Plan) dzielą id #galeria — aktywność
-                // rozróżniamy po aktualnym widoku galerii.
-                const isActive = s.view
-                  ? active === s.id && galleryView === s.view
-                  : active === s.id;
-                return (
-                  <a
-                    key={s.view ?? s.id}
-                    href={`#${s.id}`}
-                    onClick={(e) => goToView(e, s)}
-                    aria-current={isActive ? "true" : undefined}
-                    className={
-                      "rounded-full px-3 py-1.5 text-sm transition " +
-                      (isActive
-                        ? "bg-gold-500/15 text-gold-300"
-                        : "text-cream/65 hover:bg-forest-800 hover:text-gold-300")
-                    }
-                  >
-                    {s.label}
-                  </a>
-                );
-              })}
-            </nav>
-          </>
-        ) : null}
+  return (
+    <>
+      {/* ===== DESKTOP (lg+): jeden spójny command bar, przyklejony pod menu ===== */}
+      <div className="mb-8 hidden flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-2xl border border-gold-500/15 bg-forest-900/80 px-3 py-2 backdrop-blur lg:sticky lg:top-20 lg:z-30 lg:flex">
+        <div className="flex flex-wrap items-center gap-y-1">
+          <Link
+            href="/oferty"
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-cream/70 transition hover:bg-forest-800 hover:text-gold-300"
+          >
+            {BackIcon("h-4 w-4")}
+            <span>Wróć do ofert</span>
+          </Link>
+
+          {sections.length > 0 ? (
+            <>
+              <span
+                className="mx-1.5 h-5 w-px bg-gold-500/15"
+                aria-hidden
+              />
+              <nav
+                aria-label="Sekcje oferty"
+                className="flex flex-wrap items-center gap-0.5"
+              >
+                {sections.map(renderPill)}
+              </nav>
+            </>
+          ) : null}
+        </div>
+
+        <div className="flex items-center gap-0.5">
+          <button
+            type="button"
+            onClick={share}
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-cream/75 transition hover:bg-forest-800 hover:text-gold-300"
+          >
+            {FbIcon("h-4 w-4")}
+            <span>Udostępnij</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={shareWhatsApp}
+            aria-label="Udostępnij ofertę przez WhatsApp"
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-cream/75 transition hover:bg-forest-800 hover:text-[#25D366]"
+          >
+            {WaIcon("h-4 w-4")}
+            <span>WhatsApp</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-cream/75 transition hover:bg-forest-800 hover:text-gold-300"
+          >
+            {PrintIcon("h-4 w-4")}
+            <span>Drukuj</span>
+          </button>
+        </div>
       </div>
 
-      {/* Prawa strona: akcje (Udostępnij ↔ Drukuj) */}
-      <div className="flex items-center gap-0.5">
-        <button
-          type="button"
-          onClick={share}
-          className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-cream/75 transition hover:bg-forest-800 hover:text-gold-300"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="h-4 w-4"
-            aria-hidden="true"
+      {/* ===== MOBILE (< lg) — belka 1: akcje (przewija się z treścią) ===== */}
+      <div className="mb-3 flex items-center justify-between gap-2 rounded-2xl border border-gold-500/15 bg-forest-900/55 px-1.5 py-1.5 backdrop-blur lg:hidden">
+        <div className="flex items-center gap-0.5">
+          <Link
+            href="/oferty"
+            className="inline-flex items-center gap-1 rounded-full px-2.5 py-1.5 text-sm text-cream/80 transition hover:bg-forest-800 hover:text-gold-300"
           >
-            <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z" />
-          </svg>
-          <span className="hidden sm:inline">Udostępnij</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={shareWhatsApp}
-          aria-label="Udostępnij ofertę przez WhatsApp"
-          className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-cream/75 transition hover:bg-forest-800 hover:text-[#25D366]"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="h-4 w-4"
-            aria-hidden="true"
+            {BackIcon("h-4 w-4")}
+            <span>Oferty</span>
+          </Link>
+          <button
+            type="button"
+            onClick={share}
+            aria-label="Udostępnij ofertę na Facebooku"
+            className="inline-flex items-center rounded-full p-2 text-cream/80 transition hover:bg-forest-800 hover:text-gold-300"
           >
-            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.82 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.24-8.25 8.24-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.37c0-4.54 3.7-8.24 8.24-8.24zm-3.6 4.43c-.17 0-.45.06-.69.31-.24.25-.9.88-.9 2.15 0 1.27.92 2.5 1.05 2.67.13.17 1.8 2.86 4.42 3.91.62.25 1.1.4 1.48.51.62.2 1.19.17 1.64.1.5-.07 1.54-.63 1.76-1.24.22-.61.22-1.13.16-1.24-.07-.11-.24-.17-.5-.31-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.59.13-.17.25-.67.85-.83 1.02-.15.17-.3.19-.56.06-.26-.13-1.1-.4-2.09-1.29-.77-.69-1.29-1.54-1.44-1.8-.15-.25-.02-.39.11-.52.12-.12.26-.31.4-.46.13-.16.17-.27.26-.45.09-.18.04-.34-.02-.47-.06-.13-.58-1.4-.8-1.92-.2-.5-.4-.43-.56-.44-.14-.01-.3-.01-.47-.01z" />
-          </svg>
-          <span className="hidden sm:inline">WhatsApp</span>
-        </button>
+            {FbIcon("h-5 w-5")}
+          </button>
+          <button
+            type="button"
+            onClick={shareWhatsApp}
+            aria-label="Udostępnij ofertę przez WhatsApp"
+            className="inline-flex items-center rounded-full p-2 text-cream/80 transition hover:bg-forest-800 hover:text-[#25D366]"
+          >
+            {WaIcon("h-5 w-5")}
+          </button>
+        </div>
 
         <button
           type="button"
           onClick={() => window.print()}
-          className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm text-cream/75 transition hover:bg-forest-800 hover:text-gold-300"
+          aria-label="Drukuj ofertę"
+          className="inline-flex items-center rounded-full p-2 text-cream/80 transition hover:bg-forest-800 hover:text-gold-300"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            className="h-4 w-4"
-            aria-hidden="true"
-          >
-            <path
-              d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M6 14h12v7H6z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="hidden sm:inline">Drukuj</span>
+          {PrintIcon("h-5 w-5")}
         </button>
       </div>
-    </div>
+
+      {/* ===== MOBILE (< lg) — belka 2: sekcje ZAWSZE w jednej linii, przyklejona ===== */}
+      {sections.length > 0 ? (
+        <nav
+          aria-label="Sekcje oferty"
+          className="no-scrollbar sticky top-20 z-30 mb-8 flex items-center gap-1 overflow-x-auto rounded-2xl border border-gold-500/15 bg-forest-900/90 px-2 py-2 backdrop-blur lg:hidden"
+        >
+          {sections.map(renderPill)}
+        </nav>
+      ) : null}
+    </>
   );
 }
