@@ -1,10 +1,11 @@
 // Centralna konfiguracja treści FREE HOME — jedno źródło prawdy dla całego serwisu.
 
 // Adres kanoniczny serwisu — sterowany zmienną, żeby ten sam kod działał na:
-//  • staging   → https://www.freehome.com.pl  (skrypt buildu ustawia NEXT_PUBLIC_SITE_URL)
-//  • produkcja → https://www.freehome.pl       (wartość domyślna)
+//  • podgląd   → https://podglad.dm82980.domenomania.eu (deploy-podglad.sh ustawia NEXT_PUBLIC_SITE_URL)
+//  • produkcja → https://freehome.pl (build-and-deploy.sh ustawia jawnie; domyślna = ta sama,
+//    żeby build bez env NIGDY nie wyprodukował canonicali z „www", które lecą na 301)
 // Zasila metadataBase (canonical, Open Graph) w layout.tsx oraz JSON-LD.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.freehome.pl";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://freehome.pl";
 
 export const site = {
   name: "FREE HOME",

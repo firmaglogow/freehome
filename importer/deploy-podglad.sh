@@ -60,7 +60,13 @@ NEXT_PUBLIC_BASE_PATH="" NEXT_PUBLIC_SITE_URL="$SITE_URL" $TASKSET ./node_module
 #    Wykluczamy .well-known, żeby nie ruszać wyzwań SSL (Let's Encrypt).
 rsync -a --delete --exclude='.well-known' out/ "$DOCROOT/"
 
-# 4. Firmowa strona 404 na hostingu Apache.
-printf 'ErrorDocument 404 /404.html\n' > "$DOCROOT/.htaccess"
+# 4. Firmowa strona 404 + BLOKADA INDEKSOWANIA podglądu. Podgląd to robocza
+#    kopia produkcji (freehome.pl) — bez noindex Google widziałby cały serwis
+#    podwójnie (duplicate content, groźne dla świeżej domeny). X-Robots-Tag
+#    działa dla KAŻDEGO pliku (HTML, obrazy, PDF), robots.txt dodatkowo
+#    blokuje crawl. Oba pliki odtwarzamy PO rsync --delete, żeby publikacja
+#    nigdy ich nie zgubiła.
+printf 'ErrorDocument 404 /404.html\nHeader always set X-Robots-Tag "noindex, nofollow"\n' > "$DOCROOT/.htaccess"
+printf 'User-agent: *\nDisallow: /\n' > "$DOCROOT/robots.txt"
 
 echo "[$(date '+%F %T')] KONIEC deploy-podglad — OPUBLIKOWANO na $SITE_URL"

@@ -6,7 +6,7 @@ import ReviewsList from "@/components/opinie/ReviewsList";
 import { site } from "@/lib/site";
 import { googleReviews } from "@/lib/googleReviews";
 import JsonLd from "@/components/seo/JsonLd";
-import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { pageMetadata, breadcrumbJsonLd, ORG_ID } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Opinie",
@@ -23,6 +23,9 @@ const JSONLD_REVIEW_LIMIT = 80;
 const reviewsJsonLd = {
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
+  // Ten sam @id co encja na stronie głównej — Google skleja obie w JEDNĄ
+  // organizację (bez @id widziałby dwa osobne byty RealEstateAgent).
+  "@id": ORG_ID,
   name: site.fullName,
   url: `${site.url}/opinie`,
   aggregateRating: {

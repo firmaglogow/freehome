@@ -31,6 +31,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/dlaczego-my", priority: 0.7, changeFrequency: "monthly" },
     { path: "/ludzie", priority: 0.6, changeFrequency: "monthly" },
     { path: "/dla-klienta", priority: 0.6, changeFrequency: "monthly" },
+    // Narzędzia „Dla klienta" — statyczne strony z public/ (poza routingiem
+    // Next), ale pełnoprawne podstrony serwisu. Bez wpisu w sitemap Google
+    // słabiej widzi naszą główną przewagę (raport konkurencji wprost to
+    // wytykał). Kalkulator notarialny celowo pominięty — to widżet do iframe.
+    { path: "/ceny-w-okolicy", priority: 0.7, changeFrequency: "monthly" },
+    { path: "/kalkulator-kredytowy", priority: 0.6, changeFrequency: "monthly" },
+    { path: "/mapa-osiedli", priority: 0.6, changeFrequency: "monthly" },
     { path: "/opinie", priority: 0.6, changeFrequency: "weekly" },
     { path: "/blog", priority: 0.6, changeFrequency: "weekly" },
     { path: "/faq", priority: 0.6, changeFrequency: "monthly" },
